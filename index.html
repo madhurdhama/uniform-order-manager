@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uniform Order Manager</title>
+  <style>
+    /* ─────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      color: #1a1a1a;
+      font-size: 15px;
+    }
+
+    /* ─────────────────────────────────────────
+       LAYOUT
+    ───────────────────────────────────────── */
+    .app {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .header {
+      text-align: center;
+      padding: 1.2rem 0 1.5rem;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .header p {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    /* ─────────────────────────────────────────
+       TABS
+    ───────────────────────────────────────── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #e0e0e0;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1rem;
+    }
+    .tab {
+      flex: 1;
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      background: none;
+      border-radius: 9px;
+      cursor: pointer;
+      color: #666;
+    }
+    .tab.active {
+      background: #fff;
+      color: #1a1a1a;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION CARDS
+    ───────────────────────────────────────── */
+    .section {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e8e8e8;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+    }
+
+    /* ─────────────────────────────────────────
+       FORM FIELDS
+    ───────────────────────────────────────── */
+    .field { margin-bottom: 10px; }
+    .field label {
+      font-size: 12px;
+      color: #666;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 9px 11px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: #aaa;
+      background: #fff;
+    }
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* ─────────────────────────────────────────
+       ITEM ROWS (dress selector table)
+    ───────────────────────────────────────── */
+    .col-labels {
+      display: grid;
+      grid-template-columns: 1fr 80px 55px 78px 30px;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+    .col-labels span {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 55px 78px 30px;
+      gap: 5px;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+    .item-row select,
+    .item-row input {
+      padding: 7px 8px;
+      font-size: 13px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      background: #fafafa;
+      color: #1a1a1a;
+      outline: none;
+      width: 100%;
+    }
+    .item-row input:focus,
+    .item-row select:focus {
+      border-color: #aaa;
+      background: #fff;
+    }
+
+    .item-price {
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      text-align: right;
+      padding-right: 2px;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 17px;
+      color: #bbb;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .remove-btn:hover {
+      background: #ffeaea;
+      color: #e55;
+    }
+
+    .add-btn {
+      font-size: 13px;
+      color: #2563eb;
+      background: none;
+      border: 1px dashed #93c5fd;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .add-btn:hover { background: #eff6ff; }
+
+    /* ─────────────────────────────────────────
+       TOTAL SUMMARY
+    ───────────────────────────────────────── */
+    .total-card {
+      background: #f8f8f8;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 1rem;
+      border: 1px solid #ebebeb;
+    }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    .total-final {
+      display: flex;
+      justify-content: space-between;
+      font-size: 21px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    /* ─────────────────────────────────────────
+       SAVE BUTTON
+    ───────────────────────────────────────── */
+    .save-btn {
+      width: 100%;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 600;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .save-btn:hover { background: #333; }
+    .save-btn:active { transform: scale(0.99); }
+
+    /* ─────────────────────────────────────────
+       SAVED ORDERS TAB
+    ───────────────────────────────────────── */
+    .search-box input {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      color: #1a1a1a;
+      outline: none;
+      margin-bottom: 8px;
+    }
+    .total-count {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .order-card {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .order-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .order-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .order-meta {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+    .order-amount {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .order-items {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .order-item-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 2px;
+    }
+    .del-order {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      color: #e55;
+      padding: 2px 6px;
+      border-radius: 5px;
+      margin-left: 6px;
+    }
+    .del-order:hover { background: #ffeaea; }
+
+    .empty {
+      text-align: center;
+      padding: 2.5rem;
+      color: #aaa;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <h1>Uniform Order Manager</h1>
+    <p>Add items, auto-calculate total & save orders</p>
+  </div>
+
+  <!-- ── TABS ── -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('new')">New Order</button>
+    <button class="tab"        onclick="showTab('orders')">Saved Orders</button>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       TAB 1 — NEW ORDER
+  ════════════════════════════════════════ -->
+  <div id="tab-new">
+
+    <!-- Student details -->
+    <div class="section">
+      <div class="section-title">Student Details</div>
+      <div class="row2">
+        <div class="field">
+          <label>Student Name</label>
+          <input id="sname" type="text" placeholder="e.g. Rahul Sharma">
+        </div>
+        <div class="field">
+          <label>Class</label>
+          <input id="sclass" type="text" placeholder="e.g. 5th A">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Parent Name</label>
+          <input id="pname" type="text" placeholder="e.g. Suresh Sharma">
+        </div>
+        <div class="field">
+          <label>Mobile Number</label>
+          <input id="mobile" type="tel" placeholder="e.g. 9876543210">
+        </div>
+      </div>
+    </div>
+
+    <!-- Dress items -->
+    <div class="section">
+      <div class="section-title">Dress Items</div>
+
+      <!-- Column headers -->
+      <div class="col-labels">
+        <span>Item</span>
+        <span>Size</span>
+        <span>Qty</span>
+        <span style="text-align:right">Line Total</span>
+        <span></span>
+      </div>
+
+      <!-- Item rows are added here by JavaScript -->
+      <div id="items-container"></div>
+
+      <button class="add-btn" onclick="addItem()">+ Add another item</button>
+
+      <!-- Running total -->
+      <div class="total-card">
+        <div id="item-breakdown"></div>
+        <div class="total-final">
+          <span>Grand Total</span>
+          <span id="grand-total">₹0</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveOrder()">Save Order</button>
+
+  </div><!-- end tab-new -->
+
+
+  <!-- ════════════════════════════════════════
+       TAB 2 — SAVED ORDERS
+  ════════════════════════════════════════ -->
+  <div id="tab-orders" style="display:none">
+    <div class="search-box">
+      <input type="text"
+             placeholder="Search by name, class or mobile..."
+             oninput="renderOrders(this.value)">
+    </div>
+    <div id="orders-summary" class="total-count"></div>
+    <div id="orders-list"></div>
+  </div>
+
+</div><!-- end .app -->
+
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   PRICE TABLE
+   ─────────────────────────────────────────────────────
+   HOW TO EDIT:
+     Format:  "Item Name": { Size: Price, Size: Price }
+     Sizes can be numbers (28, 30) or strings ("Small", "Big")
+     Add new items by copying any existing row.
+     Remove items by deleting the whole line.
+═══════════════════════════════════════════════════════ */
+const PRICES = {
+  "Shirt":      { 26: 325,  28: 325,  30: 350,  32: 350,  34: 375,  36: 375,  38: 400,  40: 400,  42: 425,  44: 450 },
+  "Pant":       { 26: 325,  28: 325,  30: 350,  32: 350,  34: 375,  36: 375,  38: 400,  40: 400,  42: 425,  44: 450 },
+  "T-Shirt":    { 26: 300,  28: 300,  30: 325,  32: 325,  34: 350,  36: 350,  38: 400,  40: 400,  42: 425,  44: 450 },
+  "Lower":      { 26: 300,  28: 300,  30: 325,  32: 325,  34: 350,  36: 350,  38: 400,  40: 400,  42: 425,  44: 450 },
+  "Pink Shirt": { 20: 300,  22: 300,  24: 325,  26: 325,  28: 350 },
+  "Pink Pant":  { 20: 300,  22: 300,  24: 325,  26: 325,  28: 350 },
+  "Red T-Shirt":{ 20: 300,  22: 300,  24: 325, },
+  "Red Shorts": { 20: 300,  22: 300,  24: 325, },
+  "Suit":       { 28: 900,  30: 950,  32: 1000, 34: 1100 },
+  "Tie":        { "Small": 50,   "Large": 100 },
+  "Belt":       { "All": 100, },
+  "Socks":      { "Pair": 30 }
+};
+
+/* ═══════════════════════════════════════════════════════
+   APP STATE
+═══════════════════════════════════════════════════════ */
+const ITEM_NAMES = Object.keys(PRICES);
+let itemCounter  = 0;
+let savedOrders  = JSON.parse(localStorage.getItem('uniform_orders') || '[]');
+
+
+/* ═══════════════════════════════════════════════════════
+   ADD ITEM ROW
+═══════════════════════════════════════════════════════ */
+function addItem() {
+  itemCounter++;
+  const id = itemCounter;
+
+  const container = document.getElementById('items-container');
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.id = 'item-' + id;
+
+  // Build item <select> options
+  const itemOptions = ITEM_NAMES.map(name => `<option>${name}</option>`).join('');
+
+  // Build size options for the first item
+  const firstItem  = ITEM_NAMES[0];
+  const sizeOptions = getSizeOptions(firstItem);
+
+  row.innerHTML = `
+    <select id="item-sel-${id}" onchange="onItemChange(${id})">
+      ${itemOptions}
+    </select>
+
+    <select id="size-sel-${id}" onchange="recalc()">
+      ${sizeOptions}
+    </select>
+
+    <input type="number"
+           id="qty-${id}"
+           value="1" min="1" max="99"
+           style="text-align:center"
+           oninput="recalc()">
+
+    <div class="item-price" id="price-${id}">₹0</div>
+
+    <button class="remove-btn" onclick="removeItem(${id})" title="Remove">×</button>
+  `;
+
+  container.appendChild(row);
+  recalc();
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════ */
+function getSizeOptions(itemName) {
+  return Object.keys(PRICES[itemName] || {})
+               .map(s => `<option>${s}</option>`)
+               .join('');
+}
+
+function onItemChange(id) {
+  const item = document.getElementById('item-sel-' + id).value;
+  document.getElementById('size-sel-' + id).innerHTML = getSizeOptions(item);
+  recalc();
+}
+
+function removeItem(id) {
+  const el = document.getElementById('item-' + id);
+  if (el) el.remove();
+  recalc();
+}
+
+function getUnitPrice(itemName, size) {
+  return PRICES[itemName]?.[size] || PRICES[itemName]?.[parseInt(size)] || 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   RECALCULATE TOTALS
+   Called whenever any dropdown or qty changes.
+═══════════════════════════════════════════════════════ */
+function recalc() {
+  let grandTotal = 0;
+  let breakdownHTML = '';
+
+  // Loop every active item row
+  document.querySelectorAll('[id^="item-"]').forEach(row => {
+    if (row.id === 'items-container') return;
+
+    const id       = row.id.replace('item-', '');
+    const itemEl   = document.getElementById('item-sel-'  + id);
+    const sizeEl   = document.getElementById('size-sel-'  + id);
+    const qtyEl    = document.getElementById('qty-'       + id);
+    const priceEl  = document.getElementById('price-'     + id);
+    if (!itemEl) return;
+
+    const item      = itemEl.value;
+    const size      = sizeEl.value;
+    const qty       = parseInt(qtyEl.value) || 1;
+    const unitPrice = getUnitPrice(item, size);
+    const lineTotal = unitPrice * qty;
+
+    grandTotal += lineTotal;
+    priceEl.textContent = '₹' + lineTotal.toLocaleString('en-IN');
+
+    // Show breakdown only when qty > 1
+    if (qty > 1) {
+      breakdownHTML += `
+        <div class="total-row">
+          <span>${item} (${size}) × ${qty}</span>
+          <span>₹${lineTotal.toLocaleString('en-IN')}</span>
+        </div>`;
+    }
+  });
+
+  document.getElementById('item-breakdown').innerHTML = breakdownHTML;
+  document.getElementById('grand-total').textContent  = '₹' + grandTotal.toLocaleString('en-IN');
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   SAVE ORDER
+═══════════════════════════════════════════════════════ */
+function saveOrder() {
+  const sname  = document.getElementById('sname').value.trim();
+  const sclass = document.getElementById('sclass').value.trim();
+  const pname  = document.getElementById('pname').value.trim();
+  const mobile = document.getElementById('mobile').value.trim();
+
+  if (!sname) { alert('Please enter student name'); return; }
+
+  const rows = document.querySelectorAll('[id^="item-"]:not(#items-container)');
+  if (rows.length === 0) { alert('Please add at least one item'); return; }
+
+  let items = [];
+  let total = 0;
+
+  rows.forEach(row => {
+    const id        = row.id.replace('item-', '');
+    const itemEl    = document.getElementById('item-sel-' + id);
+    if (!itemEl) return;
+
+    const item      = itemEl.value;
+    const size      = document.getElementById('size-sel-' + id).value;
+    const qty       = parseInt(document.getElementById('qty-' + id).value) || 1;
+    const unitPrice = getUnitPrice(item, size);
+    const lineTotal = unitPrice * qty;
+
+    total += lineTotal;
+    items.push({ item, size, qty, unitPrice, lineTotal });
+  });
+
+  const order = {
+    id:     Date.now(),
+    sname, sclass, pname, mobile,
+    items,  total,
+    date:   new Date().toLocaleDateString('en-IN')
+  };
+
+  savedOrders.unshift(order);
+  localStorage.setItem('uniform_orders', JSON.stringify(savedOrders));
+
+  alert(`✅ Order saved!\n${sname}  —  ₹${total.toLocaleString('en-IN')}`);
+  resetForm();
+}
+
+function resetForm() {
+  ['sname','sclass','pname','mobile'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('items-container').innerHTML = '';
+  itemCounter = 0;
+  recalc();
+  addItem();  // start fresh with one empty row
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════════ */
+function showTab(tab) {
+  document.getElementById('tab-new').style.display    = tab === 'new'    ? '' : 'none';
+  document.getElementById('tab-orders').style.display = tab === 'orders' ? '' : 'none';
+
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    el.classList.toggle('active', (i === 0 && tab === 'new') || (i === 1 && tab === 'orders'));
+  });
+
+  if (tab === 'orders') renderOrders('');
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   RENDER SAVED ORDERS LIST
+═══════════════════════════════════════════════════════ */
+function renderOrders(query) {
+  query = (query || '').toLowerCase();
+
+  const filtered = savedOrders.filter(o =>
+    o.sname.toLowerCase().includes(query)  ||
+    (o.sclass  || '').toLowerCase().includes(query) ||
+    (o.mobile  || '').includes(query)
+  );
+
+  const totalAmt = filtered.reduce((sum, o) => sum + o.total, 0);
+  document.getElementById('orders-summary').textContent =
+    `${filtered.length} order${filtered.length !== 1 ? 's' : ''} — Total: ₹${totalAmt.toLocaleString('en-IN')}`;
+
+  const list = document.getElementById('orders-list');
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">No orders found</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(o => `
+    <div class="order-card">
+      <div class="order-card-top">
+        <div>
+          <div class="order-name">
+            ${o.sname}
+            <span style="font-size:12px;font-weight:400;color:#888"> ${o.sclass || ''}</span>
+          </div>
+          <div class="order-meta">
+            ${o.pname ? o.pname + ' · ' : ''}${o.mobile || ''} · ${o.date}
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="order-amount">₹${o.total.toLocaleString('en-IN')}</div>
+          <button class="del-order" onclick="deleteOrder(${o.id})" title="Delete">✕</button>
+        </div>
+      </div>
+      <div class="order-items">
+        ${o.items.map(i => `
+          <div class="order-item-line">
+            <span>${i.item} (${i.size})${i.qty > 1 ? ' × ' + i.qty : ''}</span>
+            <span>₹${i.lineTotal.toLocaleString('en-IN')}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   DELETE ORDER
+═══════════════════════════════════════════════════════ */
+function deleteOrder(id) {
+  if (!confirm('Delete this order?')) return;
+  savedOrders = savedOrders.filter(o => o.id !== id);
+  localStorage.setItem('uniform_orders', JSON.stringify(savedOrders));
+  renderOrders('');
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   INIT — add one empty item row on load
+═══════════════════════════════════════════════════════ */
+addItem();
+</script>
+
+</body>
+</html>
