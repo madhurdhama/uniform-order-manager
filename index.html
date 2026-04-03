@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Uniform Order Manager</title>
   <style>
-    /* ─────────────────────────────────────────
-       RESET & BASE
-    ───────────────────────────────────────── */
+
+    /* ── Reset ── */
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f4f4f4;
+      background: #f0f2f5;
       color: #1a1a1a;
       font-size: 15px;
     }
 
-    /* ─────────────────────────────────────────
-       LAYOUT
-    ───────────────────────────────────────── */
     .app {
-      max-width: 620px;
+      max-width: 640px;
       margin: 0 auto;
       padding: 1rem;
     }
 
-    /* ─────────────────────────────────────────
-       HEADER
-    ───────────────────────────────────────── */
-    .header {
-      text-align: center;
-      padding: 1.2rem 0 1.5rem;
-    }
-    .header h1 {
-      font-size: 22px;
-      font-weight: 600;
-    }
-    .header p {
-      font-size: 13px;
-      color: #666;
-      margin-top: 4px;
-    }
+    /* ── Header ── */
+    .header { text-align: center; padding: 1.2rem 0 1rem; }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .header p  { font-size: 12px; color: #666; margin-top: 3px; }
 
-    /* ─────────────────────────────────────────
-       TABS
-    ───────────────────────────────────────── */
+    /* ── Location Toggle ── */
+    .location-toggle {
+      display: flex;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .loc-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      background: #fafafa;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .loc-btn:not(:last-child) { border-right: 1px solid #ddd; }
+    .loc-btn.active { background: #1a1a1a; color: #fff; }
+
+    /* ── Tabs ── */
     .tabs {
       display: flex;
       gap: 4px;
@@ -65,15 +69,9 @@
       cursor: pointer;
       color: #666;
     }
-    .tab.active {
-      background: #fff;
-      color: #1a1a1a;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-    }
+    .tab.active { background: #fff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
 
-    /* ─────────────────────────────────────────
-       SECTION CARDS
-    ───────────────────────────────────────── */
+    /* ── Section cards ── */
     .section {
       background: #fff;
       border-radius: 14px;
@@ -90,16 +88,9 @@
       margin-bottom: 12px;
     }
 
-    /* ─────────────────────────────────────────
-       FORM FIELDS
-    ───────────────────────────────────────── */
+    /* ── Form fields ── */
     .field { margin-bottom: 10px; }
-    .field label {
-      font-size: 12px;
-      color: #666;
-      display: block;
-      margin-bottom: 4px;
-    }
+    .field label { font-size: 12px; color: #666; display: block; margin-bottom: 4px; }
     .field input,
     .field select {
       width: 100%;
@@ -113,61 +104,90 @@
       transition: border-color 0.15s;
     }
     .field input:focus,
-    .field select:focus {
-      border-color: #aaa;
-      background: #fff;
-    }
-    .row2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
+    .field select:focus { border-color: #aaa; background: #fff; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-    /* ─────────────────────────────────────────
-       ITEM ROWS (dress selector table)
-    ───────────────────────────────────────── */
+    /* ── Payment mode toggle ── */
+    .payment-toggle {
+      display: flex;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+    .pay-btn {
+      flex: 1;
+      padding: 9px 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      background: #fafafa;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pay-btn:not(:last-child) { border-right: 1px solid #ddd; }
+    .pay-btn.active { background: #1a1a1a; color: #fff; }
+
+    /* ── Item table column headers ── */
     .col-labels {
       display: grid;
-      grid-template-columns: 1fr 80px 55px 78px 30px;
+      grid-template-columns: 1fr 80px 55px 80px 30px;
       gap: 5px;
       margin-bottom: 5px;
     }
-    .col-labels span {
-      font-size: 11px;
-      color: #999;
-    }
+    .col-labels span { font-size: 11px; color: #999; }
 
+    /* ── Single item row ── */
     .item-row {
       display: grid;
-      grid-template-columns: 1fr 80px 55px 78px 30px;
+      grid-template-columns: 1fr 80px 55px 80px 30px;
       gap: 5px;
       align-items: center;
       margin-bottom: 7px;
     }
-    .item-row select,
-    .item-row input {
+
+    /* ── Combo item row ── */
+    .combo-row {
+      background: #f8f8f8;
+      border: 1px solid #ebebeb;
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+    }
+    .combo-top {
+      display: grid;
+      grid-template-columns: 1fr 55px 80px 30px;
+      gap: 5px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .combo-sub {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+    .combo-label { font-size: 11px; color: #888; padding-left: 2px; }
+
+    /* ── Shared inputs inside item rows ── */
+    .item-row select, .item-row input,
+    .combo-top select, .combo-top input,
+    .combo-sub select {
       padding: 7px 8px;
       font-size: 13px;
       border: 1px solid #ddd;
       border-radius: 7px;
-      background: #fafafa;
+      background: #fff;
       color: #1a1a1a;
       outline: none;
       width: 100%;
     }
-    .item-row input:focus,
-    .item-row select:focus {
-      border-color: #aaa;
-      background: #fff;
-    }
+    .item-row input:focus, .item-row select:focus,
+    .combo-top input:focus, .combo-top select:focus,
+    .combo-sub select:focus { border-color: #aaa; }
 
-    .item-price {
-      font-size: 13px;
-      font-weight: 500;
-      color: #444;
-      text-align: right;
-      padding-right: 2px;
-    }
+    .item-price { font-size: 13px; font-weight: 500; color: #444; text-align: right; padding-right: 2px; }
 
     .remove-btn {
       background: none;
@@ -182,27 +202,25 @@
       align-items: center;
       justify-content: center;
     }
-    .remove-btn:hover {
-      background: #ffeaea;
-      color: #e55;
-    }
+    .remove-btn:hover { background: #ffeaea; color: #e55; }
 
+    /* ── Add item buttons ── */
+    .add-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
     .add-btn {
+      flex: 1;
       font-size: 13px;
       color: #2563eb;
       background: none;
       border: 1px dashed #93c5fd;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 8px 10px;
       cursor: pointer;
-      width: 100%;
-      margin-top: 6px;
     }
     .add-btn:hover { background: #eff6ff; }
+    .add-btn.combo { color: #7c3aed; border-color: #c4b5fd; }
+    .add-btn.combo:hover { background: #f5f3ff; }
 
-    /* ─────────────────────────────────────────
-       TOTAL SUMMARY
-    ───────────────────────────────────────── */
+    /* ── Total card ── */
     .total-card {
       background: #f8f8f8;
       border-radius: 10px;
@@ -210,27 +228,19 @@
       margin-top: 1rem;
       border: 1px solid #ebebeb;
     }
-    .total-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 4px;
-    }
+    .total-row { display: flex; justify-content: space-between; font-size: 13px; color: #666; margin-bottom: 4px; }
     .total-final {
       display: flex;
       justify-content: space-between;
       font-size: 21px;
-      font-weight: 600;
+      font-weight: 700;
       color: #1a1a1a;
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid #e0e0e0;
     }
 
-    /* ─────────────────────────────────────────
-       SAVE BUTTON
-    ───────────────────────────────────────── */
+    /* ── Save button ── */
     .save-btn {
       width: 100%;
       padding: 13px;
@@ -246,9 +256,7 @@
     .save-btn:hover { background: #333; }
     .save-btn:active { transform: scale(0.99); }
 
-    /* ─────────────────────────────────────────
-       SAVED ORDERS TAB
-    ───────────────────────────────────────── */
+    /* ── Saved orders list ── */
     .search-box input {
       width: 100%;
       padding: 9px 12px;
@@ -260,12 +268,9 @@
       outline: none;
       margin-bottom: 8px;
     }
-    .total-count {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 8px;
-    }
+    .total-count { font-size: 12px; color: #888; margin-bottom: 8px; }
 
+    /* ── Order card ── */
     .order-card {
       background: #fff;
       border: 1px solid #e8e8e8;
@@ -273,36 +278,54 @@
       padding: 12px 14px;
       margin-bottom: 10px;
     }
-    .order-card-top {
+    .order-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .order-name   { font-size: 15px; font-weight: 600; }
+    .order-meta   { font-size: 12px; color: #888; margin-top: 2px; }
+    .order-amount { font-size: 16px; font-weight: 700; }
+
+    /* Payment badge */
+    .pay-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-top: 4px;
+    }
+    .pay-badge.cash    { background: #dcfce7; color: #16a34a; }
+    .pay-badge.online  { background: #dbeafe; color: #1d4ed8; }
+    .pay-badge.pending { background: #fef3c7; color: #d97706; }
+
+    /* Location badge */
+    .loc-badge {
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-top: 4px;
+    }
+    .loc-badge.baghpat  { background: #ede9fe; color: #6d28d9; }
+    .loc-badge.badagaon { background: #fce7f3; color: #be185d; }
+
+    .discount-badge { font-size: 11px; color: #e55; margin-top: 2px; }
+
+    /* Order item lines */
+    .order-items { margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+    .order-item-line { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 2px; }
+    .order-final-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-    }
-    .order-name {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
+      color: #1a1a1a;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #ebebeb;
     }
-    .order-meta {
-      font-size: 12px;
-      color: #888;
-      margin-top: 2px;
-    }
-    .order-amount {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .order-items {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid #f0f0f0;
-    }
-    .order-item-line {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 2px;
-    }
+
+    /* Action buttons on order card */
     .del-order {
       background: none;
       border: none;
@@ -314,34 +337,123 @@
       margin-left: 6px;
     }
     .del-order:hover { background: #ffeaea; }
-
-    .empty {
-      text-align: center;
-      padding: 2.5rem;
-      color: #aaa;
-      font-size: 14px;
+    .edit-btn {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 12px;
+      color: #555;
+      padding: 3px 10px;
+      cursor: pointer;
+      margin-top: 6px;
+      display: inline-block;
     }
+    .edit-btn:hover { background: #f5f5f5; }
+    .empty { text-align: center; padding: 2.5rem; color: #aaa; font-size: 14px; }
+
+    /* ── Edit payment panel ── */
+    .edit-panel {
+      display: none;
+      background: #f8f9ff;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 10px;
+    }
+    .edit-panel.open { display: block; }
+    .edit-panel-title { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .edit-pay-toggle { display: flex; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+    .edit-pay-btn {
+      flex: 1;
+      padding: 8px 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: none;
+      background: #fafafa;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .edit-pay-btn:not(:last-child) { border-right: 1px solid #ddd; }
+    .edit-pay-btn.active { background: #1a1a1a; color: #fff; }
+    .edit-amount-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .edit-amount-row label { font-size: 12px; color: #555; white-space: nowrap; }
+    .edit-amount-row input {
+      flex: 1;
+      padding: 7px 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+      outline: none;
+      color: #1a1a1a;
+    }
+    .edit-amount-row input:focus { border-color: #93c5fd; }
+    .edit-orig { font-size: 11px; color: #aaa; margin-bottom: 10px; }
+    .update-btn {
+      width: 100%;
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .update-btn:hover { background: #1d4ed8; }
+    .update-btn:active { transform: scale(0.99); }
+
+    /* ── Full order edit screen (fixed overlay) ── */
+    #edit-order-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #f0f2f5;
+      z-index: 100;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    #edit-order-screen.open { display: block; }
+    .edit-screen-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; }
+    .back-btn {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      padding: 7px 13px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #444;
+    }
+    .back-btn:hover { background: #f5f5f5; }
+    .edit-screen-title { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+
   </style>
 </head>
 <body>
-
 <div class="app">
 
-  <!-- ── HEADER ── -->
+  <!-- Header -->
   <div class="header">
     <h1>Uniform Order Manager</h1>
-    <p>Add items, auto-calculate total & save orders</p>
+    <p>Golden Gate International School</p>
   </div>
 
-  <!-- ── TABS ── -->
+  <!-- Location toggle -->
+  <div class="location-toggle">
+    <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
+    <button class="loc-btn"        id="loc-baghpat"  onclick="setLocation('baghpat')">Baghpat</button>
+  </div>
+
+  <!-- Main tabs -->
   <div class="tabs">
     <button class="tab active" onclick="showTab('new')">New Order</button>
     <button class="tab"        onclick="showTab('orders')">Saved Orders</button>
   </div>
 
-  <!-- ════════════════════════════════════════
-       TAB 1 — NEW ORDER
-  ════════════════════════════════════════ -->
+
+  <!-- TAB 1: NEW ORDER -->
   <div id="tab-new">
 
     <!-- Student details -->
@@ -367,344 +479,914 @@
           <input id="mobile" type="tel" placeholder="e.g. 9876543210">
         </div>
       </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Payment Mode</label>
+        <div class="payment-toggle">
+          <button class="pay-btn"        id="pay-pending" onclick="setPayment('pending')">Pending</button>
+          <button class="pay-btn active" id="pay-cash"    onclick="setPayment('cash')">Cash</button>
+          <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
+        </div>
+      </div>
     </div>
 
     <!-- Dress items -->
     <div class="section">
       <div class="section-title">Dress Items</div>
-
-      <!-- Column headers -->
       <div class="col-labels">
-        <span>Item</span>
-        <span>Size</span>
-        <span>Qty</span>
-        <span style="text-align:right">Line Total</span>
-        <span></span>
+        <span>Item</span><span>Size</span><span>Qty</span>
+        <span style="text-align:right">Line Total</span><span></span>
       </div>
-
-      <!-- Item rows are added here by JavaScript -->
       <div id="items-container"></div>
-
-      <button class="add-btn" onclick="addItem()">+ Add another item</button>
-
-      <!-- Running total -->
+      <div id="add-btns-new" class="add-buttons"></div>
       <div class="total-card">
         <div id="item-breakdown"></div>
         <div class="total-final">
-          <span>Grand Total</span>
-          <span id="grand-total">₹0</span>
+          <span>Total</span>
+          <span id="grand-total">Rs.0</span>
         </div>
       </div>
     </div>
 
     <button class="save-btn" onclick="saveOrder()">Save Order</button>
+  </div>
 
-  </div><!-- end tab-new -->
 
-
-  <!-- ════════════════════════════════════════
-       TAB 2 — SAVED ORDERS
-  ════════════════════════════════════════ -->
+  <!-- TAB 2: SAVED ORDERS -->
   <div id="tab-orders" style="display:none">
     <div class="search-box">
-      <input type="text"
-             placeholder="Search by name, class or mobile..."
-             oninput="renderOrders(this.value)">
+      <input type="text" placeholder="Search by name, class or mobile..." oninput="renderOrders(this.value)">
     </div>
-    <div id="orders-summary" class="total-count"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div id="orders-summary" class="total-count"></div>
+      <button onclick="exportCSV()" style="font-size:12px;padding:5px 10px;border:1px solid #86efac;border-radius:7px;background:none;color:#16a34a;cursor:pointer">
+        Export CSV
+      </button>
+    </div>
     <div id="orders-list"></div>
   </div>
 
 </div><!-- end .app -->
 
 
+<!-- FULL ORDER EDIT SCREEN (fixed overlay, shown when editing a saved order) -->
+<div id="edit-order-screen">
+  <div style="max-width:640px;margin:0 auto">
+
+    <div class="edit-screen-header">
+      <button class="back-btn" onclick="closeEditOrder()">&#8592; Back</button>
+      <div class="edit-screen-title">Edit Order</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Student Details</div>
+      <div class="row2">
+        <div class="field"><label>Student Name</label><input id="eo-sname" type="text"></div>
+        <div class="field"><label>Class</label><input id="eo-sclass" type="text"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Parent Name</label><input id="eo-pname" type="text"></div>
+        <div class="field"><label>Mobile Number</label><input id="eo-mobile" type="tel"></div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Payment Mode</label>
+        <div class="payment-toggle">
+          <button class="pay-btn" id="eo-pay-pending" onclick="setEoPay('pending')">Pending</button>
+          <button class="pay-btn" id="eo-pay-cash"    onclick="setEoPay('cash')">Cash</button>
+          <button class="pay-btn" id="eo-pay-online"  onclick="setEoPay('online')">Online</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Dress Items</div>
+      <div class="col-labels">
+        <span>Item</span><span>Size</span><span>Qty</span>
+        <span style="text-align:right">Line Total</span><span></span>
+      </div>
+      <div id="eo-items-container"></div>
+      <div id="add-btns-eo" class="add-buttons"></div>
+      <div class="total-card">
+        <div id="eo-breakdown"></div>
+        <div class="total-final">
+          <span>Total</span>
+          <span id="eo-grand-total">Rs.0</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveEditOrder()">Save Changes</button>
+    <div style="height:2rem"></div>
+  </div>
+</div>
+
+
 <script>
-/* ═══════════════════════════════════════════════════════
-   PRICE TABLE
-   ─────────────────────────────────────────────────────
-   HOW TO EDIT:
-     Format:  "Item Name": { Size: Price, Size: Price }
-     Sizes can be numbers (28, 30) or strings ("Small", "Big")
-     Add new items by copying any existing row.
-     Remove items by deleting the whole line.
-═══════════════════════════════════════════════════════ */
+
+/* ============================================================
+   PRICE TABLES
+   ============================================================
+   Format:  "Item Name": { Size: Price, Size: Price }
+   Sizes can be numbers (26, 28) or strings ("Small", "All")
+
+   TO EDIT A PRICE  -> change the number after the size
+   TO ADD A SIZE    -> add ", 46: 500" inside the { }
+   TO ADD AN ITEM   -> copy any line and change name + prices
+   TO REMOVE ITEM   -> delete the whole line
+   ============================================================ */
+
 const PRICES = {
-  "Shirt":      { 26: 325,  28: 325,  30: 350,  32: 350,  34: 375,  36: 375,  38: 400,  40: 400,  42: 425,  44: 450 },
-  "Pant":       { 26: 325,  28: 325,  30: 350,  32: 350,  34: 375,  36: 375,  38: 400,  40: 400,  42: 425,  44: 450 },
-  "T-Shirt":    { 26: 300,  28: 300,  30: 325,  32: 325,  34: 350,  36: 350,  38: 400,  40: 400,  42: 425,  44: 450 },
-  "Lower":      { 26: 300,  28: 300,  30: 325,  32: 325,  34: 350,  36: 350,  38: 400,  40: 400,  42: 425,  44: 450 },
-  "Pink Shirt": { 20: 300,  22: 300,  24: 325,  26: 325,  28: 350 },
-  "Pink Pant":  { 20: 300,  22: 300,  24: 325,  26: 325,  28: 350 },
-  "Red T-Shirt":{ 20: 300,  22: 300,  24: 325, },
-  "Red Shorts": { 20: 300,  22: 300,  24: 325, },
-  "Suit":       { 28: 900,  30: 950,  32: 1000, 34: 1100 },
-  "Tie":        { "Small": 50,   "Large": 100 },
-  "Belt":       { "All": 100, },
-  "Socks":      { "Pair": 30 }
+
+  // Badagaon prices
+  // Note: Pink Pant & Shirt use same price as regular Pant & Shirt
+  // so just use the Pant & Shirt Set button — color doesn't matter for billing
+  badagaon: {
+    "Tie":          { "Small": 50,  "Large": 100 },
+    "Belt":         { "All":   100 },
+    "Socks":        { "Pair":   30 },
+    "Pant":         { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 },
+    "Shirt":        { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 },
+    "Lower":        { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
+    "T-Shirt":      { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
+    "Half Lower":   { 20: 250, 22: 250, 24: 250 },
+    "Half T-Shirt": { 20: 350, 22: 350, 24: 400 },
+    "Suit":         { "All": 350 },
+    "Trouser":      { "All": 350 },
+    "Jacket":       { "All": 300 }
+  },
+
+  // Baghpat prices
+  baghpat: {
+    "Tie":          { "Small": 50,  "Large": 100 },
+    "Belt":         { "All":   100 },
+    "Socks":        { "Pair":   40 },
+    "Pant":         { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    "Shirt":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    "Lower":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    "T-Shirt":      { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    "Half Lower":   { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
+    "Half T-Shirt": { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
+    "Suit":         { "All": 400 },
+    "Trouser":      { "All": 400 },
+    "Jacket":       { "All": 300 }
+  }
+
 };
 
-/* ═══════════════════════════════════════════════════════
+/* ============================================================
+   COMBO SETS
+   Defines which items are paired in each combo button.
+   Add new combos here — they automatically appear as buttons.
+   ============================================================ */
+
+const COMBOS = {
+  'pant-shirt':   { item1: 'Pant',         item2: 'Shirt',         label: 'Pant & Shirt Set' },
+  'lower-tshirt': { item1: 'Lower',        item2: 'T-Shirt',       label: 'Lower & T-Shirt Set' },
+  'half-set':     { item1: 'Half Lower',   item2: 'Half T-Shirt',  label: 'Half Lower & T-Shirt Set' }
+};
+
+/* ============================================================
    APP STATE
-═══════════════════════════════════════════════════════ */
-const ITEM_NAMES = Object.keys(PRICES);
-let itemCounter  = 0;
-let savedOrders  = JSON.parse(localStorage.getItem('uniform_orders') || '[]');
+   ============================================================ */
 
+let currentLocation = 'badagaon'; // active location
+let paymentMode     = 'cash';     // active payment mode for new order
+let eoOrderId       = null;       // id of order being edited in edit screen
+let eoPayMode       = 'cash';     // payment mode inside edit screen
+let itemCounter     = 0;          // unique id counter for item rows
+let savedOrders     = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
 
-/* ═══════════════════════════════════════════════════════
-   ADD ITEM ROW
-═══════════════════════════════════════════════════════ */
-function addItem() {
+/* ============================================================
+   UTILITY FUNCTIONS
+   ============================================================ */
+
+// Shortcut for getElementById
+const $ = id => document.getElementById(id);
+
+// Format a number as "Rs.1,250"
+const rupees = n => 'Rs.' + n.toLocaleString('en-IN');
+
+// Save all orders to localStorage
+const saveLocal = () => localStorage.setItem('uniform_orders2', JSON.stringify(savedOrders));
+
+// Get price table for current location
+const getPrices = () => PRICES[currentLocation];
+
+// Get unit price for an item+size (tries string key then numeric key)
+function getUnitPrice(itemName, size) {
+  const table = getPrices();
+  return table[itemName]?.[size] || table[itemName]?.[parseInt(size)] || 0;
+}
+
+// Build <option> tags for a size dropdown
+// selectedSize highlights the matching option
+function getSizeOptions(itemName, selectedSize) {
+  const table = getPrices();
+  return Object.keys(table[itemName] || {})
+    .map(s => `<option${String(s) === String(selectedSize) ? ' selected' : ''}>${s}</option>`)
+    .join('');
+}
+
+/* ============================================================
+   LOCATION
+   ============================================================ */
+
+function setLocation(loc) {
+  currentLocation = loc;
+
+  // Update toggle button styles
+  ['badagaon', 'baghpat'].forEach(l =>
+    $('loc-' + l).classList.toggle('active', l === loc)
+  );
+
+  // Clear in-progress items since prices changed
+  $('items-container').innerHTML = '';
+  itemCounter = 0;
+  recalc();
+}
+
+/* ============================================================
+   PAYMENT MODE
+   ============================================================ */
+
+function setPayment(mode) {
+  paymentMode = mode;
+  ['cash', 'online', 'pending'].forEach(m =>
+    $('pay-' + m).classList.toggle('active', m === mode)
+  );
+}
+
+function setEoPay(mode) {
+  eoPayMode = mode;
+  ['cash', 'online', 'pending'].forEach(m =>
+    $('eo-pay-' + m).classList.toggle('active', m === mode)
+  );
+}
+
+/* ============================================================
+   BUILD ADD BUTTONS
+   Generates the row of "+ Single Item", "+ Pant & Shirt Set" etc.
+   Both locations share the same buttons now.
+   isEo = true when building for the edit order screen.
+   ============================================================ */
+
+function buildAddButtons(containerId, isEo) {
+  const prefix = isEo ? 'eoAdd' : 'add';
+  let html = `<button class="add-btn" onclick="${prefix}Item()">+ Single Item</button>`;
+
+  Object.entries(COMBOS).forEach(([key, cfg]) => {
+    html += `<button class="add-btn combo" onclick="${prefix}Combo('${key}')">${cfg.label}</button>`;
+  });
+
+  html += `<button class="add-btn combo" onclick="${prefix}Combo('suit-set')">Suit Set (Suit+Trouser+Jacket)</button>`;
+  $(containerId).innerHTML = html;
+}
+
+/* ============================================================
+   ADD SINGLE ITEM ROW
+   Used by both New Order and Edit Order screens.
+   containerId   = where to append the row
+   prefix        = 'n' for new order, 'e' for edit screen (keeps IDs unique)
+   recalcFn      = name of the recalc function to call on change
+   defaultItem   = pre-selected item name (used when restoring saved order)
+   defaultSize   = pre-selected size
+   defaultQty    = pre-filled quantity
+   ============================================================ */
+
+function _addItem(containerId, prefix, recalcFn, defaultItem, defaultSize, defaultQty) {
   itemCounter++;
-  const id = itemCounter;
+  const id        = prefix + itemCounter;
+  const itemNames = Object.keys(getPrices());
+  const firstItem = defaultItem || itemNames[0];
+  const qty       = defaultQty  || 1;
 
-  const container = document.getElementById('items-container');
+  const itemOptions = itemNames
+    .map(n => `<option${n === firstItem ? ' selected' : ''}>${n}</option>`)
+    .join('');
+
   const row = document.createElement('div');
-  row.className = 'item-row';
-  row.id = 'item-' + id;
-
-  // Build item <select> options
-  const itemOptions = ITEM_NAMES.map(name => `<option>${name}</option>`).join('');
-
-  // Build size options for the first item
-  const firstItem  = ITEM_NAMES[0];
-  const sizeOptions = getSizeOptions(firstItem);
+  row.className    = 'item-row';
+  row.id           = 'item-' + id;
+  row.dataset.type = 'single';
 
   row.innerHTML = `
-    <select id="item-sel-${id}" onchange="onItemChange(${id})">
-      ${itemOptions}
-    </select>
-
-    <select id="size-sel-${id}" onchange="recalc()">
-      ${sizeOptions}
-    </select>
-
-    <input type="number"
-           id="qty-${id}"
-           value="1" min="1" max="99"
-           style="text-align:center"
-           oninput="recalc()">
-
-    <div class="item-price" id="price-${id}">₹0</div>
-
-    <button class="remove-btn" onclick="removeItem(${id})" title="Remove">×</button>
+    <select id="isel-${id}" onchange="onItemChange('${id}','${recalcFn}')">${itemOptions}</select>
+    <select id="ssel-${id}" onchange="${recalcFn}()">${getSizeOptions(firstItem, defaultSize)}</select>
+    <input  id="qty-${id}"  type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
+    <div    id="price-${id}" class="item-price">Rs.0</div>
+    <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
   `;
 
-  container.appendChild(row);
-  recalc();
+  $(containerId).appendChild(row);
+  window[recalcFn]();
 }
 
+/* ============================================================
+   ADD COMBO ROW
+   Handles both regular combos (two items with sizes) and
+   the special Suit Set (fixed 3-item bundle).
+   ============================================================ */
 
-/* ═══════════════════════════════════════════════════════
-   HELPERS
-═══════════════════════════════════════════════════════ */
-function getSizeOptions(itemName) {
-  return Object.keys(PRICES[itemName] || {})
-               .map(s => `<option>${s}</option>`)
-               .join('');
+function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSize2, defaultQty) {
+  itemCounter++;
+  const id  = prefix + itemCounter;
+  const qty = defaultQty || 1;
+  const row = document.createElement('div');
+  row.className = 'combo-row';
+  row.id        = 'item-' + id;
+
+  if (type === 'suit-set') {
+    // Suit Set: fixed bundle of Suit + Trouser + Jacket
+    const prices = getPrices();
+    const unitPrice = prices['Suit']['All'] + prices['Trouser']['All'] + prices['Jacket']['All'];
+    row.dataset.type = 'suit-set';
+    row.innerHTML = `
+      <div class="combo-top">
+        <div style="font-size:12px;font-weight:600;color:#555">Suit Set</div>
+        <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
+        <div id="price-${id}" class="item-price">${rupees(unitPrice)}</div>
+        <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
+      </div>
+      <div style="font-size:11px;color:#888;padding:2px 2px 4px">
+        Suit ${rupees(prices['Suit']['All'])} + Trouser ${rupees(prices['Trouser']['All'])} + Jacket ${rupees(prices['Jacket']['All'])} = ${rupees(unitPrice)} each
+      </div>
+    `;
+  } else {
+    // Regular combo: two items with separate size dropdowns
+    const cfg = COMBOS[type];
+    row.dataset.type  = 'combo';
+    row.dataset.item1 = cfg.item1;
+    row.dataset.item2 = cfg.item2;
+    row.innerHTML = `
+      <div class="combo-top">
+        <div style="font-size:12px;font-weight:600;color:#555">${cfg.label}</div>
+        <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
+        <div id="price-${id}" class="item-price">Rs.0</div>
+        <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
+      </div>
+      <div class="combo-sub">
+        <div>
+          <div class="combo-label">${cfg.item1} Size</div>
+          <select id="s1-${id}" onchange="syncSize2('${id}');${recalcFn}()">${getSizeOptions(cfg.item1, defaultSize1)}</select>
+        </div>
+        <div>
+          <div class="combo-label">${cfg.item2} Size</div>
+          <select id="s2-${id}" onchange="${recalcFn}()">${getSizeOptions(cfg.item2, defaultSize2 || defaultSize1)}</select>
+        </div>
+      </div>
+    `;
+  }
+
+  $(containerId).appendChild(row);
+  window[recalcFn]();
 }
 
-function onItemChange(id) {
-  const item = document.getElementById('item-sel-' + id).value;
-  document.getElementById('size-sel-' + id).innerHTML = getSizeOptions(item);
-  recalc();
+/* ============================================================
+   SHARED ITEM HELPERS
+   ============================================================ */
+
+// When item dropdown changes, refresh the size dropdown
+function onItemChange(id, recalcFn) {
+  $('ssel-' + id).innerHTML = getSizeOptions($('isel-' + id).value);
+  window[recalcFn]();
 }
 
-function removeItem(id) {
-  const el = document.getElementById('item-' + id);
+// Remove an item row
+function removeItem(id, recalcFn) {
+  const el = $('item-' + id);
   if (el) el.remove();
-  recalc();
+  window[recalcFn]();
 }
 
-function getUnitPrice(itemName, size) {
-  return PRICES[itemName]?.[size] || PRICES[itemName]?.[parseInt(size)] || 0;
+// When size1 changes in a combo, auto-match size2 to the same value
+function syncSize2(id) {
+  const s1 = $('s1-' + id), s2 = $('s2-' + id);
+  if (!s1 || !s2) return;
+  for (let opt of s2.options) {
+    if (opt.value === s1.value) { s2.value = s1.value; break; }
+  }
 }
 
-
-/* ═══════════════════════════════════════════════════════
+/* ============================================================
    RECALCULATE TOTALS
-   Called whenever any dropdown or qty changes.
-═══════════════════════════════════════════════════════ */
-function recalc() {
-  let grandTotal = 0;
-  let breakdownHTML = '';
+   Loops over all item rows in a container, calculates each
+   line total, updates the price display, and sums everything.
+   containerId = the items container div id
+   breakdownId = where to show per-item breakdown (when qty > 1)
+   totalId     = where to show the grand total
+   ============================================================ */
 
-  // Loop every active item row
-  document.querySelectorAll('[id^="item-"]').forEach(row => {
-    if (row.id === 'items-container') return;
+function _recalc(containerId, breakdownId, totalId) {
+  let subtotal    = 0;
+  let breakdownHtml = '';
 
-    const id       = row.id.replace('item-', '');
-    const itemEl   = document.getElementById('item-sel-'  + id);
-    const sizeEl   = document.getElementById('size-sel-'  + id);
-    const qtyEl    = document.getElementById('qty-'       + id);
-    const priceEl  = document.getElementById('price-'     + id);
-    if (!itemEl) return;
+  $(containerId).querySelectorAll('[id^="item-"]').forEach(row => {
+    const id      = row.id.replace('item-', '');
+    const type    = row.dataset.type;
+    const qtyEl   = $('qty-'   + id);
+    const priceEl = $('price-' + id);
+    if (!qtyEl) return;
 
-    const item      = itemEl.value;
-    const size      = sizeEl.value;
-    const qty       = parseInt(qtyEl.value) || 1;
-    const unitPrice = getUnitPrice(item, size);
+    const qty = parseInt(qtyEl.value) || 1;
+    let unitPrice = 0;
+    let lineLabel = '';
+
+    if (type === 'single') {
+      const itemSel = $('isel-' + id);
+      const sizeSel = $('ssel-' + id);
+      if (!itemSel) return;
+      unitPrice = getUnitPrice(itemSel.value, sizeSel.value);
+      lineLabel = `${itemSel.value} (${sizeSel.value}) x${qty}`;
+
+    } else if (type === 'suit-set') {
+      const p = getPrices();
+      unitPrice = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
+      lineLabel = `Suit Set x${qty}`;
+
+    } else if (type === 'combo') {
+      const s1 = $('s1-' + id), s2 = $('s2-' + id);
+      if (!s1) return;
+      unitPrice = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
+      lineLabel = `${row.dataset.item1}+${row.dataset.item2} x${qty}`;
+    }
+
     const lineTotal = unitPrice * qty;
-
-    grandTotal += lineTotal;
-    priceEl.textContent = '₹' + lineTotal.toLocaleString('en-IN');
+    subtotal += lineTotal;
+    priceEl.textContent = rupees(lineTotal);
 
     // Show breakdown only when qty > 1
     if (qty > 1) {
-      breakdownHTML += `
+      breakdownHtml += `
         <div class="total-row">
-          <span>${item} (${size}) × ${qty}</span>
-          <span>₹${lineTotal.toLocaleString('en-IN')}</span>
+          <span>${lineLabel}</span>
+          <span>${rupees(lineTotal)}</span>
         </div>`;
     }
   });
 
-  document.getElementById('item-breakdown').innerHTML = breakdownHTML;
-  document.getElementById('grand-total').textContent  = '₹' + grandTotal.toLocaleString('en-IN');
+  $(breakdownId).innerHTML    = breakdownHtml;
+  $(totalId).textContent      = rupees(subtotal);
+  return subtotal;
 }
 
+/* ============================================================
+   NEW ORDER — public wrappers that call shared functions
+   ============================================================ */
 
-/* ═══════════════════════════════════════════════════════
-   SAVE ORDER
-═══════════════════════════════════════════════════════ */
-function saveOrder() {
-  const sname  = document.getElementById('sname').value.trim();
-  const sclass = document.getElementById('sclass').value.trim();
-  const pname  = document.getElementById('pname').value.trim();
-  const mobile = document.getElementById('mobile').value.trim();
+function addItem(di, ds, dq)         { _addItem('items-container',    'n', 'recalc',   di, ds, dq); }
+function addCombo(type, s1, s2, qty) { _addCombo('items-container',   'n', 'recalc',   type, s1, s2, qty); }
+function recalc()                    { _recalc('items-container',    'item-breakdown', 'grand-total'); }
 
-  if (!sname) { alert('Please enter student name'); return; }
+/* ============================================================
+   EDIT ORDER — public wrappers that call shared functions
+   ============================================================ */
 
-  const rows = document.querySelectorAll('[id^="item-"]:not(#items-container)');
-  if (rows.length === 0) { alert('Please add at least one item'); return; }
+function eoAddItem(di, ds, dq)         { _addItem('eo-items-container',  'e', 'eoRecalc', di, ds, dq); }
+function eoAddCombo(type, s1, s2, qty) { _addCombo('eo-items-container', 'e', 'eoRecalc', type, s1, s2, qty); }
+function eoRecalc()                    { _recalc('eo-items-container', 'eo-breakdown', 'eo-grand-total'); }
 
-  let items = [];
-  let total = 0;
+/* ============================================================
+   COLLECT ITEMS
+   Reads all rows from a container and builds a clean items array
+   with labels and totals — used before saving an order.
+   ============================================================ */
 
-  rows.forEach(row => {
-    const id        = row.id.replace('item-', '');
-    const itemEl    = document.getElementById('item-sel-' + id);
-    if (!itemEl) return;
+function collectItems(containerId) {
+  let items    = [];
+  let subtotal = 0;
 
-    const item      = itemEl.value;
-    const size      = document.getElementById('size-sel-' + id).value;
-    const qty       = parseInt(document.getElementById('qty-' + id).value) || 1;
-    const unitPrice = getUnitPrice(item, size);
+  $(containerId).querySelectorAll('[id^="item-"]').forEach(row => {
+    const id   = row.id.replace('item-', '');
+    const type = row.dataset.type;
+    const qty  = parseInt($('qty-' + id)?.value) || 1;
+    let unitPrice = 0, label = '', extra = {};
+
+    if (type === 'single') {
+      const itemSel = $('isel-' + id), sizeSel = $('ssel-' + id);
+      if (!itemSel) return;
+      unitPrice = getUnitPrice(itemSel.value, sizeSel.value);
+      label     = `${itemSel.value} (${sizeSel.value})${qty > 1 ? ' x ' + qty : ''}`;
+
+    } else if (type === 'suit-set') {
+      const p   = getPrices();
+      unitPrice = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
+      label     = `Suit Set (Suit + Trouser + Jacket)${qty > 1 ? ' x ' + qty : ''}`;
+      extra     = { isSuitSet: true };
+
+    } else if (type === 'combo') {
+      const s1 = $('s1-' + id), s2 = $('s2-' + id);
+      if (!s1) return;
+      unitPrice = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
+      label     = `${row.dataset.item1} (${s1.value}) + ${row.dataset.item2} (${s2.value})${qty > 1 ? ' x ' + qty : ''}`;
+      extra     = { isCombo: true };
+    }
+
     const lineTotal = unitPrice * qty;
-
-    total += lineTotal;
-    items.push({ item, size, qty, unitPrice, lineTotal });
+    subtotal += lineTotal;
+    items.push({ label, lineTotal, ...extra });
   });
 
+  return { items, subtotal };
+}
+
+/* ============================================================
+   SAVE ORDER
+   ============================================================ */
+
+function saveOrder() {
+  const sname = $('sname').value.trim();
+  if (!sname) { alert('Please enter student name'); return; }
+  if (!$('items-container').querySelector('[id^="item-"]')) { alert('Please add at least one item'); return; }
+
+  const { items, subtotal } = collectItems('items-container');
+
   const order = {
-    id:     Date.now(),
-    sname, sclass, pname, mobile,
-    items,  total,
-    date:   new Date().toLocaleDateString('en-IN')
+    id:          Date.now(),
+    location:    currentLocation,
+    sname,
+    sclass:      $('sclass').value.trim(),
+    pname:       $('pname').value.trim(),
+    mobile:      $('mobile').value.trim(),
+    paymentMode,
+    items,
+    subtotal,
+    discount:    0,
+    finalAmt:    subtotal,
+    date:        new Date().toLocaleDateString('en-IN')
   };
 
   savedOrders.unshift(order);
-  localStorage.setItem('uniform_orders', JSON.stringify(savedOrders));
-
-  alert(`✅ Order saved!\n${sname}  —  ₹${total.toLocaleString('en-IN')}`);
+  saveLocal();
+  alert(`Order saved!\n${sname}  -  ${rupees(subtotal)}`);
   resetForm();
 }
 
 function resetForm() {
-  ['sname','sclass','pname','mobile'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('items-container').innerHTML = '';
+  ['sname', 'sclass', 'pname', 'mobile'].forEach(id => $(id).value = '');
+  $('items-container').innerHTML = '';
   itemCounter = 0;
+  setPayment('cash');
   recalc();
-  addItem();  // start fresh with one empty row
 }
 
-
-/* ═══════════════════════════════════════════════════════
+/* ============================================================
    TABS
-═══════════════════════════════════════════════════════ */
+   ============================================================ */
+
 function showTab(tab) {
-  document.getElementById('tab-new').style.display    = tab === 'new'    ? '' : 'none';
-  document.getElementById('tab-orders').style.display = tab === 'orders' ? '' : 'none';
-
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', (i === 0 && tab === 'new') || (i === 1 && tab === 'orders'));
-  });
-
+  $('tab-new').style.display    = tab === 'new'    ? '' : 'none';
+  $('tab-orders').style.display = tab === 'orders' ? '' : 'none';
+  document.querySelectorAll('.tab').forEach((el, i) =>
+    el.classList.toggle('active', (i === 0 && tab === 'new') || (i === 1 && tab === 'orders'))
+  );
   if (tab === 'orders') renderOrders('');
 }
 
-
-/* ═══════════════════════════════════════════════════════
+/* ============================================================
    RENDER SAVED ORDERS LIST
-═══════════════════════════════════════════════════════ */
+   Shows all orders, filtered by search query.
+   Each order card shows a location badge and payment badge.
+   ============================================================ */
+
 function renderOrders(query) {
   query = (query || '').toLowerCase();
 
   const filtered = savedOrders.filter(o =>
-    o.sname.toLowerCase().includes(query)  ||
-    (o.sclass  || '').toLowerCase().includes(query) ||
-    (o.mobile  || '').includes(query)
+    o.sname.toLowerCase().includes(query)          ||
+    (o.sclass   || '').toLowerCase().includes(query) ||
+    (o.mobile   || '').includes(query)               ||
+    (o.location || '').toLowerCase().includes(query)
   );
 
-  const totalAmt = filtered.reduce((sum, o) => sum + o.total, 0);
-  document.getElementById('orders-summary').textContent =
-    `${filtered.length} order${filtered.length !== 1 ? 's' : ''} — Total: ₹${totalAmt.toLocaleString('en-IN')}`;
+  const totalAmt = filtered.reduce((sum, o) => sum + o.finalAmt, 0);
+  $('orders-summary').textContent =
+    `${filtered.length} order${filtered.length !== 1 ? 's' : ''} - Total: ${rupees(totalAmt)}`;
 
-  const list = document.getElementById('orders-list');
+  const PAY_LABEL = { cash: 'Cash', online: 'Online', pending: 'Pending' };
+  const LOC_LABEL = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
 
   if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty">No orders found</div>';
+    $('orders-list').innerHTML = '<div class="empty">No orders found</div>';
     return;
   }
 
-  list.innerHTML = filtered.map(o => `
-    <div class="order-card">
-      <div class="order-card-top">
-        <div>
-          <div class="order-name">
-            ${o.sname}
-            <span style="font-size:12px;font-weight:400;color:#888"> ${o.sclass || ''}</span>
+  $('orders-list').innerHTML = filtered.map(o => {
+    const mode = o.paymentMode || 'cash';
+    const loc  = o.location    || 'badagaon';
+    return `
+      <div class="order-card" id="card-${o.id}">
+
+        <div class="order-card-top">
+          <div>
+            <div class="order-name">
+              ${o.sname}
+              <span style="font-size:12px;font-weight:400;color:#888">${o.sclass || ''}</span>
+            </div>
+            <div class="order-meta">
+              ${o.pname ? o.pname + ' - ' : ''}${o.mobile || ''} - ${o.date}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px">
+              <span class="pay-badge ${mode}">${PAY_LABEL[mode]}</span>
+              <span class="loc-badge ${loc}">${LOC_LABEL[loc]}</span>
+              <button class="edit-btn" onclick="openEditOrder(${o.id})">Edit Order</button>
+              <button class="edit-btn" onclick="toggleEditPayment(${o.id})">Edit Payment</button>
+              <button class="edit-btn" style="color:#16a34a;border-color:#86efac" onclick="copyWhatsApp(${o.id})">WhatsApp</button>
+            </div>
+            ${o.discount > 0 ? `<div class="discount-badge">Discount: - ${rupees(o.discount)}</div>` : ''}
           </div>
-          <div class="order-meta">
-            ${o.pname ? o.pname + ' · ' : ''}${o.mobile || ''} · ${o.date}
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="order-amount">${rupees(o.finalAmt)}</div>
+            <button class="del-order" onclick="deleteOrder(${o.id})">&#10005;</button>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <div class="order-amount">₹${o.total.toLocaleString('en-IN')}</div>
-          <button class="del-order" onclick="deleteOrder(${o.id})" title="Delete">✕</button>
-        </div>
-      </div>
-      <div class="order-items">
-        ${o.items.map(i => `
-          <div class="order-item-line">
-            <span>${i.item} (${i.size})${i.qty > 1 ? ' × ' + i.qty : ''}</span>
-            <span>₹${i.lineTotal.toLocaleString('en-IN')}</span>
+
+        <div class="order-items">
+          ${o.items.map(i => `
+            <div class="order-item-line">
+              <span>${i.label}</span>
+              <span>${rupees(i.lineTotal)}</span>
+            </div>`).join('')}
+          <div class="order-final-row">
+            <span>Subtotal</span>
+            <span>${rupees(o.subtotal)}</span>
           </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
+          ${o.finalAmt !== o.subtotal ? `
+          <div class="order-final-row" style="color:#e55">
+            <span>Paid (after discount)</span>
+            <span>${rupees(o.finalAmt)}</span>
+          </div>` : ''}
+        </div>
+
+        <!-- Edit payment panel (hidden until toggled) -->
+        <div class="edit-panel" id="edit-${o.id}">
+          <div class="edit-panel-title">Update Payment</div>
+          <div class="edit-pay-toggle">
+            <button class="edit-pay-btn ${mode === 'pending' ? 'active' : ''}" id="ep-pending-${o.id}" onclick="setEditPay(${o.id},'pending')">Pending</button>
+            <button class="edit-pay-btn ${mode === 'cash'    ? 'active' : ''}" id="ep-cash-${o.id}"    onclick="setEditPay(${o.id},'cash')">Cash</button>
+            <button class="edit-pay-btn ${mode === 'online'  ? 'active' : ''}" id="ep-online-${o.id}"  onclick="setEditPay(${o.id},'online')">Online</button>
+          </div>
+          <div class="edit-amount-row">
+            <label>Amount Paid (Rs.)</label>
+            <input type="number" id="ep-amt-${o.id}" value="${o.finalAmt}" min="0">
+          </div>
+          <div class="edit-orig">
+            Original total: ${rupees(o.subtotal)}
+            ${o.discount > 0 ? ' - Discount: ' + rupees(o.discount) : ''}
+          </div>
+          <button class="update-btn" onclick="applyEditPayment(${o.id})">Save Changes</button>
+        </div>
+
+      </div>`;
+  }).join('');
 }
 
-
-/* ═══════════════════════════════════════════════════════
+/* ============================================================
    DELETE ORDER
-═══════════════════════════════════════════════════════ */
+   ============================================================ */
+
 function deleteOrder(id) {
   if (!confirm('Delete this order?')) return;
   savedOrders = savedOrders.filter(o => o.id !== id);
-  localStorage.setItem('uniform_orders', JSON.stringify(savedOrders));
-  renderOrders('');
+  saveLocal();
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
 
+/* ============================================================
+   EDIT PAYMENT PANEL
+   ============================================================ */
 
-/* ═══════════════════════════════════════════════════════
-   INIT — add one empty item row on load
-═══════════════════════════════════════════════════════ */
-addItem();
+function toggleEditPayment(id) {
+  $('edit-' + id).classList.toggle('open');
+}
+
+function setEditPay(id, mode) {
+  ['pending', 'cash', 'online'].forEach(m =>
+    $(`ep-${m}-${id}`).classList.toggle('active', m === mode)
+  );
+  $('edit-' + id).dataset.chosenMode = mode;
+}
+
+function applyEditPayment(id) {
+  const panel   = $('edit-' + id);
+  const newMode = panel.dataset.chosenMode ||
+    ['pending', 'cash', 'online'].find(m => $(`ep-${m}-${id}`).classList.contains('active')) || 'cash';
+  const newAmt  = parseInt($(`ep-amt-${id}`).value) || 0;
+
+  const idx = savedOrders.findIndex(o => o.id === id);
+  if (idx === -1) return;
+
+  savedOrders[idx].paymentMode = newMode;
+  savedOrders[idx].finalAmt    = newAmt;
+  savedOrders[idx].discount    = Math.max(0, savedOrders[idx].subtotal - newAmt);
+  saveLocal();
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+}
+
+/* ============================================================
+   FULL ORDER EDIT SCREEN
+   Opens a fixed overlay pre-filled with the order's data.
+   User can change any field, add/remove items, then save.
+   ============================================================ */
+
+function openEditOrder(id) {
+  const order = savedOrders.find(o => o.id === id);
+  if (!order) return;
+
+  eoOrderId   = id;
+  itemCounter = 0;
+
+  // Set location to match the order being edited
+  // so prices and available items are correct
+  currentLocation = order.location || 'badagaon';
+  buildAddButtons('add-btns-eo', true);
+
+  // Fill student details
+  $('eo-sname').value  = order.sname  || '';
+  $('eo-sclass').value = order.sclass || '';
+  $('eo-pname').value  = order.pname  || '';
+  $('eo-mobile').value = order.mobile || '';
+  setEoPay(order.paymentMode || 'cash');
+
+  // Rebuild item rows from saved order data
+  $('eo-items-container').innerHTML = '';
+
+  // Map item1 name back to combo type key
+  const comboTypeByItem1 = {
+    'Pant':        'pant-shirt',
+    'Lower':       'lower-tshirt',
+    'Half Lower':  'half-set'
+  };
+
+  order.items.forEach(savedItem => {
+    if (savedItem.isSuitSet) {
+      const qtyMatch = savedItem.label.match(/x (\d+)$/);
+      eoAddCombo('suit-set', null, null, qtyMatch ? parseInt(qtyMatch[1]) : 1);
+
+    } else if (savedItem.isCombo) {
+      const qtyMatch = savedItem.label.match(/x (\d+)$/);
+      const qty      = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+      const clean    = savedItem.label.replace(/ x \d+$/, '');
+      const parts    = clean.split(' + ');
+      const [name1, size1] = parseItemLabel(parts[0]);
+      const [,      size2] = parseItemLabel(parts[1]);
+      const comboType      = comboTypeByItem1[name1] || 'pant-shirt';
+      eoAddCombo(comboType, size1, size2, qty);
+
+    } else {
+      const qtyMatch = savedItem.label.match(/x (\d+)$/);
+      const qty      = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+      const [name, size] = parseItemLabel(savedItem.label.replace(/ x \d+$/, ''));
+      eoAddItem(name, size, qty);
+    }
+  });
+
+  eoRecalc();
+  $('edit-order-screen').classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+// Helper: "Shirt (30)" -> ["Shirt", "30"]
+function parseItemLabel(str) {
+  const match = str.trim().match(/^(.+?)\s*\((.+)\)$/);
+  return match ? [match[1].trim(), match[2].trim()] : [str.trim(), ''];
+}
+
+function closeEditOrder() {
+  $('edit-order-screen').classList.remove('open');
+  eoOrderId = null;
+  // Restore location toggle to whatever the user had selected
+  buildAddButtons('add-btns-new', false);
+}
+
+function saveEditOrder() {
+  const sname = $('eo-sname').value.trim();
+  if (!sname) { alert('Please enter student name'); return; }
+  if (!$('eo-items-container').querySelector('[id^="item-"]')) { alert('Please add at least one item'); return; }
+
+  const { items, subtotal } = collectItems('eo-items-container');
+  const idx = savedOrders.findIndex(o => o.id === eoOrderId);
+  if (idx === -1) { alert('Order not found'); return; }
+
+  const original = savedOrders[idx];
+  const discount = Math.max(0, original.discount || 0);
+
+  savedOrders[idx] = {
+    ...original,
+    sname,
+    sclass:      $('eo-sclass').value.trim(),
+    pname:       $('eo-pname').value.trim(),
+    mobile:      $('eo-mobile').value.trim(),
+    paymentMode: eoPayMode,
+    items,
+    subtotal,
+    discount,
+    finalAmt: Math.max(0, subtotal - discount)
+  };
+
+  saveLocal();
+  alert(`Order updated!\n${sname}  -  ${rupees(savedOrders[idx].finalAmt)}`);
+  closeEditOrder();
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+}
+
+/* ============================================================
+   WHATSAPP COPY
+   Formats order details as a clean text message
+   and copies it to clipboard for pasting in WhatsApp.
+   ============================================================ */
+
+function copyWhatsApp(id) {
+  const order = savedOrders.find(o => o.id === id);
+  if (!order) return;
+
+  const PAY_LABEL = { cash: 'Cash', online: 'Online', pending: 'Pending' };
+
+  // Put price on new line for long item names
+  const itemLines = order.items.map(item => {
+    const price = `Rs.${item.lineTotal.toLocaleString('en-IN')}`;
+    if (item.label.length <= 24) {
+      return `  ${item.label.padEnd(26)} ${price}`;
+    } else {
+      return `  ${item.label}\n  ${''.padEnd(26)} ${price}`;
+    }
+  }).join('\n');
+
+  const discountLine = order.finalAmt !== order.subtotal
+    ? `\n  Discount               - Rs.${order.discount.toLocaleString('en-IN')}`
+    : '';
+
+  const message =
+`*Golden Gate International School*
+*Uniform Bill*
+-------------------------
+Student : ${order.sname}${order.sclass ? ' (' + order.sclass + ')' : ''}
+${order.pname  ? 'Parent  : ' + order.pname  : ''}${order.mobile ? '\nMobile  : ' + order.mobile : ''}
+Date    : ${order.date}
+-------------------------
+${itemLines}${discountLine}
+-------------------------
+*Total   : Rs.${order.finalAmt.toLocaleString('en-IN')}*
+Payment : ${PAY_LABEL[order.paymentMode || 'cash']}
+-------------------------
+Thank you!`;
+
+  // Try modern clipboard API, fall back to execCommand for older phones
+  navigator.clipboard.writeText(message)
+    .then(() => alert('Copied! Now open WhatsApp and paste.'))
+    .catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = message;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Copied! Now open WhatsApp and paste.');
+    });
+}
+
+/* ============================================================
+   EXPORT CSV
+   Downloads all saved orders as a .csv file.
+   Open in Excel or Google Sheets.
+   ============================================================ */
+
+function exportCSV() {
+  if (!savedOrders.length) { alert('No orders to export.'); return; }
+
+  const headers = ['Date', 'Location', 'Student', 'Class', 'Parent', 'Mobile', 'Items', 'Subtotal', 'Discount', 'Total', 'Payment'];
+
+  const rows = savedOrders.map(o => [
+    o.date,
+    o.location || 'badagaon',
+    o.sname,
+    o.sclass  || '',
+    o.pname   || '',
+    o.mobile  || '',
+    o.items.map(i => i.label + ' = Rs.' + i.lineTotal).join(' | '),
+    o.subtotal,
+    o.discount || 0,
+    o.finalAmt,
+    o.paymentMode
+  ]);
+
+  const csv = [headers, ...rows]
+    .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+
+  const link     = document.createElement('a');
+  link.href      = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  link.download  = `uniform-orders-${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.csv`;
+  link.click();
+}
+
+/* ============================================================
+   INIT
+   Runs once when the page loads.
+   ============================================================ */
+
+buildAddButtons('add-btns-new', false);
+buildAddButtons('add-btns-eo',  true);
+recalc();
+
 </script>
-
 </body>
 </html>
