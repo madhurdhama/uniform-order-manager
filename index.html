@@ -6,54 +6,91 @@
   <title>Uniform Order Manager</title>
   <style>
 
+    /* ── Design tokens ── */
+    :root {
+      --green:      #16a34a;  --green-bg:  #dcfce7;
+      --blue:       #1d4ed8;  --blue-bg:   #dbeafe;
+      --orange:     #d97706;  --orange-bg: #fef3c7;
+      --purple:     #6d28d9;  --purple-bg: #ede9fe;
+      --pink:       #be185d;  --pink-bg:   #fce7f3;
+      --accent:     #2563eb;
+      --accent-bg:  #eff6ff;
+      --text:       #1a1a1a;
+      --text-2:     #555;
+      --text-3:     #999;
+      --border:     #e5e7eb;
+      --border-2:   #d1d5db;
+      --surface:    #f9fafb;
+      --bg:         #f3f4f6;
+    }
+
     /* ── Reset ── */
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0f2f5;
-      color: #1a1a1a;
+      background: var(--bg);
+      color: var(--text);
       font-size: 15px;
     }
 
     .app {
-      max-width: 640px;
+      max-width: 600px;
       margin: 0 auto;
       padding: 1rem;
     }
 
     /* ── Header ── */
-    .header { text-align: center; padding: 1.2rem 0 1rem; }
-    .header h1 { font-size: 20px; font-weight: 700; }
-    .header p  { font-size: 12px; color: #666; margin-top: 3px; }
+    .header {
+      text-align: center;
+      padding: 1rem 0 1.25rem;
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .header p {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
 
-    /* ── Location Toggle ── */
-    .location-toggle {
+    /* ── Location pill — compact, lives under header ── */
+    .location-row {
       display: flex;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
+      justify-content: center;
       margin-bottom: 1rem;
     }
+    .location-pill {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px;
+      gap: 2px;
+    }
     .loc-btn {
-      flex: 1;
-      padding: 10px;
-      font-size: 14px;
+      padding: 5px 16px;
+      font-size: 12px;
       font-weight: 600;
       border: none;
-      background: #fafafa;
-      color: #888;
+      background: none;
+      border-radius: 16px;
       cursor: pointer;
+      color: var(--text-3);
       transition: all 0.15s;
     }
-    .loc-btn:not(:last-child) { border-right: 1px solid #ddd; }
-    .loc-btn.active { background: #1a1a1a; color: #fff; }
+    .loc-btn.active {
+      background: var(--text);
+      color: #fff;
+    }
 
     /* ── Tabs ── */
     .tabs {
       display: flex;
       gap: 4px;
-      background: #e0e0e0;
+      background: var(--border);
       border-radius: 12px;
       padding: 4px;
       margin-bottom: 1rem;
@@ -67,9 +104,13 @@
       background: none;
       border-radius: 9px;
       cursor: pointer;
-      color: #666;
+      color: var(--text-2);
     }
-    .tab.active { background: #fff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+    .tab.active {
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
 
     /* ── Section cards ── */
     .section {
@@ -77,40 +118,53 @@
       border-radius: 14px;
       padding: 1rem 1.25rem;
       margin-bottom: 1rem;
-      border: 1px solid #e8e8e8;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .section-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: #999;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-3);
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.08em;
       margin-bottom: 12px;
     }
 
     /* ── Form fields ── */
     .field { margin-bottom: 10px; }
-    .field label { font-size: 12px; color: #666; display: block; margin-bottom: 4px; }
+    .field label {
+      font-size: 12px;
+      color: var(--text-2);
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
     .field input,
     .field select {
       width: 100%;
       padding: 9px 11px;
       font-size: 14px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-2);
       border-radius: 8px;
-      background: #fafafa;
-      color: #1a1a1a;
+      background: var(--surface);
+      color: var(--text);
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .field input:focus,
-    .field select:focus { border-color: #aaa; background: #fff; }
+    .field select:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+    }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-    /* ── Payment mode toggle ── */
+    /* ── Payment mode toggle ──
+       Each mode gets its own color when active,
+       matching the badge colors in saved orders.        ── */
     .payment-toggle {
       display: flex;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-2);
       border-radius: 8px;
       overflow: hidden;
       margin-top: 2px;
@@ -121,27 +175,31 @@
       font-size: 13px;
       font-weight: 500;
       border: none;
-      background: #fafafa;
-      color: #888;
+      background: var(--surface);
+      color: var(--text-3);
       cursor: pointer;
       transition: all 0.15s;
     }
-    .pay-btn:not(:last-child) { border-right: 1px solid #ddd; }
-    .pay-btn.active { background: #1a1a1a; color: #fff; }
+    .pay-btn:not(:last-child) { border-right: 1px solid var(--border-2); }
+
+    /* Each active state matches its badge color */
+    #pay-cash.active,    #eo-pay-cash.active    { background: var(--green-bg);  color: var(--green);  }
+    #pay-online.active,  #eo-pay-online.active  { background: var(--blue-bg);   color: var(--blue);   }
+    #pay-pending.active, #eo-pay-pending.active { background: var(--orange-bg); color: var(--orange); }
 
     /* ── Item table column headers ── */
     .col-labels {
       display: grid;
-      grid-template-columns: 1fr 80px 55px 80px 30px;
+      grid-template-columns: 1fr 80px 52px 78px 28px;
       gap: 5px;
       margin-bottom: 5px;
     }
-    .col-labels span { font-size: 11px; color: #999; }
+    .col-labels span { font-size: 11px; color: var(--text-3); font-weight: 500; }
 
     /* ── Single item row ── */
     .item-row {
       display: grid;
-      grid-template-columns: 1fr 80px 55px 80px 30px;
+      grid-template-columns: 1fr 80px 52px 78px 28px;
       gap: 5px;
       align-items: center;
       margin-bottom: 7px;
@@ -149,15 +207,15 @@
 
     /* ── Combo item row ── */
     .combo-row {
-      background: #f8f8f8;
-      border: 1px solid #ebebeb;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 10px;
       padding: 8px 10px;
       margin-bottom: 8px;
     }
     .combo-top {
       display: grid;
-      grid-template-columns: 1fr 55px 80px 30px;
+      grid-template-columns: 1fr 52px 78px 28px;
       gap: 5px;
       align-items: center;
       margin-bottom: 6px;
@@ -168,7 +226,7 @@
       gap: 5px;
       margin-bottom: 4px;
     }
-    .combo-label { font-size: 11px; color: #888; padding-left: 2px; }
+    .combo-label { font-size: 11px; color: var(--text-3); padding-left: 2px; font-weight: 500; }
 
     /* ── Shared inputs inside item rows ── */
     .item-row select, .item-row input,
@@ -176,68 +234,79 @@
     .combo-sub select {
       padding: 7px 8px;
       font-size: 13px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-2);
       border-radius: 7px;
       background: #fff;
-      color: #1a1a1a;
+      color: var(--text);
       outline: none;
       width: 100%;
     }
     .item-row input:focus, .item-row select:focus,
     .combo-top input:focus, .combo-top select:focus,
-    .combo-sub select:focus { border-color: #aaa; }
+    .combo-sub select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.08);
+    }
 
-    .item-price { font-size: 13px; font-weight: 500; color: #444; text-align: right; padding-right: 2px; }
+    .item-price { font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
 
     .remove-btn {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 17px;
-      color: #bbb;
-      width: 30px;
-      height: 30px;
+      font-size: 16px;
+      color: var(--text-3);
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .remove-btn:hover { background: #ffeaea; color: #e55; }
+    .remove-btn:hover { background: #fee2e2; color: #dc2626; }
 
     /* ── Add item buttons ── */
-    .add-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .add-buttons { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
     .add-btn {
-      flex: 1;
-      font-size: 13px;
-      color: #2563eb;
-      background: none;
-      border: 1px dashed #93c5fd;
-      border-radius: 8px;
-      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-bg);
+      border: none;
+      border-radius: 20px;
+      padding: 6px 12px;
       cursor: pointer;
+      transition: background 0.15s;
     }
-    .add-btn:hover { background: #eff6ff; }
-    .add-btn.combo { color: #7c3aed; border-color: #c4b5fd; }
-    .add-btn.combo:hover { background: #f5f3ff; }
+    .add-btn:hover { background: #dbeafe; }
+    .add-btn.combo { color: var(--purple); background: var(--purple-bg); }
+    .add-btn.combo:hover { background: #ddd6fe; }
 
     /* ── Total card ── */
     .total-card {
-      background: #f8f8f8;
+      background: var(--surface);
       border-radius: 10px;
       padding: 12px 14px;
       margin-top: 1rem;
-      border: 1px solid #ebebeb;
+      border: 1px solid var(--border);
     }
-    .total-row { display: flex; justify-content: space-between; font-size: 13px; color: #666; margin-bottom: 4px; }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-2);
+      margin-bottom: 4px;
+    }
     .total-final {
       display: flex;
       justify-content: space-between;
-      font-size: 21px;
+      align-items: baseline;
+      font-size: 22px;
       font-weight: 700;
-      color: #1a1a1a;
+      color: var(--text);
       margin-top: 10px;
       padding-top: 10px;
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid var(--border);
     }
 
     /* ── Save button ── */
@@ -246,110 +315,119 @@
       padding: 13px;
       font-size: 15px;
       font-weight: 600;
-      background: #1a1a1a;
+      background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 12px;
       cursor: pointer;
       margin-top: 1rem;
+      transition: background 0.15s;
     }
-    .save-btn:hover { background: #333; }
+    .save-btn:hover  { background: #1d4ed8; }
     .save-btn:active { transform: scale(0.99); }
 
-    /* ── Saved orders list ── */
+    /* ── Saved orders ── */
     .search-box input {
       width: 100%;
       padding: 9px 12px;
       font-size: 14px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-2);
       border-radius: 10px;
       background: #fff;
-      color: #1a1a1a;
+      color: var(--text);
       outline: none;
       margin-bottom: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .total-count { font-size: 12px; color: #888; margin-bottom: 8px; }
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+    }
+    .total-count { font-size: 12px; color: var(--text-3); margin-bottom: 8px; }
 
     /* ── Order card ── */
     .order-card {
       background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
       padding: 12px 14px;
       margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .order-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
     .order-name   { font-size: 15px; font-weight: 600; }
-    .order-meta   { font-size: 12px; color: #888; margin-top: 2px; }
+    .order-meta   { font-size: 12px; color: var(--text-3); margin-top: 2px; }
     .order-amount { font-size: 16px; font-weight: 700; }
 
-    /* Payment badge */
-    .pay-badge {
+    /* ── Badges — payment + location ──
+       All use the same pill shape and color system.       ── */
+    .badge {
       display: inline-flex;
       align-items: center;
       font-size: 11px;
       font-weight: 600;
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 20px;
       margin-top: 4px;
     }
-    .pay-badge.cash    { background: #dcfce7; color: #16a34a; }
-    .pay-badge.online  { background: #dbeafe; color: #1d4ed8; }
-    .pay-badge.pending { background: #fef3c7; color: #d97706; }
+    .badge.cash    { background: var(--green-bg);  color: var(--green);  }
+    .badge.online  { background: var(--blue-bg);   color: var(--blue);   }
+    .badge.pending { background: var(--orange-bg); color: var(--orange); }
+    .badge.badagaon { background: var(--purple-bg); color: var(--purple); }
+    .badge.baghpat  { background: var(--pink-bg);   color: var(--pink);   }
 
-    /* Location badge */
-    .loc-badge {
-      display: inline-flex;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 20px;
-      margin-top: 4px;
+    .discount-badge { font-size: 11px; color: #dc2626; margin-top: 2px; }
+
+    /* ── Order item lines ── */
+    .order-items { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .order-item-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-2);
+      margin-bottom: 4px;
     }
-    .loc-badge.baghpat  { background: #ede9fe; color: #6d28d9; }
-    .loc-badge.badagaon { background: #fce7f3; color: #be185d; }
-
-    .discount-badge { font-size: 11px; color: #e55; margin-top: 2px; }
-
-    /* Order item lines */
-    .order-items { margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
-    .order-item-line { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 2px; }
     .order-final-row {
       display: flex;
       justify-content: space-between;
       font-size: 13px;
       font-weight: 600;
-      color: #1a1a1a;
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px solid #ebebeb;
+      color: var(--text);
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
     }
 
-    /* Action buttons on order card */
+    /* ── Action buttons on card ── */
+    .card-actions { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+    .action-btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border-2);
+      background: var(--surface);
+      color: var(--text-2);
+      transition: background 0.12s;
+    }
+    .action-btn:hover { background: var(--border); }
+    .action-btn.whatsapp { color: var(--green); border-color: #86efac; background: var(--green-bg); }
+    .action-btn.whatsapp:hover { background: #bbf7d0; }
+
     .del-order {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 12px;
-      color: #e55;
-      padding: 2px 6px;
+      font-size: 13px;
+      color: var(--text-3);
+      padding: 3px 6px;
       border-radius: 5px;
-      margin-left: 6px;
+      margin-left: 4px;
     }
-    .del-order:hover { background: #ffeaea; }
-    .edit-btn {
-      background: none;
-      border: 1px solid #ddd;
-      border-radius: 7px;
-      font-size: 12px;
-      color: #555;
-      padding: 3px 10px;
-      cursor: pointer;
-      margin-top: 6px;
-      display: inline-block;
-    }
-    .edit-btn:hover { background: #f5f5f5; }
-    .empty { text-align: center; padding: 2.5rem; color: #aaa; font-size: 14px; }
+    .del-order:hover { background: #fee2e2; color: #dc2626; }
+
+    .empty { text-align: center; padding: 2.5rem; color: var(--text-3); font-size: 14px; }
 
     /* ── Edit payment panel ── */
     .edit-panel {
@@ -361,42 +439,58 @@
       margin-top: 10px;
     }
     .edit-panel.open { display: block; }
-    .edit-panel-title { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-    .edit-pay-toggle { display: flex; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+    .edit-panel-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .edit-pay-toggle {
+      display: flex;
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
     .edit-pay-btn {
       flex: 1;
       padding: 8px 6px;
       font-size: 12px;
       font-weight: 500;
       border: none;
-      background: #fafafa;
-      color: #888;
+      background: var(--surface);
+      color: var(--text-3);
       cursor: pointer;
       transition: all 0.15s;
     }
-    .edit-pay-btn:not(:last-child) { border-right: 1px solid #ddd; }
-    .edit-pay-btn.active { background: #1a1a1a; color: #fff; }
+    .edit-pay-btn:not(:last-child) { border-right: 1px solid var(--border-2); }
+    .edit-pay-btn.cash-active    { background: var(--green-bg);  color: var(--green);  }
+    .edit-pay-btn.online-active  { background: var(--blue-bg);   color: var(--blue);   }
+    .edit-pay-btn.pending-active { background: var(--orange-bg); color: var(--orange); }
+
     .edit-amount-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .edit-amount-row label { font-size: 12px; color: #555; white-space: nowrap; }
+    .edit-amount-row label { font-size: 12px; color: var(--text-2); white-space: nowrap; font-weight: 500; }
     .edit-amount-row input {
       flex: 1;
       padding: 7px 10px;
       font-size: 14px;
       font-weight: 600;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-2);
       border-radius: 8px;
       background: #fff;
       outline: none;
-      color: #1a1a1a;
+      color: var(--text);
     }
-    .edit-amount-row input:focus { border-color: #93c5fd; }
-    .edit-orig { font-size: 11px; color: #aaa; margin-bottom: 10px; }
+    .edit-amount-row input:focus { border-color: var(--accent); }
+    .edit-orig { font-size: 11px; color: var(--text-3); margin-bottom: 10px; }
     .update-btn {
       width: 100%;
       padding: 9px;
       font-size: 13px;
       font-weight: 600;
-      background: #2563eb;
+      background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -405,12 +499,12 @@
     .update-btn:hover { background: #1d4ed8; }
     .update-btn:active { transform: scale(0.99); }
 
-    /* ── Full order edit screen (fixed overlay) ── */
+    /* ── Full order edit screen ── */
     #edit-order-screen {
       display: none;
       position: fixed;
       inset: 0;
-      background: #f0f2f5;
+      background: var(--bg);
       z-index: 100;
       overflow-y: auto;
       padding: 1rem;
@@ -419,15 +513,16 @@
     .edit-screen-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; }
     .back-btn {
       background: #fff;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-2);
       border-radius: 9px;
       padding: 7px 13px;
       font-size: 14px;
       cursor: pointer;
-      color: #444;
+      color: var(--text-2);
+      font-weight: 500;
     }
-    .back-btn:hover { background: #f5f5f5; }
-    .edit-screen-title { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+    .back-btn:hover { background: var(--surface); }
+    .edit-screen-title { font-size: 17px; font-weight: 700; }
 
   </style>
 </head>
@@ -440,10 +535,12 @@
     <p>Golden Gate International School</p>
   </div>
 
-  <!-- Location toggle -->
-  <div class="location-toggle">
-    <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
-    <button class="loc-btn"        id="loc-baghpat"  onclick="setLocation('baghpat')">Baghpat</button>
+  <!-- Location pill — compact, centered under header -->
+  <div class="location-row">
+    <div class="location-pill">
+      <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
+      <button class="loc-btn"        id="loc-baghpat"  onclick="setLocation('baghpat')">Baghpat</button>
+    </div>
   </div>
 
   <!-- Main tabs -->
@@ -1084,12 +1181,12 @@ function renderOrders(query) {
             <div class="order-meta">
               ${o.pname ? o.pname + ' - ' : ''}${o.mobile || ''} - ${o.date}
             </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px">
-              <span class="pay-badge ${mode}">${PAY_LABEL[mode]}</span>
-              <span class="loc-badge ${loc}">${LOC_LABEL[loc]}</span>
-              <button class="edit-btn" onclick="openEditOrder(${o.id})">Edit Order</button>
-              <button class="edit-btn" onclick="toggleEditPayment(${o.id})">Edit Payment</button>
-              <button class="edit-btn" style="color:#16a34a;border-color:#86efac" onclick="copyWhatsApp(${o.id})">WhatsApp</button>
+            <div class="card-actions">
+              <span class="badge ${mode}">${PAY_LABEL[mode]}</span>
+              <span class="badge ${loc}">${LOC_LABEL[loc]}</span>
+              <button class="action-btn" onclick="openEditOrder(${o.id})">Edit Order</button>
+              <button class="action-btn" onclick="toggleEditPayment(${o.id})">Edit Payment</button>
+              <button class="action-btn whatsapp" onclick="copyWhatsApp(${o.id})">WhatsApp</button>
             </div>
             ${o.discount > 0 ? `<div class="discount-badge">Discount: - ${rupees(o.discount)}</div>` : ''}
           </div>
@@ -1120,9 +1217,9 @@ function renderOrders(query) {
         <div class="edit-panel" id="edit-${o.id}">
           <div class="edit-panel-title">Update Payment</div>
           <div class="edit-pay-toggle">
-            <button class="edit-pay-btn ${mode === 'pending' ? 'active' : ''}" id="ep-pending-${o.id}" onclick="setEditPay(${o.id},'pending')">Pending</button>
-            <button class="edit-pay-btn ${mode === 'cash'    ? 'active' : ''}" id="ep-cash-${o.id}"    onclick="setEditPay(${o.id},'cash')">Cash</button>
-            <button class="edit-pay-btn ${mode === 'online'  ? 'active' : ''}" id="ep-online-${o.id}"  onclick="setEditPay(${o.id},'online')">Online</button>
+            <button class="edit-pay-btn ${mode === 'pending' ? 'pending-active' : ''}" id="ep-pending-${o.id}" onclick="setEditPay(${o.id},'pending')">Pending</button>
+            <button class="edit-pay-btn ${mode === 'cash'    ? 'cash-active'    : ''}" id="ep-cash-${o.id}"    onclick="setEditPay(${o.id},'cash')">Cash</button>
+            <button class="edit-pay-btn ${mode === 'online'  ? 'online-active'  : ''}" id="ep-online-${o.id}"  onclick="setEditPay(${o.id},'online')">Online</button>
           </div>
           <div class="edit-amount-row">
             <label>Amount Paid (Rs.)</label>
@@ -1159,16 +1256,18 @@ function toggleEditPayment(id) {
 }
 
 function setEditPay(id, mode) {
-  ['pending', 'cash', 'online'].forEach(m =>
-    $(`ep-${m}-${id}`).classList.toggle('active', m === mode)
-  );
+  ['pending', 'cash', 'online'].forEach(m => {
+    const btn = $(`ep-${m}-${id}`);
+    btn.classList.remove('cash-active', 'online-active', 'pending-active');
+    if (m === mode) btn.classList.add(mode + '-active');
+  });
   $('edit-' + id).dataset.chosenMode = mode;
 }
 
 function applyEditPayment(id) {
   const panel   = $('edit-' + id);
   const newMode = panel.dataset.chosenMode ||
-    ['pending', 'cash', 'online'].find(m => $(`ep-${m}-${id}`).classList.contains('active')) || 'cash';
+    ['pending', 'cash', 'online'].find(m => $(`ep-${m}-${id}`).classList.contains(m + '-active')) || 'cash';
   const newAmt  = parseInt($(`ep-amt-${id}`).value) || 0;
 
   const idx = savedOrders.findIndex(o => o.id === id);
@@ -1300,18 +1399,12 @@ function copyWhatsApp(id) {
 
   const PAY_LABEL = { cash: 'Cash', online: 'Online', pending: 'Pending' };
 
-  // Put price on new line for long item names
-  const itemLines = order.items.map(item => {
-    const price = `Rs.${item.lineTotal.toLocaleString('en-IN')}`;
-    if (item.label.length <= 24) {
-      return `  ${item.label.padEnd(26)} ${price}`;
-    } else {
-      return `  ${item.label}\n  ${''.padEnd(26)} ${price}`;
-    }
-  }).join('\n');
+  const itemLines = order.items
+    .map(i => `  ${i.label}  —  Rs.${i.lineTotal.toLocaleString('en-IN')}`)
+    .join('\n');
 
   const discountLine = order.finalAmt !== order.subtotal
-    ? `\n  Discount               - Rs.${order.discount.toLocaleString('en-IN')}`
+    ? `\n  Discount  —  - Rs.${order.discount.toLocaleString('en-IN')}`
     : '';
 
   const message =
