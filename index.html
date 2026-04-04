@@ -268,15 +268,16 @@
     /* ── Add item buttons ── */
     .add-buttons { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
     .add-btn {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--accent);
       background: var(--accent-bg);
       border: none;
       border-radius: 20px;
-      padding: 6px 12px;
+      padding: 9px 14px;
       cursor: pointer;
       transition: background 0.15s;
+      min-height: 40px;
     }
     .add-btn:hover { background: #dbeafe; }
     .add-btn.combo { color: var(--purple); background: var(--purple-bg); }
@@ -579,8 +580,8 @@
       <div class="field" style="margin-bottom:0">
         <label>Payment Mode</label>
         <div class="payment-toggle">
-          <button class="pay-btn"        id="pay-pending" onclick="setPayment('pending')">Pending</button>
-          <button class="pay-btn active" id="pay-cash"    onclick="setPayment('cash')">Cash</button>
+          <button class="pay-btn active" id="pay-pending" onclick="setPayment('pending')">Pending</button>
+          <button class="pay-btn"        id="pay-cash"    onclick="setPayment('cash')">Cash</button>
           <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
         </div>
       </div>
@@ -746,7 +747,7 @@ const COMBOS = {
    ============================================================ */
 
 let currentLocation = 'badagaon'; // active location
-let paymentMode     = 'cash';     // active payment mode for new order
+let paymentMode = 'pending'; // default — changed to Cash/Online after payment
 let eoOrderId       = null;       // id of order being edited in edit screen
 let eoPayMode       = 'cash';     // payment mode inside edit screen
 let itemCounter     = 0;          // unique id counter for item rows
@@ -1121,7 +1122,7 @@ function resetForm() {
   ['sname', 'sclass', 'pname', 'mobile'].forEach(id => $(id).value = '');
   $('items-container').innerHTML = '';
   itemCounter = 0;
-  setPayment('cash');
+  setPayment('pending');
   recalc();
 }
 
