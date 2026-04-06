@@ -430,6 +430,45 @@
 
     .empty { text-align: center; padding: 2.5rem; color: var(--text-3); font-size: 14px; }
 
+    /* ── Pending count banner ── */
+    .pending-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--orange-bg);
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange);
+    }
+    .pending-banner span { font-weight: 400; font-size: 12px; color: #92400e; }
+
+    /* ── Date filter tabs ── */
+    .date-filter {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .date-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border-2);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--text-3);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .date-btn.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
     /* ── Edit payment panel ── */
     .edit-panel {
       display: none;
@@ -585,6 +624,10 @@
           <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
         </div>
       </div>
+      <div class="field" style="margin-top:10px;margin-bottom:0">
+        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+        <input id="notes" type="text" placeholder="e.g. alteration needed, half payment done">
+      </div>
     </div>
 
     <!-- Dress items -->
@@ -611,6 +654,20 @@
 
   <!-- TAB 2: SAVED ORDERS -->
   <div id="tab-orders" style="display:none">
+
+    <!-- Pending count banner — shows only when there are pending orders -->
+    <div id="pending-banner" class="pending-banner" style="display:none">
+      <div id="pending-text"></div>
+      <span>tap to filter</span>
+    </div>
+
+    <!-- Date filter -->
+    <div class="date-filter">
+      <button class="date-btn active" id="filter-all"   onclick="setDateFilter('all')">All</button>
+      <button class="date-btn"        id="filter-today" onclick="setDateFilter('today')">Today</button>
+      <button class="date-btn"        id="filter-week"  onclick="setDateFilter('week')">This Week</button>
+    </div>
+
     <div class="search-box">
       <input type="text" placeholder="Search by name, class or mobile..." oninput="renderOrders(this.value)">
     </div>
@@ -652,6 +709,10 @@
           <button class="pay-btn" id="eo-pay-cash"    onclick="setEoPay('cash')">Cash</button>
           <button class="pay-btn" id="eo-pay-online"  onclick="setEoPay('online')">Online</button>
         </div>
+      </div>
+      <div class="field" style="margin-top:10px;margin-bottom:0">
+        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+        <input id="eo-notes" type="text" placeholder="e.g. alteration needed, half payment done">
       </div>
     </div>
 
@@ -747,10 +808,11 @@ const COMBOS = {
    ============================================================ */
 
 let currentLocation = 'badagaon'; // active location
-let paymentMode = 'pending'; // default — changed to Cash/Online after payment
+let paymentMode     = 'pending';  // default — changed to Cash/Online after payment
 let eoOrderId       = null;       // id of order being edited in edit screen
 let eoPayMode       = 'cash';     // payment mode inside edit screen
 let itemCounter     = 0;          // unique id counter for item rows
+let dateFilter      = 'all';      // date filter: 'all', 'today', 'week'
 let savedOrders     = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
 
 /* ============================================================
@@ -1104,6 +1166,7 @@ function saveOrder() {
     sclass:      $('sclass').value.trim(),
     pname:       $('pname').value.trim(),
     mobile:      $('mobile').value.trim(),
+    notes:       $('notes').value.trim(),
     paymentMode,
     items,
     subtotal,
@@ -1119,7 +1182,7 @@ function saveOrder() {
 }
 
 function resetForm() {
-  ['sname', 'sclass', 'pname', 'mobile'].forEach(id => $(id).value = '');
+  ['sname', 'sclass', 'pname', 'mobile', 'notes'].forEach(id => $(id).value = '');
   $('items-container').innerHTML = '';
   itemCounter = 0;
   setPayment('pending');
@@ -1140,20 +1203,77 @@ function showTab(tab) {
 }
 
 /* ============================================================
+   DATE FILTER
+   ============================================================ */
+
+function setDateFilter(filter) {
+  dateFilter = filter;
+  ['all', 'today', 'week'].forEach(f =>
+    $('filter-' + f).classList.toggle('active', f === filter)
+  );
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+}
+
+function matchesDateFilter(order) {
+  if (dateFilter === 'all') return true;
+
+  // Parse order date (format: d/m/yyyy from toLocaleDateString en-IN)
+  const parts   = order.date.split('/');
+  const orderDate = new Date(parts[2], parts[1] - 1, parts[0]);
+  const now     = new Date();
+  const today   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  if (dateFilter === 'today') {
+    return orderDate.getTime() === today.getTime();
+  }
+  if (dateFilter === 'week') {
+    const weekAgo = new Date(today);
+    weekAgo.setDate(today.getDate() - 6);
+    return orderDate >= weekAgo && orderDate <= today;
+  }
+  return true;
+}
+
+/* ============================================================
    RENDER SAVED ORDERS LIST
-   Shows all orders, filtered by search query.
-   Each order card shows a location badge and payment badge.
+   Shows all orders filtered by search query and date filter.
+   Each order card shows location badge, payment badge, and notes.
    ============================================================ */
 
 function renderOrders(query) {
   query = (query || '').toLowerCase();
 
+  // Apply date filter + search filter
   const filtered = savedOrders.filter(o =>
-    o.sname.toLowerCase().includes(query)          ||
-    (o.sclass   || '').toLowerCase().includes(query) ||
-    (o.mobile   || '').includes(query)               ||
-    (o.location || '').toLowerCase().includes(query)
+    matchesDateFilter(o) && (
+      o.sname.toLowerCase().includes(query)            ||
+      (o.sclass   || '').toLowerCase().includes(query) ||
+      (o.mobile   || '').includes(query)               ||
+      (o.location || '').toLowerCase().includes(query) ||
+      (o.notes    || '').toLowerCase().includes(query)
+    )
   );
+
+  // Pending banner — count all pending orders (not just filtered)
+  const pendingAll = savedOrders.filter(o => o.paymentMode === 'pending');
+  const banner     = $('pending-banner');
+  if (pendingAll.length > 0) {
+    banner.style.display = 'flex';
+    $('pending-text').textContent =
+      `${pendingAll.length} pending payment${pendingAll.length !== 1 ? 's' : ''}`;
+    banner.onclick = () => {
+      setDateFilter('all');
+      $('tab-orders').querySelector('.search-box input').value = '';
+      renderOrders('');
+      // scroll to first pending order
+      setTimeout(() => {
+        const first = document.querySelector('.badge.pending');
+        if (first) first.closest('.order-card')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    };
+  } else {
+    banner.style.display = 'none';
+  }
 
   const totalAmt = filtered.reduce((sum, o) => sum + o.finalAmt, 0);
   $('orders-summary').textContent =
@@ -1189,6 +1309,7 @@ function renderOrders(query) {
               <button class="action-btn" onclick="toggleEditPayment(${o.id})">Edit Payment</button>
               <button class="action-btn whatsapp" onclick="copyWhatsApp(${o.id})">WhatsApp</button>
             </div>
+            ${o.notes ? `<div style="font-size:12px;color:var(--orange);margin-top:5px;font-style:italic">Note: ${o.notes}</div>` : ''}
             ${o.discount > 0 ? `<div class="discount-badge">Discount: - ${rupees(o.discount)}</div>` : ''}
           </div>
           <div style="display:flex;align-items:center;gap:6px">
@@ -1208,7 +1329,7 @@ function renderOrders(query) {
             <span>${rupees(o.subtotal)}</span>
           </div>
           ${o.finalAmt !== o.subtotal ? `
-          <div class="order-final-row" style="color:#e55">
+          <div class="order-final-row" style="color:#dc2626">
             <span>Paid (after discount)</span>
             <span>${rupees(o.finalAmt)}</span>
           </div>` : ''}
@@ -1304,6 +1425,7 @@ function openEditOrder(id) {
   $('eo-sclass').value = order.sclass || '';
   $('eo-pname').value  = order.pname  || '';
   $('eo-mobile').value = order.mobile || '';
+  $('eo-notes').value  = order.notes  || '';
   setEoPay(order.paymentMode || 'cash');
 
   // Rebuild item rows from saved order data
@@ -1375,6 +1497,7 @@ function saveEditOrder() {
     sclass:      $('eo-sclass').value.trim(),
     pname:       $('eo-pname').value.trim(),
     mobile:      $('eo-mobile').value.trim(),
+    notes:       $('eo-notes').value.trim(),
     paymentMode: eoPayMode,
     items,
     subtotal,
@@ -1414,7 +1537,7 @@ function copyWhatsApp(id) {
 -------------------------
 Student : ${order.sname}${order.sclass ? ' (' + order.sclass + ')' : ''}
 ${order.pname  ? 'Parent  : ' + order.pname  : ''}${order.mobile ? '\nMobile  : ' + order.mobile : ''}
-Date    : ${order.date}
+Date    : ${order.date}${order.notes ? '\nNote    : ' + order.notes : ''}
 -------------------------
 ${itemLines}${discountLine}
 -------------------------
@@ -1446,7 +1569,7 @@ Thank you!`;
 function exportCSV() {
   if (!savedOrders.length) { alert('No orders to export.'); return; }
 
-  const headers = ['Date', 'Location', 'Student', 'Class', 'Parent', 'Mobile', 'Items', 'Subtotal', 'Discount', 'Total', 'Payment'];
+  const headers = ['Date', 'Location', 'Student', 'Class', 'Parent', 'Mobile', 'Notes', 'Items', 'Subtotal', 'Discount', 'Total', 'Payment'];
 
   const rows = savedOrders.map(o => [
     o.date,
@@ -1455,6 +1578,7 @@ function exportCSV() {
     o.sclass  || '',
     o.pname   || '',
     o.mobile  || '',
+    o.notes   || '',
     o.items.map(i => i.label + ' = Rs.' + i.lineTotal).join(' | '),
     o.subtotal,
     o.discount || 0,
