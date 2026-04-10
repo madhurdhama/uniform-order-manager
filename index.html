@@ -6,25 +6,24 @@
   <title>Uniform Order Manager</title>
   <style>
 
-    /* ── Design tokens ── */
+    /* ─── Design tokens ─────────────────────────────── */
     :root {
-      --green:      #16a34a;  --green-bg:  #dcfce7;
-      --blue:       #1d4ed8;  --blue-bg:   #dbeafe;
-      --orange:     #d97706;  --orange-bg: #fef3c7;
-      --purple:     #6d28d9;  --purple-bg: #ede9fe;
-      --pink:       #be185d;  --pink-bg:   #fce7f3;
-      --accent:     #2563eb;
-      --accent-bg:  #eff6ff;
-      --text:       #1a1a1a;
-      --text-2:     #555;
-      --text-3:     #999;
-      --border:     #e5e7eb;
-      --border-2:   #d1d5db;
-      --surface:    #f9fafb;
-      --bg:         #f3f4f6;
+      --green:     #16a34a;  --green-bg:  #dcfce7;
+      --blue:      #1d4ed8;  --blue-bg:   #dbeafe;
+      --orange:    #d97706;  --orange-bg: #fef3c7;
+      --purple:    #6d28d9;  --purple-bg: #ede9fe;
+      --pink:      #be185d;  --pink-bg:   #fce7f3;
+      --accent:    #2563eb;  --accent-bg: #eff6ff;
+      --text:      #1a1a1a;
+      --text-2:    #555;
+      --text-3:    #999;
+      --border:    #e5e7eb;
+      --border-2:  #d1d5db;
+      --surface:   #f9fafb;
+      --bg:        #f3f4f6;
     }
 
-    /* ── Reset ── */
+    /* ─── Reset ─────────────────────────────────────── */
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -40,23 +39,12 @@
       padding: 1rem;
     }
 
-    /* ── Header ── */
-    .header {
-      text-align: center;
-      padding: 1rem 0 1.25rem;
-    }
-    .header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .header p {
-      font-size: 12px;
-      color: var(--text-3);
-      margin-top: 2px;
-    }
+    /* ─── Header ─────────────────────────────────────── */
+    .header { text-align: center; padding: 1rem 0 1.25rem; }
+    .header h1 { font-size: 18px; font-weight: 700; }
+    .header p  { font-size: 12px; color: var(--text-3); margin-top: 2px; }
 
-    /* ── Location pill — compact, lives under header ── */
+    /* ─── Location pill ──────────────────────────────── */
     .location-row {
       display: flex;
       justify-content: center;
@@ -81,12 +69,9 @@
       color: var(--text-3);
       transition: all 0.15s;
     }
-    .loc-btn.active {
-      background: var(--text);
-      color: #fff;
-    }
+    .loc-btn.active { background: var(--text); color: #fff; }
 
-    /* ── Tabs ── */
+    /* ─── Tabs ───────────────────────────────────────── */
     .tabs {
       display: flex;
       gap: 4px;
@@ -112,7 +97,7 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    /* ── Section cards ── */
+    /* ─── Section cards ──────────────────────────────── */
     .section {
       background: #fff;
       border-radius: 14px;
@@ -130,8 +115,9 @@
       margin-bottom: 12px;
     }
 
-    /* ── Form fields ── */
+    /* ─── Form fields ────────────────────────────────── */
     .field { margin-bottom: 10px; }
+
     .field label {
       font-size: 12px;
       color: var(--text-2);
@@ -157,11 +143,11 @@
       background: #fff;
       box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
     }
+
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-    /* ── Payment mode toggle ──
-       Each mode gets its own color when active,
-       matching the badge colors in saved orders.        ── */
+    /* ─── Payment toggle ─────────────────────────────── */
+    /* Active color matches badge color for visual consistency */
     .payment-toggle {
       display: flex;
       border: 1px solid var(--border-2);
@@ -182,12 +168,11 @@
     }
     .pay-btn:not(:last-child) { border-right: 1px solid var(--border-2); }
 
-    /* Each active state matches its badge color */
     #pay-cash.active,    #eo-pay-cash.active    { background: var(--green-bg);  color: var(--green);  }
     #pay-online.active,  #eo-pay-online.active  { background: var(--blue-bg);   color: var(--blue);   }
     #pay-pending.active, #eo-pay-pending.active { background: var(--orange-bg); color: var(--orange); }
 
-    /* ── Item table column headers ── */
+    /* ─── Item table ─────────────────────────────────── */
     .col-labels {
       display: grid;
       grid-template-columns: 1fr 80px 52px 78px 28px;
@@ -196,7 +181,7 @@
     }
     .col-labels span { font-size: 11px; color: var(--text-3); font-weight: 500; }
 
-    /* ── Single item row ── */
+    /* Single item row */
     .item-row {
       display: grid;
       grid-template-columns: 1fr 80px 52px 78px 28px;
@@ -205,7 +190,7 @@
       margin-bottom: 7px;
     }
 
-    /* ── Combo item row ── */
+    /* Combo row (two items with separate sizes) */
     .combo-row {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -228,7 +213,7 @@
     }
     .combo-label { font-size: 11px; color: var(--text-3); padding-left: 2px; font-weight: 500; }
 
-    /* ── Shared inputs inside item rows ── */
+    /* Shared input styles for item/combo rows */
     .item-row select, .item-row input,
     .combo-top select, .combo-top input,
     .combo-sub select {
@@ -248,8 +233,12 @@
       box-shadow: 0 0 0 2px rgba(37,99,235,0.08);
     }
 
-    .item-price { font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
-
+    .item-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+    }
     .remove-btn {
       background: none;
       border: none;
@@ -265,8 +254,9 @@
     }
     .remove-btn:hover { background: #fee2e2; color: #dc2626; }
 
-    /* ── Add item buttons ── */
+    /* ─── Add item buttons ───────────────────────────── */
     .add-buttons { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
     .add-btn {
       font-size: 13px;
       font-weight: 500;
@@ -280,10 +270,23 @@
       min-height: 40px;
     }
     .add-btn:hover { background: #dbeafe; }
+
+    /* Combo buttons (purple) */
     .add-btn.combo { color: var(--purple); background: var(--purple-bg); }
     .add-btn.combo:hover { background: #ddd6fe; }
 
-    /* ── Total card ── */
+    /* Full-set quick button (green, full width, sits above others) */
+    .add-btn.quickset {
+      color: var(--green);
+      background: var(--green-bg);
+      font-weight: 700;
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+    .add-btn.quickset:hover { background: #bbf7d0; }
+
+    /* ─── Total card ─────────────────────────────────── */
     .total-card {
       background: var(--surface);
       border-radius: 10px;
@@ -310,7 +313,7 @@
       border-top: 1px solid var(--border);
     }
 
-    /* ── Save button ── */
+    /* ─── Save button ────────────────────────────────── */
     .save-btn {
       width: 100%;
       padding: 13px;
@@ -327,7 +330,7 @@
     .save-btn:hover  { background: #1d4ed8; }
     .save-btn:active { transform: scale(0.99); }
 
-    /* ── Saved orders ── */
+    /* ─── Search box ─────────────────────────────────── */
     .search-box input {
       width: 100%;
       padding: 9px 12px;
@@ -346,7 +349,41 @@
     }
     .total-count { font-size: 12px; color: var(--text-3); margin-bottom: 8px; }
 
-    /* ── Order card ── */
+    /* ─── Pending banner ─────────────────────────────── */
+    /* Compact card showing total pending + today's pending */
+    .pending-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--orange-bg);
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .pending-banner-left { display: flex; align-items: center; gap: 8px; }
+    .pending-count { font-size: 22px; font-weight: 700; color: var(--orange); line-height: 1; }
+    .pending-label { font-size: 12px; font-weight: 600; color: var(--orange); }
+    .pending-today { font-size: 11px; color: #92400e; margin-top: 1px; }
+    .pending-tap   { font-size: 11px; color: #92400e; }
+
+    /* ─── Date filter pills ──────────────────────────── */
+    .date-filter { display: flex; gap: 5px; margin-bottom: 10px; }
+    .date-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border-2);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--text-3);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .date-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+    /* ─── Order card ─────────────────────────────────── */
     .order-card {
       background: #fff;
       border: 1px solid var(--border);
@@ -356,12 +393,12 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .order-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .order-name   { font-size: 15px; font-weight: 600; }
-    .order-meta   { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-    .order-amount { font-size: 16px; font-weight: 700; }
+    .order-name     { font-size: 15px; font-weight: 600; }
+    .order-meta     { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    .order-amount   { font-size: 16px; font-weight: 700; }
 
-    /* ── Badges — payment + location ──
-       All use the same pill shape and color system.       ── */
+    /* ─── Badges (payment + location) ───────────────── */
+    /* All use same pill shape — color encodes meaning */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -371,15 +408,15 @@
       border-radius: 20px;
       margin-top: 4px;
     }
-    .badge.cash    { background: var(--green-bg);  color: var(--green);  }
-    .badge.online  { background: var(--blue-bg);   color: var(--blue);   }
-    .badge.pending { background: var(--orange-bg); color: var(--orange); }
+    .badge.cash     { background: var(--green-bg);  color: var(--green);  }
+    .badge.online   { background: var(--blue-bg);   color: var(--blue);   }
+    .badge.pending  { background: var(--orange-bg); color: var(--orange); }
     .badge.badagaon { background: var(--purple-bg); color: var(--purple); }
     .badge.baghpat  { background: var(--pink-bg);   color: var(--pink);   }
 
     .discount-badge { font-size: 11px; color: #dc2626; margin-top: 2px; }
 
-    /* ── Order item lines ── */
+    /* Item lines inside order card */
     .order-items { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
     .order-item-line {
       display: flex;
@@ -399,8 +436,9 @@
       border-top: 1px solid var(--border);
     }
 
-    /* ── Action buttons on card ── */
+    /* ─── Card action buttons ────────────────────────── */
     .card-actions { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+
     .action-btn {
       font-size: 12px;
       font-weight: 500;
@@ -430,46 +468,8 @@
 
     .empty { text-align: center; padding: 2.5rem; color: var(--text-3); font-size: 14px; }
 
-    /* ── Pending count banner ── */
-    .pending-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--orange-bg);
-      border: 1px solid #fcd34d;
-      border-radius: 10px;
-      padding: 10px 14px;
-      margin-bottom: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--orange);
-    }
-    .pending-banner span { font-weight: 400; font-size: 12px; color: #92400e; }
-
-    /* ── Date filter tabs ── */
-    .date-filter {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 10px;
-    }
-    .date-btn {
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid var(--border-2);
-      border-radius: 20px;
-      background: var(--surface);
-      color: var(--text-3);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .date-btn.active {
-      background: var(--text);
-      color: #fff;
-      border-color: var(--text);
-    }
-
-    /* ── Edit payment panel ── */
+    /* ─── Edit payment panel ─────────────────────────── */
+    /* Hidden by default inside each order card, toggled open */
     .edit-panel {
       display: none;
       background: #f8f9ff;
@@ -479,6 +479,7 @@
       margin-top: 10px;
     }
     .edit-panel.open { display: block; }
+
     .edit-panel-title {
       font-size: 10px;
       font-weight: 700;
@@ -506,12 +507,19 @@
       transition: all 0.15s;
     }
     .edit-pay-btn:not(:last-child) { border-right: 1px solid var(--border-2); }
+
+    /* Active state matches badge color */
     .edit-pay-btn.cash-active    { background: var(--green-bg);  color: var(--green);  }
     .edit-pay-btn.online-active  { background: var(--blue-bg);   color: var(--blue);   }
     .edit-pay-btn.pending-active { background: var(--orange-bg); color: var(--orange); }
 
     .edit-amount-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .edit-amount-row label { font-size: 12px; color: var(--text-2); white-space: nowrap; font-weight: 500; }
+    .edit-amount-row label {
+      font-size: 12px;
+      color: var(--text-2);
+      white-space: nowrap;
+      font-weight: 500;
+    }
     .edit-amount-row input {
       flex: 1;
       padding: 7px 10px;
@@ -524,7 +532,9 @@
       color: var(--text);
     }
     .edit-amount-row input:focus { border-color: var(--accent); }
+
     .edit-orig { font-size: 11px; color: var(--text-3); margin-bottom: 10px; }
+
     .update-btn {
       width: 100%;
       padding: 9px;
@@ -536,10 +546,11 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    .update-btn:hover { background: #1d4ed8; }
+    .update-btn:hover  { background: #1d4ed8; }
     .update-btn:active { transform: scale(0.99); }
 
-    /* ── Full order edit screen ── */
+    /* ─── Full order edit screen ─────────────────────── */
+    /* Fixed overlay that slides over everything */
     #edit-order-screen {
       display: none;
       position: fixed;
@@ -550,6 +561,7 @@
       padding: 1rem;
     }
     #edit-order-screen.open { display: block; }
+
     .edit-screen-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; }
     .back-btn {
       background: #fff;
@@ -564,18 +576,84 @@
     .back-btn:hover { background: var(--surface); }
     .edit-screen-title { font-size: 17px; font-weight: 700; }
 
+    /* ─── Quick-set size picker modal ────────────────── */
+    /* Bottom sheet that slides up when Full Set is tapped */
+    .quickset-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .quickset-modal.open { display: flex; }
+
+    .quickset-sheet {
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      padding: 1.25rem 1.25rem 2rem;
+      width: 100%;
+      max-width: 600px;
+    }
+    .quickset-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .quickset-sub   { font-size: 12px; color: var(--text-3); margin-bottom: 1rem; }
+
+    .quickset-sizes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+    .size-chip {
+      padding: 10px 4px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--border-2);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text-2);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.12s;
+    }
+    .size-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .quickset-confirm {
+      width: 100%;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .quickset-confirm:hover { background: #1d4ed8; }
+    .quickset-cancel {
+      width: 100%;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      color: var(--text-3);
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- Header -->
   <div class="header">
     <h1>Uniform Order Manager</h1>
     <p>Golden Gate International School</p>
   </div>
 
-  <!-- Location pill — compact, centered under header -->
+  <!-- Location toggle — compact pill under header -->
   <div class="location-row">
     <div class="location-pill">
       <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
@@ -583,40 +661,42 @@
     </div>
   </div>
 
-  <!-- Main tabs -->
   <div class="tabs">
     <button class="tab active" onclick="showTab('new')">New Order</button>
     <button class="tab"        onclick="showTab('orders')">Saved Orders</button>
   </div>
 
 
-  <!-- TAB 1: NEW ORDER -->
+  <!-- ══════════════════════════════════════
+       TAB 1 — NEW ORDER
+  ══════════════════════════════════════ -->
   <div id="tab-new">
 
-    <!-- Student details -->
+    <!-- Parent & student info -->
     <div class="section">
       <div class="section-title">Student Details</div>
       <div class="row2">
         <div class="field">
           <label>Student Name</label>
-          <input id="sname" type="text" placeholder="e.g. Rahul Sharma">
+          <!-- Enter key moves focus to next field -->
+          <input id="sname" type="text" placeholder="e.g. Rahul" onkeydown="onEnter(event,'sclass')">
         </div>
         <div class="field">
           <label>Class</label>
-          <input id="sclass" type="text" placeholder="e.g. 5th A">
+          <input id="sclass" type="text" placeholder="e.g. 5A" onkeydown="onEnter(event,'pname')">
         </div>
       </div>
       <div class="row2">
         <div class="field">
           <label>Parent Name</label>
-          <input id="pname" type="text" placeholder="e.g. Suresh Sharma">
+          <input id="pname" type="text" placeholder="e.g. Suresh Sharma" onkeydown="onEnter(event,'mobile')">
         </div>
         <div class="field">
           <label>Mobile Number</label>
-          <input id="mobile" type="tel" placeholder="e.g. 9876543210">
+          <input id="mobile" type="tel" placeholder="e.g. 9876543210" onkeydown="onEnter(event,'notes')">
         </div>
       </div>
-      <div class="field" style="margin-bottom:0">
+      <div class="field">
         <label>Payment Mode</label>
         <div class="payment-toggle">
           <button class="pay-btn active" id="pay-pending" onclick="setPayment('pending')">Pending</button>
@@ -624,7 +704,7 @@
           <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
         </div>
       </div>
-      <div class="field" style="margin-top:10px;margin-bottom:0">
+      <div class="field" style="margin-bottom:0">
         <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
         <input id="notes" type="text" placeholder="e.g. alteration needed, half payment done">
       </div>
@@ -638,6 +718,7 @@
         <span style="text-align:right">Line Total</span><span></span>
       </div>
       <div id="items-container"></div>
+      <!-- Add buttons injected here by buildAddButtons() -->
       <div id="add-btns-new" class="add-buttons"></div>
       <div class="total-card">
         <div id="item-breakdown"></div>
@@ -652,13 +733,21 @@
   </div>
 
 
-  <!-- TAB 2: SAVED ORDERS -->
+  <!-- ══════════════════════════════════════
+       TAB 2 — SAVED ORDERS
+  ══════════════════════════════════════ -->
   <div id="tab-orders" style="display:none">
 
-    <!-- Pending count banner — shows only when there are pending orders -->
+    <!-- Pending banner: shows total + today's pending count -->
     <div id="pending-banner" class="pending-banner" style="display:none">
-      <div id="pending-text"></div>
-      <span>tap to filter</span>
+      <div class="pending-banner-left">
+        <div class="pending-count" id="pending-count">0</div>
+        <div>
+          <div class="pending-label">Pending payments</div>
+          <div class="pending-today" id="pending-today"></div>
+        </div>
+      </div>
+      <div class="pending-tap">tap to view</div>
     </div>
 
     <!-- Date filter -->
@@ -671,19 +760,24 @@
     <div class="search-box">
       <input type="text" placeholder="Search by name, class or mobile..." oninput="renderOrders(this.value)">
     </div>
+
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <div id="orders-summary" class="total-count"></div>
       <button onclick="exportCSV()" style="font-size:12px;padding:5px 10px;border:1px solid #86efac;border-radius:7px;background:none;color:#16a34a;cursor:pointer">
         Export CSV
       </button>
     </div>
+
     <div id="orders-list"></div>
   </div>
 
 </div><!-- end .app -->
 
 
-<!-- FULL ORDER EDIT SCREEN (fixed overlay, shown when editing a saved order) -->
+<!-- ══════════════════════════════════════
+     FULL ORDER EDIT SCREEN
+     Fixed overlay shown when editing a saved order
+══════════════════════════════════════ -->
 <div id="edit-order-screen">
   <div style="max-width:640px;margin:0 auto">
 
@@ -702,7 +796,7 @@
         <div class="field"><label>Parent Name</label><input id="eo-pname" type="text"></div>
         <div class="field"><label>Mobile Number</label><input id="eo-mobile" type="tel"></div>
       </div>
-      <div class="field" style="margin-bottom:0">
+      <div class="field">
         <label>Payment Mode</label>
         <div class="payment-toggle">
           <button class="pay-btn" id="eo-pay-pending" onclick="setEoPay('pending')">Pending</button>
@@ -710,9 +804,9 @@
           <button class="pay-btn" id="eo-pay-online"  onclick="setEoPay('online')">Online</button>
         </div>
       </div>
-      <div class="field" style="margin-top:10px;margin-bottom:0">
+      <div class="field" style="margin-bottom:0">
         <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
-        <input id="eo-notes" type="text" placeholder="e.g. alteration needed, half payment done">
+        <input id="eo-notes" type="text">
       </div>
     </div>
 
@@ -739,25 +833,44 @@
 </div>
 
 
+<!-- ══════════════════════════════════════
+     QUICK-SET MODAL
+     Bottom sheet for picking full-set size
+══════════════════════════════════════ -->
+<div class="quickset-modal" id="quickset-modal" onclick="closeQuickSet(event)">
+  <div class="quickset-sheet">
+    <div class="quickset-title">Quick Add — Full Set</div>
+    <div class="quickset-sub">Adds: Pant + Shirt + Lower + T-Shirt + Tie + Belt + Socks x2</div>
+    <div class="quickset-sub" style="margin-bottom:0.75rem;font-weight:600;color:var(--text-2)">
+      Pick size (all items use same size):
+    </div>
+    <div class="quickset-sizes" id="qs-sizes"></div>
+    <div style="font-size:12px;color:var(--text-3);margin-top:8px;margin-bottom:1rem">
+      Tie: Small for size &lt;34 &nbsp;|&nbsp; Large for size 34+
+    </div>
+    <button class="quickset-confirm" onclick="confirmQuickSet()">Add Full Set</button>
+    <button class="quickset-cancel"  onclick="closeQuickSet()">Cancel</button>
+  </div>
+</div>
+
+
 <script>
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    PRICE TABLES
-   ============================================================
-   Format:  "Item Name": { Size: Price, Size: Price }
+   ──────────────────────────────────────────────────────
+   Format:   "Item Name": { Size: Price, ... }
    Sizes can be numbers (26, 28) or strings ("Small", "All")
 
-   TO EDIT A PRICE  -> change the number after the size
-   TO ADD A SIZE    -> add ", 46: 500" inside the { }
-   TO ADD AN ITEM   -> copy any line and change name + prices
-   TO REMOVE ITEM   -> delete the whole line
-   ============================================================ */
+   TO EDIT A PRICE  → change the number after the size
+   TO ADD A SIZE    → add ", 46: 500" inside the { }
+   TO ADD AN ITEM   → copy any line and change name + prices
+   TO REMOVE ITEM   → delete the whole line
+══════════════════════════════════════════════════════ */
 
 const PRICES = {
 
   // Badagaon prices
-  // Note: Pink Pant & Shirt use same price as regular Pant & Shirt
-  // so just use the Pant & Shirt Set button — color doesn't matter for billing
   badagaon: {
     "Tie":          { "Small": 50,  "Large": 100 },
     "Belt":         { "All":   100 },
@@ -791,82 +904,91 @@ const PRICES = {
 
 };
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    COMBO SETS
-   Defines which items are paired in each combo button.
-   Add new combos here — they automatically appear as buttons.
-   ============================================================ */
+   Add new combos here — buttons appear automatically.
+══════════════════════════════════════════════════════ */
 
 const COMBOS = {
-  'pant-shirt':   { item1: 'Pant',         item2: 'Shirt',         label: 'Pant & Shirt Set' },
-  'lower-tshirt': { item1: 'Lower',        item2: 'T-Shirt',       label: 'Lower & T-Shirt Set' },
-  'half-set':     { item1: 'Half Lower',   item2: 'Half T-Shirt',  label: 'Half Lower & T-Shirt Set' }
+  'pant-shirt':   { item1: 'Pant',       item2: 'Shirt',        label: 'Pant & Shirt Set' },
+  'lower-tshirt': { item1: 'Lower',      item2: 'T-Shirt',      label: 'Lower & T-Shirt Set' },
+  'half-set':     { item1: 'Half Lower', item2: 'Half T-Shirt', label: 'Half Lower & T-Shirt Set' }
 };
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    APP STATE
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
-let currentLocation = 'badagaon'; // active location
-let paymentMode     = 'pending';  // default — changed to Cash/Online after payment
-let eoOrderId       = null;       // id of order being edited in edit screen
-let eoPayMode       = 'cash';     // payment mode inside edit screen
-let itemCounter     = 0;          // unique id counter for item rows
-let dateFilter      = 'all';      // date filter: 'all', 'today', 'week'
+let currentLocation = 'badagaon';  // active location
+let paymentMode     = 'pending';   // resets to pending after each save
+let eoOrderId       = null;        // id of order being edited
+let eoPayMode       = 'cash';      // payment mode in edit screen
+let itemCounter     = 0;           // global counter — keeps item IDs unique
+let dateFilter      = 'all';       // saved orders date filter
 let savedOrders     = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
 
-/* ============================================================
-   UTILITY FUNCTIONS
-   ============================================================ */
+// Quick-set state
+let qsTarget = null;   // which screen opened it: 'new' or 'eo'
+let qsSize   = null;   // selected size for all items in the full set
 
-// Shortcut for getElementById
+/* ══════════════════════════════════════════════════════
+   UTILITY FUNCTIONS
+══════════════════════════════════════════════════════ */
+
+// Short alias for getElementById
 const $ = id => document.getElementById(id);
 
-// Format a number as "Rs.1,250"
+// Format number as rupees string
 const rupees = n => 'Rs.' + n.toLocaleString('en-IN');
 
 // Save all orders to localStorage
 const saveLocal = () => localStorage.setItem('uniform_orders2', JSON.stringify(savedOrders));
 
-// Get price table for current location
+// Get price table for the active location
 const getPrices = () => PRICES[currentLocation];
 
-// Get unit price for an item+size (tries string key then numeric key)
+// Get unit price — tries string key first, then numeric key
 function getUnitPrice(itemName, size) {
   const table = getPrices();
   return table[itemName]?.[size] || table[itemName]?.[parseInt(size)] || 0;
 }
 
-// Build <option> tags for a size dropdown
-// selectedSize highlights the matching option
+// Build <option> tags for a size dropdown, pre-selecting selectedSize
 function getSizeOptions(itemName, selectedSize) {
-  const table = getPrices();
-  return Object.keys(table[itemName] || {})
+  return Object.keys(getPrices()[itemName] || {})
     .map(s => `<option${String(s) === String(selectedSize) ? ' selected' : ''}>${s}</option>`)
     .join('');
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
+   ENTER KEY — moves focus to next field for faster entry
+══════════════════════════════════════════════════════ */
+
+function onEnter(event, nextId) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    $(nextId)?.focus();
+  }
+}
+
+/* ══════════════════════════════════════════════════════
    LOCATION
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function setLocation(loc) {
   currentLocation = loc;
-
-  // Update toggle button styles
   ['badagaon', 'baghpat'].forEach(l =>
     $('loc-' + l).classList.toggle('active', l === loc)
   );
-
-  // Clear in-progress items since prices changed
+  // Clear items since prices changed
   $('items-container').innerHTML = '';
   itemCounter = 0;
   recalc();
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    PAYMENT MODE
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function setPayment(mode) {
   paymentMode = mode;
@@ -882,35 +1004,90 @@ function setEoPay(mode) {
   );
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    BUILD ADD BUTTONS
-   Generates the row of "+ Single Item", "+ Pant & Shirt Set" etc.
-   Both locations share the same buttons now.
+   Called once on init and again when location changes
+   in edit screen (to get correct prices).
    isEo = true when building for the edit order screen.
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function buildAddButtons(containerId, isEo) {
   const prefix = isEo ? 'eoAdd' : 'add';
-  let html = `<button class="add-btn" onclick="${prefix}Item()">+ Single Item</button>`;
+  const target = isEo ? 'eo'   : 'new';
 
+  // Green full-set button at top
+  let html = `<button class="add-btn quickset" onclick="openQuickSet('${target}')">
+    Full Set (Pant + Shirt + Lower + T-Shirt + Tie + Belt + Socks)
+  </button>`;
+
+  // Combo set buttons (purple)
   Object.entries(COMBOS).forEach(([key, cfg]) => {
     html += `<button class="add-btn combo" onclick="${prefix}Combo('${key}')">${cfg.label}</button>`;
   });
 
-  html += `<button class="add-btn combo" onclick="${prefix}Combo('suit-set')">Suit Set (Suit+Trouser+Jacket)</button>`;
+  html += `<button class="add-btn combo" onclick="${prefix}Combo('suit-set')">Suit Set</button>`;
+  html += `<button class="add-btn" onclick="${prefix}Item()">+ Single Item</button>`;
+
   $(containerId).innerHTML = html;
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
+   QUICK-SET FULL SET
+   Opens a bottom sheet to pick one size.
+   Adds 7 items at once with Socks qty 2.
+   Tie size auto-set: Large for size ≥34, Small otherwise.
+══════════════════════════════════════════════════════ */
+
+function openQuickSet(target) {
+  qsTarget = target;
+  qsSize   = null;
+
+  // Fixed size range for the full set: 26–44
+  const sizes = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44];
+  $('qs-sizes').innerHTML = sizes
+    .map(s => `<div class="size-chip" onclick="selectQsSize('${s}',this)">${s}</div>`)
+    .join('');
+
+  $('quickset-modal').classList.add('open');
+}
+
+function selectQsSize(size, el) {
+  $('qs-sizes').querySelectorAll('.size-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  qsSize = size;
+}
+
+// Close if user taps the dark backdrop (not the sheet itself)
+function closeQuickSet(event) {
+  if (event && event.target !== $('quickset-modal')) return;
+  $('quickset-modal').classList.remove('open');
+}
+
+function confirmQuickSet() {
+  if (!qsSize) { alert('Please select a size'); return; }
+  $('quickset-modal').classList.remove('open');
+
+  const isEo     = qsTarget === 'eo';
+  const ctr      = isEo ? 'eo-items-container' : 'items-container';
+  const pfx      = isEo ? 'e' : 'n';
+  const fn       = isEo ? 'eoRecalc' : 'recalc';
+  const size     = String(qsSize);
+  const tieSize  = parseInt(size) >= 34 ? 'Large' : 'Small';  // auto Tie size
+
+  _addCombo(ctr, pfx, fn, 'pant-shirt',   size, size);  // Pant + Shirt
+  _addCombo(ctr, pfx, fn, 'lower-tshirt', size, size);  // Lower + T-Shirt
+  _addItem(ctr,  pfx, fn, 'Tie',   tieSize);             // Tie (auto size)
+  _addItem(ctr,  pfx, fn, 'Belt',  'All');                // Belt
+  _addItem(ctr,  pfx, fn, 'Socks', 'Pair', 2);           // Socks x2
+}
+
+/* ══════════════════════════════════════════════════════
    ADD SINGLE ITEM ROW
-   Used by both New Order and Edit Order screens.
-   containerId   = where to append the row
-   prefix        = 'n' for new order, 'e' for edit screen (keeps IDs unique)
-   recalcFn      = name of the recalc function to call on change
-   defaultItem   = pre-selected item name (used when restoring saved order)
-   defaultSize   = pre-selected size
-   defaultQty    = pre-filled quantity
-   ============================================================ */
+   containerId = where to append
+   prefix      = 'n' (new order) or 'e' (edit screen) — keeps IDs unique
+   recalcFn    = name of the recalc function to call on change
+   defaultItem / defaultSize / defaultQty = used when restoring saved order
+══════════════════════════════════════════════════════ */
 
 function _addItem(containerId, prefix, recalcFn, defaultItem, defaultSize, defaultQty) {
   itemCounter++;
@@ -940,11 +1117,11 @@ function _addItem(containerId, prefix, recalcFn, defaultItem, defaultSize, defau
   window[recalcFn]();
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    ADD COMBO ROW
-   Handles both regular combos (two items with sizes) and
-   the special Suit Set (fixed 3-item bundle).
-   ============================================================ */
+   Handles two-item combos (separate sizes) and
+   the fixed Suit Set (Suit + Trouser + Jacket).
+══════════════════════════════════════════════════════ */
 
 function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSize2, defaultQty) {
   itemCounter++;
@@ -955,30 +1132,27 @@ function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSiz
   row.id        = 'item-' + id;
 
   if (type === 'suit-set') {
-    // Suit Set: fixed bundle of Suit + Trouser + Jacket
-    const prices = getPrices();
+    const prices    = getPrices();
     const unitPrice = prices['Suit']['All'] + prices['Trouser']['All'] + prices['Jacket']['All'];
     row.dataset.type = 'suit-set';
     row.innerHTML = `
       <div class="combo-top">
-        <div style="font-size:12px;font-weight:600;color:#555">Suit Set</div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-2)">Suit Set</div>
         <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
         <div id="price-${id}" class="item-price">${rupees(unitPrice)}</div>
         <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
       </div>
-      <div style="font-size:11px;color:#888;padding:2px 2px 4px">
+      <div style="font-size:11px;color:var(--text-3);padding:2px 0 4px">
         Suit ${rupees(prices['Suit']['All'])} + Trouser ${rupees(prices['Trouser']['All'])} + Jacket ${rupees(prices['Jacket']['All'])} = ${rupees(unitPrice)} each
-      </div>
-    `;
+      </div>`;
   } else {
-    // Regular combo: two items with separate size dropdowns
     const cfg = COMBOS[type];
     row.dataset.type  = 'combo';
     row.dataset.item1 = cfg.item1;
     row.dataset.item2 = cfg.item2;
     row.innerHTML = `
       <div class="combo-top">
-        <div style="font-size:12px;font-weight:600;color:#555">${cfg.label}</div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-2)">${cfg.label}</div>
         <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
         <div id="price-${id}" class="item-price">Rs.0</div>
         <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
@@ -992,25 +1166,24 @@ function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSiz
           <div class="combo-label">${cfg.item2} Size</div>
           <select id="s2-${id}" onchange="${recalcFn}()">${getSizeOptions(cfg.item2, defaultSize2 || defaultSize1)}</select>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
   $(containerId).appendChild(row);
   window[recalcFn]();
 }
 
-/* ============================================================
-   SHARED ITEM HELPERS
-   ============================================================ */
+/* ══════════════════════════════════════════════════════
+   ITEM HELPERS
+══════════════════════════════════════════════════════ */
 
-// When item dropdown changes, refresh the size dropdown
+// When item name changes, refresh its size dropdown
 function onItemChange(id, recalcFn) {
   $('ssel-' + id).innerHTML = getSizeOptions($('isel-' + id).value);
   window[recalcFn]();
 }
 
-// Remove an item row
+// Remove an item row and recalculate
 function removeItem(id, recalcFn) {
   const el = $('item-' + id);
   if (el) el.remove();
@@ -1026,17 +1199,14 @@ function syncSize2(id) {
   }
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    RECALCULATE TOTALS
-   Loops over all item rows in a container, calculates each
-   line total, updates the price display, and sums everything.
-   containerId = the items container div id
-   breakdownId = where to show per-item breakdown (when qty > 1)
-   totalId     = where to show the grand total
-   ============================================================ */
+   Loops all rows in containerId, updates each line price,
+   shows qty>1 breakdown, updates the grand total.
+══════════════════════════════════════════════════════ */
 
 function _recalc(containerId, breakdownId, totalId) {
-  let subtotal    = 0;
+  let subtotal     = 0;
   let breakdownHtml = '';
 
   $(containerId).querySelectorAll('[id^="item-"]').forEach(row => {
@@ -1047,68 +1217,56 @@ function _recalc(containerId, breakdownId, totalId) {
     if (!qtyEl) return;
 
     const qty = parseInt(qtyEl.value) || 1;
-    let unitPrice = 0;
-    let lineLabel = '';
+    let unit = 0, label = '';
 
     if (type === 'single') {
-      const itemSel = $('isel-' + id);
-      const sizeSel = $('ssel-' + id);
-      if (!itemSel) return;
-      unitPrice = getUnitPrice(itemSel.value, sizeSel.value);
-      lineLabel = `${itemSel.value} (${sizeSel.value}) x${qty}`;
+      const is = $('isel-' + id), ss = $('ssel-' + id);
+      if (!is) return;
+      unit  = getUnitPrice(is.value, ss.value);
+      label = `${is.value} (${ss.value}) x${qty}`;
 
     } else if (type === 'suit-set') {
       const p = getPrices();
-      unitPrice = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
-      lineLabel = `Suit Set x${qty}`;
+      unit  = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
+      label = `Suit Set x${qty}`;
 
     } else if (type === 'combo') {
       const s1 = $('s1-' + id), s2 = $('s2-' + id);
       if (!s1) return;
-      unitPrice = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
-      lineLabel = `${row.dataset.item1}+${row.dataset.item2} x${qty}`;
+      unit  = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
+      label = `${row.dataset.item1}+${row.dataset.item2} x${qty}`;
     }
 
-    const lineTotal = unitPrice * qty;
-    subtotal += lineTotal;
-    priceEl.textContent = rupees(lineTotal);
+    const line = unit * qty;
+    subtotal += line;
+    priceEl.textContent = rupees(line);
 
-    // Show breakdown only when qty > 1
+    // Show in breakdown only when qty > 1
     if (qty > 1) {
-      breakdownHtml += `
-        <div class="total-row">
-          <span>${lineLabel}</span>
-          <span>${rupees(lineTotal)}</span>
-        </div>`;
+      breakdownHtml += `<div class="total-row"><span>${label}</span><span>${rupees(line)}</span></div>`;
     }
   });
 
-  $(breakdownId).innerHTML    = breakdownHtml;
-  $(totalId).textContent      = rupees(subtotal);
+  $(breakdownId).innerHTML = breakdownHtml;
+  $(totalId).textContent   = rupees(subtotal);
   return subtotal;
 }
 
-/* ============================================================
-   NEW ORDER — public wrappers that call shared functions
-   ============================================================ */
+/* ── Public wrappers (called by HTML onclick and confirmQuickSet) ── */
 
-function addItem(di, ds, dq)         { _addItem('items-container',    'n', 'recalc',   di, ds, dq); }
-function addCombo(type, s1, s2, qty) { _addCombo('items-container',   'n', 'recalc',   type, s1, s2, qty); }
-function recalc()                    { _recalc('items-container',    'item-breakdown', 'grand-total'); }
-
-/* ============================================================
-   EDIT ORDER — public wrappers that call shared functions
-   ============================================================ */
+function addItem(di, ds, dq)         { _addItem('items-container',   'n', 'recalc',   di, ds, dq); }
+function addCombo(type, s1, s2, qty) { _addCombo('items-container',  'n', 'recalc',   type, s1, s2, qty); }
+function recalc()                    { _recalc('items-container',   'item-breakdown', 'grand-total'); }
 
 function eoAddItem(di, ds, dq)         { _addItem('eo-items-container',  'e', 'eoRecalc', di, ds, dq); }
 function eoAddCombo(type, s1, s2, qty) { _addCombo('eo-items-container', 'e', 'eoRecalc', type, s1, s2, qty); }
 function eoRecalc()                    { _recalc('eo-items-container', 'eo-breakdown', 'eo-grand-total'); }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    COLLECT ITEMS
-   Reads all rows from a container and builds a clean items array
-   with labels and totals — used before saving an order.
-   ============================================================ */
+   Reads all item rows and returns a clean array + subtotal.
+   Used before saving an order.
+══════════════════════════════════════════════════════ */
 
 function collectItems(containerId) {
   let items    = [];
@@ -1118,29 +1276,29 @@ function collectItems(containerId) {
     const id   = row.id.replace('item-', '');
     const type = row.dataset.type;
     const qty  = parseInt($('qty-' + id)?.value) || 1;
-    let unitPrice = 0, label = '', extra = {};
+    let unit = 0, label = '', extra = {};
 
     if (type === 'single') {
-      const itemSel = $('isel-' + id), sizeSel = $('ssel-' + id);
-      if (!itemSel) return;
-      unitPrice = getUnitPrice(itemSel.value, sizeSel.value);
-      label     = `${itemSel.value} (${sizeSel.value})${qty > 1 ? ' x ' + qty : ''}`;
+      const is = $('isel-' + id), ss = $('ssel-' + id);
+      if (!is) return;
+      unit  = getUnitPrice(is.value, ss.value);
+      label = `${is.value} (${ss.value})${qty > 1 ? ' x ' + qty : ''}`;
 
     } else if (type === 'suit-set') {
-      const p   = getPrices();
-      unitPrice = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
-      label     = `Suit Set (Suit + Trouser + Jacket)${qty > 1 ? ' x ' + qty : ''}`;
-      extra     = { isSuitSet: true };
+      const p = getPrices();
+      unit    = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
+      label   = `Suit Set (Suit + Trouser + Jacket)${qty > 1 ? ' x ' + qty : ''}`;
+      extra   = { isSuitSet: true };
 
     } else if (type === 'combo') {
       const s1 = $('s1-' + id), s2 = $('s2-' + id);
       if (!s1) return;
-      unitPrice = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
-      label     = `${row.dataset.item1} (${s1.value}) + ${row.dataset.item2} (${s2.value})${qty > 1 ? ' x ' + qty : ''}`;
-      extra     = { isCombo: true };
+      unit  = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
+      label = `${row.dataset.item1} (${s1.value}) + ${row.dataset.item2} (${s2.value})${qty > 1 ? ' x ' + qty : ''}`;
+      extra = { isCombo: true };
     }
 
-    const lineTotal = unitPrice * qty;
+    const lineTotal = unit * qty;
     subtotal += lineTotal;
     items.push({ label, lineTotal, ...extra });
   });
@@ -1148,14 +1306,17 @@ function collectItems(containerId) {
   return { items, subtotal };
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    SAVE ORDER
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function saveOrder() {
   const sname = $('sname').value.trim();
   if (!sname) { alert('Please enter student name'); return; }
-  if (!$('items-container').querySelector('[id^="item-"]')) { alert('Please add at least one item'); return; }
+  if (!$('items-container').querySelector('[id^="item-"]')) {
+    alert('Please add at least one item');
+    return;
+  }
 
   const { items, subtotal } = collectItems('items-container');
 
@@ -1187,24 +1348,25 @@ function resetForm() {
   itemCounter = 0;
   setPayment('pending');
   recalc();
+  $('sname').focus();
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    TABS
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function showTab(tab) {
   $('tab-new').style.display    = tab === 'new'    ? '' : 'none';
   $('tab-orders').style.display = tab === 'orders' ? '' : 'none';
   document.querySelectorAll('.tab').forEach((el, i) =>
-    el.classList.toggle('active', (i === 0 && tab === 'new') || (i === 1 && tab === 'orders'))
+    el.classList.toggle('active', (i===0&&tab==='new') || (i===1&&tab==='orders'))
   );
   if (tab === 'orders') renderOrders('');
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    DATE FILTER
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function setDateFilter(filter) {
   dateFilter = filter;
@@ -1214,14 +1376,15 @@ function setDateFilter(filter) {
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
 
+// Returns true if the order's date matches the active filter
 function matchesDateFilter(order) {
   if (dateFilter === 'all') return true;
 
-  // Parse order date (format: d/m/yyyy from toLocaleDateString en-IN)
-  const parts   = order.date.split('/');
+  // Parse "d/m/yyyy" format from toLocaleDateString('en-IN')
+  const parts     = (order.date || '').split('/');
   const orderDate = new Date(parts[2], parts[1] - 1, parts[0]);
-  const now     = new Date();
-  const today   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const now       = new Date();
+  const today     = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   if (dateFilter === 'today') {
     return orderDate.getTime() === today.getTime();
@@ -1234,38 +1397,47 @@ function matchesDateFilter(order) {
   return true;
 }
 
-/* ============================================================
-   RENDER SAVED ORDERS LIST
-   Shows all orders filtered by search query and date filter.
-   Each order card shows location badge, payment badge, and notes.
-   ============================================================ */
+/* ══════════════════════════════════════════════════════
+   RENDER SAVED ORDERS
+   Applies date filter + search, updates pending banner,
+   renders order cards.
+══════════════════════════════════════════════════════ */
 
 function renderOrders(query) {
   query = (query || '').toLowerCase();
 
-  // Apply date filter + search filter
-  const filtered = savedOrders.filter(o =>
-    matchesDateFilter(o) && (
-      o.sname.toLowerCase().includes(query)            ||
-      (o.sclass   || '').toLowerCase().includes(query) ||
-      (o.mobile   || '').includes(query)               ||
-      (o.location || '').toLowerCase().includes(query) ||
-      (o.notes    || '').toLowerCase().includes(query)
-    )
-  );
+  const filtered = savedOrders.filter(o => {
+    if (!matchesDateFilter(o)) return false;
+    return (
+      (o.sname   || '').toLowerCase().includes(query) ||
+      (o.sclass  || '').toLowerCase().includes(query) ||
+      (o.mobile  || '').includes(query)               ||
+      (o.location|| '').toLowerCase().includes(query) ||
+      (o.notes   || '').toLowerCase().includes(query)
+    );
+  });
 
-  // Pending banner — count all pending orders (not just filtered)
-  const pendingAll = savedOrders.filter(o => o.paymentMode === 'pending');
-  const banner     = $('pending-banner');
+  // Pending banner: show total pending + how many are from today
+  const now          = new Date();
+  const todayStart   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const pendingAll   = savedOrders.filter(o => o.paymentMode === 'pending');
+  const pendingToday = pendingAll.filter(o => {
+    const p = (o.date || '').split('/');
+    return new Date(p[2], p[1] - 1, p[0]).getTime() === todayStart.getTime();
+  });
+
+  const banner = $('pending-banner');
   if (pendingAll.length > 0) {
     banner.style.display = 'flex';
-    $('pending-text').textContent =
-      `${pendingAll.length} pending payment${pendingAll.length !== 1 ? 's' : ''}`;
+    $('pending-count').textContent = pendingAll.length;
+    $('pending-today').textContent = pendingToday.length > 0
+      ? `${pendingToday.length} from today`
+      : 'none today';
     banner.onclick = () => {
       setDateFilter('all');
       $('tab-orders').querySelector('.search-box input').value = '';
       renderOrders('');
-      // scroll to first pending order
+      // Scroll to first pending order
       setTimeout(() => {
         const first = document.querySelector('.badge.pending');
         if (first) first.closest('.order-card')?.scrollIntoView({ behavior: 'smooth' });
@@ -1290,13 +1462,13 @@ function renderOrders(query) {
   $('orders-list').innerHTML = filtered.map(o => {
     const mode = o.paymentMode || 'cash';
     const loc  = o.location    || 'badagaon';
+
     return `
       <div class="order-card" id="card-${o.id}">
-
         <div class="order-card-top">
           <div>
             <div class="order-name">
-              ${o.sname}
+              ${o.sname || ''}
               <span style="font-size:12px;font-weight:400;color:#888">${o.sclass || ''}</span>
             </div>
             <div class="order-meta">
@@ -1319,7 +1491,7 @@ function renderOrders(query) {
         </div>
 
         <div class="order-items">
-          ${o.items.map(i => `
+          ${(o.items || []).map(i => `
             <div class="order-item-line">
               <span>${i.label}</span>
               <span>${rupees(i.lineTotal)}</span>
@@ -1335,13 +1507,13 @@ function renderOrders(query) {
           </div>` : ''}
         </div>
 
-        <!-- Edit payment panel (hidden until toggled) -->
+        <!-- Edit payment panel, hidden until toggled -->
         <div class="edit-panel" id="edit-${o.id}">
           <div class="edit-panel-title">Update Payment</div>
           <div class="edit-pay-toggle">
-            <button class="edit-pay-btn ${mode === 'pending' ? 'pending-active' : ''}" id="ep-pending-${o.id}" onclick="setEditPay(${o.id},'pending')">Pending</button>
-            <button class="edit-pay-btn ${mode === 'cash'    ? 'cash-active'    : ''}" id="ep-cash-${o.id}"    onclick="setEditPay(${o.id},'cash')">Cash</button>
-            <button class="edit-pay-btn ${mode === 'online'  ? 'online-active'  : ''}" id="ep-online-${o.id}"  onclick="setEditPay(${o.id},'online')">Online</button>
+            <button class="edit-pay-btn ${mode==='pending'?'pending-active':''}" id="ep-pending-${o.id}" onclick="setEditPay(${o.id},'pending')">Pending</button>
+            <button class="edit-pay-btn ${mode==='cash'   ?'cash-active'   :''}" id="ep-cash-${o.id}"    onclick="setEditPay(${o.id},'cash')">Cash</button>
+            <button class="edit-pay-btn ${mode==='online' ?'online-active' :''}" id="ep-online-${o.id}"  onclick="setEditPay(${o.id},'online')">Online</button>
           </div>
           <div class="edit-amount-row">
             <label>Amount Paid (Rs.)</label>
@@ -1358,9 +1530,9 @@ function renderOrders(query) {
   }).join('');
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    DELETE ORDER
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function deleteOrder(id) {
   if (!confirm('Delete this order?')) return;
@@ -1369,9 +1541,10 @@ function deleteOrder(id) {
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    EDIT PAYMENT PANEL
-   ============================================================ */
+   Quick panel on each card to change payment status/amount
+══════════════════════════════════════════════════════ */
 
 function toggleEditPayment(id) {
   $('edit-' + id).classList.toggle('open');
@@ -1389,8 +1562,10 @@ function setEditPay(id, mode) {
 function applyEditPayment(id) {
   const panel   = $('edit-' + id);
   const newMode = panel.dataset.chosenMode ||
-    ['pending', 'cash', 'online'].find(m => $(`ep-${m}-${id}`).classList.contains(m + '-active')) || 'cash';
-  const newAmt  = parseInt($(`ep-amt-${id}`).value) || 0;
+    ['pending', 'cash', 'online'].find(m =>
+      $(`ep-${m}-${id}`).classList.contains(m + '-active')
+    ) || 'cash';
+  const newAmt = parseInt($(`ep-amt-${id}`).value) || 0;
 
   const idx = savedOrders.findIndex(o => o.id === id);
   if (idx === -1) return;
@@ -1402,11 +1577,10 @@ function applyEditPayment(id) {
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    FULL ORDER EDIT SCREEN
    Opens a fixed overlay pre-filled with the order's data.
-   User can change any field, add/remove items, then save.
-   ============================================================ */
+══════════════════════════════════════════════════════ */
 
 function openEditOrder(id) {
   const order = savedOrders.find(o => o.id === id);
@@ -1415,12 +1589,11 @@ function openEditOrder(id) {
   eoOrderId   = id;
   itemCounter = 0;
 
-  // Set location to match the order being edited
-  // so prices and available items are correct
+  // Match location so prices are correct
   currentLocation = order.location || 'badagaon';
   buildAddButtons('add-btns-eo', true);
 
-  // Fill student details
+  // Fill form fields
   $('eo-sname').value  = order.sname  || '';
   $('eo-sclass').value = order.sclass || '';
   $('eo-pname').value  = order.pname  || '';
@@ -1428,34 +1601,33 @@ function openEditOrder(id) {
   $('eo-notes').value  = order.notes  || '';
   setEoPay(order.paymentMode || 'cash');
 
-  // Rebuild item rows from saved order data
+  // Rebuild item rows from saved data
   $('eo-items-container').innerHTML = '';
 
   // Map item1 name back to combo type key
   const comboTypeByItem1 = {
-    'Pant':        'pant-shirt',
-    'Lower':       'lower-tshirt',
-    'Half Lower':  'half-set'
+    'Pant':       'pant-shirt',
+    'Lower':      'lower-tshirt',
+    'Half Lower': 'half-set'
   };
 
-  order.items.forEach(savedItem => {
+  (order.items || []).forEach(savedItem => {
     if (savedItem.isSuitSet) {
-      const qtyMatch = savedItem.label.match(/x (\d+)$/);
-      eoAddCombo('suit-set', null, null, qtyMatch ? parseInt(qtyMatch[1]) : 1);
+      const m = savedItem.label.match(/x (\d+)$/);
+      eoAddCombo('suit-set', null, null, m ? parseInt(m[1]) : 1);
 
     } else if (savedItem.isCombo) {
-      const qtyMatch = savedItem.label.match(/x (\d+)$/);
-      const qty      = qtyMatch ? parseInt(qtyMatch[1]) : 1;
-      const clean    = savedItem.label.replace(/ x \d+$/, '');
-      const parts    = clean.split(' + ');
+      const m     = savedItem.label.match(/x (\d+)$/);
+      const qty   = m ? parseInt(m[1]) : 1;
+      const clean = savedItem.label.replace(/ x \d+$/, '');
+      const parts = clean.split(' + ');
       const [name1, size1] = parseItemLabel(parts[0]);
       const [,      size2] = parseItemLabel(parts[1]);
-      const comboType      = comboTypeByItem1[name1] || 'pant-shirt';
-      eoAddCombo(comboType, size1, size2, qty);
+      eoAddCombo(comboTypeByItem1[name1] || 'pant-shirt', size1, size2, qty);
 
     } else {
-      const qtyMatch = savedItem.label.match(/x (\d+)$/);
-      const qty      = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+      const m    = savedItem.label.match(/x (\d+)$/);
+      const qty  = m ? parseInt(m[1]) : 1;
       const [name, size] = parseItemLabel(savedItem.label.replace(/ x \d+$/, ''));
       eoAddItem(name, size, qty);
     }
@@ -1466,33 +1638,36 @@ function openEditOrder(id) {
   window.scrollTo(0, 0);
 }
 
-// Helper: "Shirt (30)" -> ["Shirt", "30"]
+// Helper: "Shirt (30)" → ["Shirt", "30"]
 function parseItemLabel(str) {
-  const match = str.trim().match(/^(.+?)\s*\((.+)\)$/);
-  return match ? [match[1].trim(), match[2].trim()] : [str.trim(), ''];
+  const m = str.trim().match(/^(.+?)\s*\((.+)\)$/);
+  return m ? [m[1].trim(), m[2].trim()] : [str.trim(), ''];
 }
 
 function closeEditOrder() {
   $('edit-order-screen').classList.remove('open');
   eoOrderId = null;
-  // Restore location toggle to whatever the user had selected
+  // Rebuild new-order buttons (in case location changed during edit)
   buildAddButtons('add-btns-new', false);
 }
 
 function saveEditOrder() {
   const sname = $('eo-sname').value.trim();
   if (!sname) { alert('Please enter student name'); return; }
-  if (!$('eo-items-container').querySelector('[id^="item-"]')) { alert('Please add at least one item'); return; }
+  if (!$('eo-items-container').querySelector('[id^="item-"]')) {
+    alert('Please add at least one item');
+    return;
+  }
 
   const { items, subtotal } = collectItems('eo-items-container');
   const idx = savedOrders.findIndex(o => o.id === eoOrderId);
   if (idx === -1) { alert('Order not found'); return; }
 
-  const original = savedOrders[idx];
-  const discount = Math.max(0, original.discount || 0);
+  const orig     = savedOrders[idx];
+  const discount = Math.max(0, orig.discount || 0);
 
   savedOrders[idx] = {
-    ...original,
+    ...orig,
     sname,
     sclass:      $('eo-sclass').value.trim(),
     pname:       $('eo-pname').value.trim(),
@@ -1502,7 +1677,7 @@ function saveEditOrder() {
     items,
     subtotal,
     discount,
-    finalAmt: Math.max(0, subtotal - discount)
+    finalAmt:    Math.max(0, subtotal - discount)
   };
 
   saveLocal();
@@ -1511,11 +1686,10 @@ function saveEditOrder() {
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    WHATSAPP COPY
-   Formats order details as a clean text message
-   and copies it to clipboard for pasting in WhatsApp.
-   ============================================================ */
+   Formats bill as plain text for pasting in WhatsApp
+══════════════════════════════════════════════════════ */
 
 function copyWhatsApp(id) {
   const order = savedOrders.find(o => o.id === id);
@@ -1523,33 +1697,33 @@ function copyWhatsApp(id) {
 
   const PAY_LABEL = { cash: 'Cash', online: 'Online', pending: 'Pending' };
 
-  const itemLines = order.items
-    .map(i => `  ${i.label}  —  Rs.${i.lineTotal.toLocaleString('en-IN')}`)
+  const itemLines = (order.items || [])
+    .map(i => `  ${i.label}  -  Rs.${i.lineTotal.toLocaleString('en-IN')}`)
     .join('\n');
 
   const discountLine = order.finalAmt !== order.subtotal
-    ? `\n  Discount  —  - Rs.${order.discount.toLocaleString('en-IN')}`
+    ? `\n  Discount  -  - Rs.${order.discount.toLocaleString('en-IN')}`
     : '';
 
   const message =
 `*Golden Gate International School*
 *Uniform Bill*
 -------------------------
-Student : ${order.sname}${order.sclass ? ' (' + order.sclass + ')' : ''}
+Student : ${order.sname || ''}${order.sclass ? ' (' + order.sclass + ')' : ''}
 ${order.pname  ? 'Parent  : ' + order.pname  : ''}${order.mobile ? '\nMobile  : ' + order.mobile : ''}
 Date    : ${order.date}${order.notes ? '\nNote    : ' + order.notes : ''}
 -------------------------
 ${itemLines}${discountLine}
 -------------------------
 *Total   : Rs.${order.finalAmt.toLocaleString('en-IN')}*
-Payment : ${PAY_LABEL[order.paymentMode || 'cash']}
+Payment : ${PAY_LABEL[order.paymentMode || 'pending']}
 -------------------------
 Thank you!`;
 
-  // Try modern clipboard API, fall back to execCommand for older phones
   navigator.clipboard.writeText(message)
     .then(() => alert('Copied! Now open WhatsApp and paste.'))
     .catch(() => {
+      // Fallback for older Android browsers
       const ta = document.createElement('textarea');
       ta.value = message;
       document.body.appendChild(ta);
@@ -1560,28 +1734,28 @@ Thank you!`;
     });
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════
    EXPORT CSV
-   Downloads all saved orders as a .csv file.
-   Open in Excel or Google Sheets.
-   ============================================================ */
+   Downloads all orders as .csv — open in Excel or Sheets
+══════════════════════════════════════════════════════ */
 
 function exportCSV() {
   if (!savedOrders.length) { alert('No orders to export.'); return; }
 
-  const headers = ['Date', 'Location', 'Student', 'Class', 'Parent', 'Mobile', 'Notes', 'Items', 'Subtotal', 'Discount', 'Total', 'Payment'];
+  const headers = ['Date', 'Location', 'Student', 'Class', 'Parent', 'Mobile', 'Notes',
+                   'Items', 'Subtotal', 'Discount', 'Total', 'Payment'];
 
   const rows = savedOrders.map(o => [
     o.date,
-    o.location || 'badagaon',
-    o.sname,
-    o.sclass  || '',
-    o.pname   || '',
-    o.mobile  || '',
-    o.notes   || '',
-    o.items.map(i => i.label + ' = Rs.' + i.lineTotal).join(' | '),
+    o.location    || 'badagaon',
+    o.sname       || '',
+    o.sclass      || '',
+    o.pname       || '',
+    o.mobile      || '',
+    o.notes       || '',
+    (o.items || []).map(i => i.label + ' = Rs.' + i.lineTotal).join(' | '),
     o.subtotal,
-    o.discount || 0,
+    o.discount    || 0,
     o.finalAmt,
     o.paymentMode
   ]);
@@ -1596,10 +1770,9 @@ function exportCSV() {
   link.click();
 }
 
-/* ============================================================
-   INIT
-   Runs once when the page loads.
-   ============================================================ */
+/* ══════════════════════════════════════════════════════
+   INIT — runs once when page loads
+══════════════════════════════════════════════════════ */
 
 buildAddButtons('add-btns-new', false);
 buildAddButtons('add-btns-eo',  true);
