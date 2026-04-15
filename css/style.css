@@ -188,9 +188,9 @@
     /* Each item inside a combo: label + size dropdown on one line */
     .combo-item-row {
       display: grid;
-      grid-template-columns: 80px 1fr;
+      grid-template-columns: 80px 1fr 28px;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .combo-label { font-size: 11px; color: var(--text-3); padding-left: 2px; font-weight: 500; }
 
@@ -420,6 +420,9 @@
       border-top: 1px solid var(--border);
     }
     .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       font-size: 12px;
       font-weight: 500;
       padding: 5px 12px;
@@ -470,7 +473,9 @@
     .menu-dropdown.open { display: block; }
 
     .menu-item {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       width: 100%;
       padding: 11px 16px;
       font-size: 13px;
@@ -485,6 +490,38 @@
     .menu-item:hover       { background: var(--surface); }
     .menu-item.destructive { color: #dc2626; }
     .menu-item.destructive:hover { background: #fee2e2; }
+    /* ─── Toast notifications ────────────────────────── */
+    /* Replaces browser alert() for success/info messages */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { background: #dc2626; }
+
     .empty { text-align: center; padding: 2.5rem; color: var(--text-3); font-size: 14px; }
 
     /* ─── Edit payment panel ─────────────────────────── */

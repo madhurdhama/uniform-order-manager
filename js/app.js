@@ -66,12 +66,38 @@ let orderCounter    = parseInt(localStorage.getItem('uniform_order_counter') || 
 let savedOrders     = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
 
 // Sheet picker state
-let sheetTarget = null;  // 'new' or 'eo' — which screen opened the sheet
-let siItem      = null;  // selected item name in single-item sheet
-let siSize      = null;  // selected size in single-item sheet
-let qsSize      = null;  // selected size in quick-set sheet
-let coType      = null;  // combo type key in combo sheet
-let coSize1     = null;  // selected size in combo sheet
+let sheetTarget     = null;  // 'new' or 'eo' — which screen opened the sheet
+let siItem          = null;  // selected item name in single-item sheet
+let siSize          = null;  // selected size in single-item sheet
+let qsSize          = null;  // selected size in quick-set sheet
+let coType          = null;  // combo type key in combo sheet
+let coSize1         = null;  // selected size in combo sheet
+let pendingDeleteId = null; // order id waiting for delete confirmation
+
+/* ══════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+   Replaces alert() for success/info — no tap needed.
+   Type: 'info' (default, dark) or 'error' (red).
+══════════════════════════════════════════════════════ */
+
+function toast(message, type = 'info', duration = 2500) {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast' + (type === 'error' ? ' error' : '');
+  el.textContent = message;
+  container.appendChild(el);
+
+  // Trigger animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => el.classList.add('show'));
+  });
+
+  // Auto-dismiss
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 250);
+  }, duration);
+}
 
 /* ══════════════════════════════════════════════════════
    UTILITY FUNCTIONS
@@ -268,8 +294,8 @@ function selectSiSize(size, el) {
 }
 
 function confirmSingleItem() {
-  if (!siItem) { alert('Please select an item'); return; }
-  if (!siSize) { alert('Please select a size');  return; }
+  if (!siItem) { toast('Select an item first', 'error'); return; }
+  if (!siSize) { toast('Select a size first', 'error');  return; }
   closeSheet('si-modal');
 
   const isEo = sheetTarget === 'eo';
@@ -333,7 +359,7 @@ function confirmCombo() {
     return;
   }
 
-  if (!coSize1) { alert('Please select a size'); return; }
+  if (!coSize1) { toast('Select a size first', 'error'); return; }
   closeSheet('co-modal');
   // Both item1 and item2 get the same size
   _addCombo(ctr, pfx, fn, coType, String(coSize1), String(coSize1), qty);
@@ -409,7 +435,9 @@ function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSiz
     row.dataset.item1 = cfg.item1;
     row.dataset.item2 = cfg.item2;
 
-    // Sub-item IDs — each item inside the combo has its own remove button
+    // Each item line has its own × button.
+    // Removing one item degrades the combo to a single-item row.
+    // Removing both removes the whole combo row.
     const sid1 = id + 'a';
     const sid2 = id + 'b';
 
@@ -418,16 +446,18 @@ function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSiz
         <div style="font-size:12px;font-weight:600;color:var(--text-2)">${cfg.label}</div>
         <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
         <div id="price-${id}" class="item-price">Rs.0</div>
-        <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
+        <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')" title="Remove both">&#215;</button>
       </div>
       <div class="combo-sub">
-        <div class="combo-item-row">
+        <div class="combo-item-row" id="crow-${sid1}">
           <div class="combo-label">${cfg.item1}</div>
           <select id="s1-${id}" onchange="${recalcFn}()">${getSizeOptions(cfg.item1, defaultSize1)}</select>
+          <button class="remove-btn" style="width:24px;height:24px;font-size:14px" onclick="removeComboItem('${sid1}','${id}','${recalcFn}')" title="Remove ${cfg.item1}">&#215;</button>
         </div>
-        <div class="combo-item-row">
+        <div class="combo-item-row" id="crow-${sid2}">
           <div class="combo-label">${cfg.item2}</div>
           <select id="s2-${id}" onchange="${recalcFn}()">${getSizeOptions(cfg.item2, defaultSize2 || defaultSize1)}</select>
+          <button class="remove-btn" style="width:24px;height:24px;font-size:14px" onclick="removeComboItem('${sid2}','${id}','${recalcFn}')" title="Remove ${cfg.item2}">&#215;</button>
         </div>
       </div>`;
   }
@@ -450,6 +480,30 @@ function onItemChange(id, recalcFn) {
 function removeItem(id, recalcFn) {
   const el = $('item-' + id);
   if (el) el.remove();
+  window[recalcFn]();
+}
+
+// Remove one item from a combo row.
+// sid = sub-row id ('n1a' or 'n1b'), comboId = parent combo id ('n1').
+// If the other sub-row is still present, the combo keeps working with one side hidden.
+// If both are gone, the whole combo row is removed.
+function removeComboItem(sid, comboId, recalcFn) {
+  const subRow  = $('crow-' + sid);
+  const comboEl = $('item-' + comboId);
+  if (!subRow || !comboEl) return;
+
+  subRow.remove();
+
+  // Check how many item rows remain inside the combo
+  const remaining = comboEl.querySelectorAll('.combo-item-row');
+  if (remaining.length === 0) {
+    // Both items removed — remove the whole combo row
+    comboEl.remove();
+  } else {
+    // One item remains — hide the combo-top label and show it as a plain row
+    const topLabel = comboEl.querySelector('.combo-top div');
+    if (topLabel) topLabel.style.fontSize = '11px';
+  }
   window[recalcFn]();
 }
 
@@ -481,9 +535,13 @@ function _recalc(containerId, totalId) {
       const p = getPrices();
       unit = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
     } else if (type === 'combo') {
-      const s1 = $('s1-' + id), s2 = $('s2-' + id);
-      if (!s1) return;
-      unit = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
+      const s1 = $('s1-' + id);
+      const s2 = $('s2-' + id);
+      // Handle partial combos — one item may have been removed
+      if (s1) unit += getUnitPrice(row.dataset.item1, s1.value);
+      if (s2) unit += getUnitPrice(row.dataset.item2, s2.value);
+      // If both selectors gone (shouldn't happen, but guard anyway)
+      if (!s1 && !s2) return;
     }
 
     const line = unit * qty;
@@ -529,10 +587,18 @@ function collectItems(containerId) {
       label   = `Suit Set (Suit + Trouser + Jacket)${qty > 1 ? ' x ' + qty : ''}`;
       extra   = { isSuitSet: true };
     } else if (type === 'combo') {
-      const s1 = $('s1-' + id), s2 = $('s2-' + id);
-      if (!s1) return;
-      unit  = getUnitPrice(row.dataset.item1, s1.value) + getUnitPrice(row.dataset.item2, s2.value);
-      label = `${row.dataset.item1} (${s1.value}) + ${row.dataset.item2} (${s2.value})${qty > 1 ? ' x ' + qty : ''}`;
+      const s1 = $('s1-' + id);
+      const s2 = $('s2-' + id);
+      if (!s1 && !s2) return;
+      const name1 = row.dataset.item1;
+      const name2 = row.dataset.item2;
+      if (s1) unit += getUnitPrice(name1, s1.value);
+      if (s2) unit += getUnitPrice(name2, s2.value);
+      // Build label from whichever items remain
+      const parts = [];
+      if (s1) parts.push(`${name1} (${s1.value})`);
+      if (s2) parts.push(`${name2} (${s2.value})`);
+      label = parts.join(' + ') + (qty > 1 ? ' x ' + qty : '');
       extra = { isCombo: true };
     }
 
@@ -551,8 +617,8 @@ function collectItems(containerId) {
 
 function saveOrder() {
   const sname = $('sname').value.trim();
-  if (!sname) { alert('Please enter student name'); return; }
-  if (!$('items-container').querySelector('[id^="item-"]')) { alert('Please add at least one item'); return; }
+  if (!sname) { toast('Please enter student name', 'error'); return; }
+  if (!$('items-container').querySelector('[id^="item-"]')) { toast('Please add at least one item', 'error'); return; }
 
   const { items, subtotal } = collectItems('items-container');
 
@@ -578,7 +644,7 @@ function saveOrder() {
 
   savedOrders.unshift(order);
   saveLocal();
-  alert(`Order #${String(orderCounter).padStart(3,'0')} saved!\n${sname}  -  ${rupees(subtotal)}`);
+  toast(`Order #${String(orderCounter).padStart(3,'0')} saved — ${sname}, ${rupees(subtotal)}`);
   resetForm();
 }
 
@@ -724,7 +790,7 @@ function renderOrders(query) {
               <span class="badge ${mode}">${PAY_TEXT[mode]}</span>
             </div>
 
-            ${o.notes ? `<div style="font-size:12px;color:var(--orange);margin-top:4px;font-style:italic">${o.notes}</div>` : ''}
+            ${o.notes ? `<div style="font-size:12px;color:var(--orange);margin-top:4px;font-style:italic">📝 ${o.notes}</div>` : ''}
             ${o.discount > 0 ? `<div class="discount-badge">Discount: - ${rupees(o.discount)}</div>` : ''}
           </div>
 
@@ -733,9 +799,15 @@ function renderOrders(query) {
             <div class="menu-wrap" id="menu-wrap-${o.id}">
               <button class="menu-btn" onclick="toggleMenu(${o.id})" title="More options">${menuIcon}</button>
               <div class="menu-dropdown" id="menu-${o.id}">
-                <button class="menu-item" onclick="closeMenu(${o.id});openEditOrder(${o.id})">Edit Order</button>
-                <button class="menu-item" onclick="closeMenu(${o.id});toggleEditPayment(${o.id})">Edit Payment</button>
-                <button class="menu-item destructive" onclick="closeMenu(${o.id});deleteOrder(${o.id})">Delete</button>
+                <button class="menu-item" onclick="closeMenu(${o.id});openEditOrder(${o.id})">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit Order
+                </button>
+                <button class="menu-item" onclick="closeMenu(${o.id});toggleEditPayment(${o.id})">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Edit Payment
+                </button>
+                <button class="menu-item destructive" onclick="closeMenu(${o.id});deleteOrder(${o.id})">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete
+                </button>
               </div>
             </div>
             <div class="order-amount">${rupees(o.finalAmt)}</div>
@@ -744,7 +816,9 @@ function renderOrders(query) {
 
         <!-- Bottom bar: Send Bill left, items toggle right -->
         <div class="card-bottom">
-          <button class="action-btn" onclick="openWhatsApp(${o.id})">Send Bill</button>
+          <button class="action-btn" onclick="openWhatsApp(${o.id})">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Send Bill
+          </button>
           <button class="items-toggle-btn" onclick="toggleItems(${o.id})">
             ${itemCount} item${itemCount !== 1 ? 's' : ''}
             <span class="items-chevron" id="chev-${o.id}">▸</span>
@@ -835,9 +909,21 @@ document.addEventListener('click', function(e) {
 ══════════════════════════════════════════════════════ */
 
 function deleteOrder(id) {
-  if (!confirm('Delete this order?')) return;
-  savedOrders = savedOrders.filter(o => o.id !== id);
+  const order = savedOrders.find(o => o.id === id);
+  pendingDeleteId = id;
+  $('del-modal-sub').textContent = order
+    ? `${order.sname || 'This order'} — ${rupees(order.finalAmt)}. This cannot be undone.`
+    : 'This cannot be undone.';
+  openSheet('del-modal');
+}
+
+function confirmDelete() {
+  if (!pendingDeleteId) return;
+  closeSheet('del-modal');
+  savedOrders = savedOrders.filter(o => o.id !== pendingDeleteId);
+  pendingDeleteId = null;
   saveLocal();
+  toast('Order deleted');
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
 
@@ -940,12 +1026,12 @@ function closeEditOrder() {
 
 function saveEditOrder() {
   const sname = $('eo-sname').value.trim();
-  if (!sname) { alert('Please enter student name'); return; }
-  if (!$('eo-items-container').querySelector('[id^="item-"]')) { alert('Please add at least one item'); return; }
+  if (!sname) { toast('Please enter student name', 'error'); return; }
+  if (!$('eo-items-container').querySelector('[id^="item-"]')) { toast('Please add at least one item', 'error'); return; }
 
   const { items, subtotal } = collectItems('eo-items-container');
   const idx = savedOrders.findIndex(o => o.id === eoOrderId);
-  if (idx === -1) { alert('Order not found'); return; }
+  if (idx === -1) { toast('Order not found', 'error'); return; }
 
   const orig     = savedOrders[idx];
   // Keep discount only if it still makes sense (not larger than new subtotal)
@@ -964,7 +1050,7 @@ function saveEditOrder() {
   };
 
   saveLocal();
-  alert(`Order updated!\n${sname}  -  ${rupees(savedOrders[idx].finalAmt)}`);
+  toast(`Order updated — ${sname}, ${rupees(savedOrders[idx].finalAmt)}`);
   closeEditOrder();
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
@@ -1018,7 +1104,7 @@ Thank you!`;
   // Fallback: if popup blocked or WhatsApp not available, copy to clipboard
   if (!opened) {
     navigator.clipboard.writeText(message)
-      .then(() => alert('Copied! Open WhatsApp and paste.'))
+      .then(() => toast('Copied to clipboard'))
       .catch(() => {
         const ta = document.createElement('textarea');
         ta.value = message;
@@ -1026,7 +1112,7 @@ Thank you!`;
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        alert('Copied! Open WhatsApp and paste.');
+        toast('Copied to clipboard');
       });
   }
 }
@@ -1037,7 +1123,7 @@ Thank you!`;
 ══════════════════════════════════════════════════════ */
 
 function exportCSV() {
-  if (!savedOrders.length) { alert('No orders to export.'); return; }
+  if (!savedOrders.length) { toast('No orders to export'); return; }
 
   const headers = ['Order#','Date','Location','Student','Class','Parent','Mobile','Notes',
                    'Items','Subtotal','Discount','Total','Payment'];
@@ -1062,7 +1148,7 @@ function exportCSV() {
 ══════════════════════════════════════════════════════ */
 
 function exportJSON() {
-  if (!savedOrders.length) { alert('No orders to export.'); return; }
+  if (!savedOrders.length) { toast('No orders to export'); return; }
   const backup = { exportedAt: new Date().toISOString(), orderCounter, orders: savedOrders };
   const link   = document.createElement('a');
   link.href     = URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}));
@@ -1087,23 +1173,23 @@ function importJSON(event) {
       const imported = Array.isArray(parsed) ? parsed : (parsed.orders || []);
       const importRC = parsed.orderCounter || 0;
 
-      if (!imported.length) { alert('No orders found in this file.'); return; }
+      if (!imported.length) { toast('No orders found in file', 'error'); return; return; }
 
       const existingIds = new Set(savedOrders.map(o => o.id));
       const newOrders   = imported.filter(o => o.id && !existingIds.has(o.id));
 
       if (newOrders.length === 0) {
-        alert('No new orders found — all already exist.');
+        toast('All orders already exist');
       } else {
         savedOrders  = [...savedOrders, ...newOrders].sort((a,b) => b.id - a.id);
         orderCounter = Math.max(orderCounter, importRC);
         saveLocal();
         saveCounter();
         renderOrders('');
-        alert(`Imported ${newOrders.length} order${newOrders.length !== 1 ? 's' : ''} successfully.`);
+        toast(`Imported ${newOrders.length} order${newOrders.length !== 1 ? 's' : ''} successfully`);
       }
     } catch (err) {
-      alert('Import failed: ' + err.message + '\nMake sure you select a valid backup JSON file.');
+      toast('Import failed: ' + err.message, 'error', 4000);
     }
     event.target.value = ''; // reset so same file can be re-imported if needed
   };

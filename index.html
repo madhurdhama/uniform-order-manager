@@ -268,6 +268,18 @@
 </div>
 
 
+<div id="toast-container"></div>
+
+<!-- Delete confirm sheet — replaces browser confirm() dialog -->
+<div class="sheet-modal" id="del-modal" onclick="closeSheet('del-modal',event)">
+  <div class="sheet" style="max-height:auto">
+    <div class="sheet-title">Delete Order?</div>
+    <div class="sheet-sub" id="del-modal-sub">This cannot be undone.</div>
+    <button class="sheet-confirm" style="background:#dc2626;margin-top:12px" onclick="confirmDelete()">Delete</button>
+    <button class="sheet-cancel" onclick="closeSheet('del-modal')">Cancel</button>
+  </div>
+</div>
+
 <script src="js/app.js"></script>
 </body>
 </html>
