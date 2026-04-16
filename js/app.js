@@ -757,7 +757,7 @@ function renderOrders(query) {
   $('orders-list').innerHTML = filtered.map(o => {
     const mode     = o.paymentMode || 'cash';
     const loc      = o.location    || 'badagaon';
-    const orderNum = o.orderNum ? `<span class="order-num">#${String(o.orderNum).padStart(3,'0')}</span>` : '';
+    const orderNum = o.orderNum ? `<span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;font-family:monospace;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:#6b7280">#${String(o.orderNum).padStart(3,'0')}</span>` : '';
     const PAY_TEXT = { cash: 'Cash', online: 'Online', pending: 'Pending' };
     const LOC_TEXT = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
     const itemCount = (o.items || []).length;
@@ -776,41 +776,48 @@ function renderOrders(query) {
 
             <!-- Name + class -->
             <div class="order-name">
-              ${orderNum}${o.sname || ''}
+              ${o.sname || ''}
               <span style="font-size:12px;font-weight:400;color:var(--text-3)">${o.sclass || ''}</span>
             </div>
 
-            <!-- Parent · mobile · location · date below name -->
+            <!-- Parent · mobile on their own line -->
+            ${(o.pname || o.mobile) ? `
             <div class="order-contact">
-              ${[o.pname, o.mobile, LOC_TEXT[loc], o.date].filter(Boolean).join(' · ')}
+              ${[o.pname, o.mobile].filter(Boolean).join(' · ')}
+            </div>` : ''}
+
+            <!-- Location · date below contact -->
+            <div class="order-contact" style="margin-top:1px">
+              ${[LOC_TEXT[loc], o.date].join(' · ')}
             </div>
 
-            <!-- Payment badge only -->
-            <div class="order-meta" style="display:flex;align-items:center;gap:5px;margin-top:5px">
+            <!-- Payment badge -->
+            <div style="margin-top:6px;display:flex;align-items:center;gap:5px">
               <span class="badge ${mode}">${PAY_TEXT[mode]}</span>
+              ${orderNum}
             </div>
 
-            ${o.notes ? `<div style="font-size:12px;color:var(--orange);margin-top:4px;font-style:italic">📝 ${o.notes}</div>` : ''}
-            ${o.discount > 0 ? `<div class="discount-badge">Discount: - ${rupees(o.discount)}</div>` : ''}
+            ${o.notes ? `<div style="font-size:12px;color:var(--orange);margin-top:4px;display:flex;align-items:center;gap:4px;font-style:italic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>${o.notes}</div>` : ''}
           </div>
 
-          <!-- Amount + menu top-right -->
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:10px;flex-shrink:0">
+          <!-- Menu + amount + discount top-right -->
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:10px;flex-shrink:0">
             <div class="menu-wrap" id="menu-wrap-${o.id}">
               <button class="menu-btn" onclick="toggleMenu(${o.id})" title="More options">${menuIcon}</button>
               <div class="menu-dropdown" id="menu-${o.id}">
                 <button class="menu-item" onclick="closeMenu(${o.id});openEditOrder(${o.id})">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit Order
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit Order
                 </button>
                 <button class="menu-item" onclick="closeMenu(${o.id});toggleEditPayment(${o.id})">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Edit Payment
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Edit Payment
                 </button>
                 <button class="menu-item destructive" onclick="closeMenu(${o.id});deleteOrder(${o.id})">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete
                 </button>
               </div>
             </div>
             <div class="order-amount">${rupees(o.finalAmt)}</div>
+            ${o.discount > 0 ? `<div class="discount-badge" style="text-align:right">-${rupees(o.discount)} off</div>` : ''}
           </div>
         </div>
 
