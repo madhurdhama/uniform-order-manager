@@ -726,3 +726,54 @@
       cursor: pointer;
       margin-top: 8px;
     }
+
+    /* Delete centered modal overlay  */
+    .modal-backdrop {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 20px 18px;
+      width: 100%; max-width: 300px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      animation: popIn 0.18s ease;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.93); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    .modal-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #fee2e2;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .modal-title {
+      font-size: 16px; font-weight: 700;
+      text-align: center; margin-bottom: 6px;
+    }
+    .modal-sub {
+      font-size: 13px; color: var(--text-2);
+      text-align: center; line-height: 1.5; margin-bottom: 18px;
+    }
+    .modal-btns  { display: flex; gap: 8px; }
+    .modal-cancel {
+      flex: 1; padding: 10px; font-size: 13px; font-weight: 500;
+      border-radius: 9px; border: 1px solid var(--border-2);
+      background: var(--surface); color: var(--text-2); cursor: pointer;
+    }
+    .modal-cancel:hover { background: var(--border); }
+    .modal-delete {
+      flex: 1; padding: 10px; font-size: 13px; font-weight: 600;
+      border-radius: 9px; border: none;
+      background: #dc2626; color: #fff; cursor: pointer;
+    }
+    .modal-delete:hover { background: #b91c1c; }

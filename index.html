@@ -270,13 +270,23 @@
 
 <div id="toast-container"></div>
 
-<!-- Delete confirm sheet — replaces browser confirm() dialog -->
-<div class="sheet-modal" id="del-modal" onclick="closeSheet('del-modal',event)">
-  <div class="sheet" style="max-height:auto">
-    <div class="sheet-title">Delete Order?</div>
-    <div class="sheet-sub" id="del-modal-sub">This cannot be undone.</div>
-    <button class="sheet-confirm" style="background:#dc2626;margin-top:12px" onclick="confirmDelete()">Delete</button>
-    <button class="sheet-cancel" onclick="closeSheet('del-modal')">Cancel</button>
+<!-- Delete centered modal overlay-->
+<div class="modal-backdrop" id="del-modal" onclick="if(event.target===this)closeDelModal()">
+  <div class="modal-box">
+    <div class="modal-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+        <path d="M10 11v6"/><path d="M14 11v6"/>
+        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+      </svg>
+    </div>
+    <div class="modal-title">Delete order?</div>
+    <div class="modal-sub" id="del-modal-sub">This cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeDelModal()">Cancel</button>
+      <button class="modal-delete" onclick="confirmDelete()">Delete</button>
+    </div>
   </div>
 </div>
 

@@ -915,18 +915,21 @@ document.addEventListener('click', function(e) {
    DELETE ORDER / EDIT PAYMENT PANEL
 ══════════════════════════════════════════════════════ */
 
+function openDelModal()  { $('del-modal').classList.add('open');    }
+function closeDelModal() { $('del-modal').classList.remove('open'); }
+
 function deleteOrder(id) {
   const order = savedOrders.find(o => o.id === id);
   pendingDeleteId = id;
   $('del-modal-sub').textContent = order
     ? `${order.sname || 'This order'} — ${rupees(order.finalAmt)}. This cannot be undone.`
     : 'This cannot be undone.';
-  openSheet('del-modal');
+  openDelModal();
 }
 
 function confirmDelete() {
   if (!pendingDeleteId) return;
-  closeSheet('del-modal');
+  closeDelModal();
   savedOrders = savedOrders.filter(o => o.id !== pendingDeleteId);
   pendingDeleteId = null;
   saveLocal();
