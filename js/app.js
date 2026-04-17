@@ -1068,8 +1068,8 @@ function saveEditOrder() {
 
 /* ══════════════════════════════════════════════════════
    WHATSAPP BILL
-   Opens WhatsApp directly with pre-filled message.
-   Fallback: copies to clipboard if WhatsApp not installed.
+   Mobile saved → opens WhatsApp directly to that number.
+   No mobile → copies bill to clipboard.
 ══════════════════════════════════════════════════════ */
 
 function openWhatsApp(id) {
@@ -1086,7 +1086,6 @@ function openWhatsApp(id) {
   const discountLine = order.finalAmt !== order.subtotal
     ? `\n  Discount = - Rs.${order.discount.toLocaleString('en-IN')}` : '';
 
-  // Build contact lines cleanly — no blank lines
   const contactLines = [
     order.pname  ? `Parent  : ${order.pname}`  : '',
     order.mobile ? `Mobile  : ${order.mobile}` : ''
@@ -1106,24 +1105,12 @@ Payment : ${PAY_LABEL[order.paymentMode || 'pending']}
 -------------------------
 Thank you!`;
 
-  // Open WhatsApp directly with pre-filled text
-  // wa.me with no phone number opens WhatsApp to choose a contact
-  const url = 'https://wa.me/?text=' + encodeURIComponent(message);
-  const opened = window.open(url, '_blank');
-
-  // Fallback: if popup blocked or WhatsApp not available, copy to clipboard
-  if (!opened) {
+  if (order.mobile) {
+    window.open(`https://wa.me/${order.mobile}?text=${encodeURIComponent(message)}`, '_blank');
+  } else {
     navigator.clipboard.writeText(message)
-      .then(() => toast('Copied to clipboard'))
-      .catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = message;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        toast('Copied to clipboard');
-      });
+      .then(() => toast('No mobile saved — bill copied to clipboard'))
+      .catch(() => toast('Copy failed — please copy manually', 'error'));
   }
 }
 
