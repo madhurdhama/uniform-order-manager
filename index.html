@@ -4,8 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Uniform Order Manager</title>
-  <!-- Receipt SVG favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='6' y='2' width='20' height='28' rx='2' fill='%232563eb'/><rect x='10' y='8' width='12' height='2' rx='1' fill='white'/><rect x='10' y='13' width='12' height='2' rx='1' fill='white'/><rect x='10' y='18' width='8' height='2' rx='1' fill='white'/><polygon points='6,30 10,27 14,30 16,27 18,30 22,27 26,30' fill='%23f3f4f6'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><path d='M8 11.5L11 9Q14 6.5 16 9Q18 6.5 21 9L24 11.5L22 14L20.5 12.5V24H11.5V12.5L10 14Z' fill='white'/></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,21 +12,58 @@
 <div class="app">
 
   <div class="header">
-    <h1>Uniform Order Manager</h1>
-    <p>Golden Gate International School</p>
-  </div>
-
-  <!-- Compact location pill under header -->
-  <div class="location-row">
-    <div class="location-pill">
-      <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
-      <button class="loc-btn"        id="loc-baghpat"  onclick="setLocation('baghpat')">Baghpat</button>
+    <div class="header-inner">
+      <div class="header-title-group">
+        <div class="header-logo">
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M8 11.5L11 9Q14 6.5 16 9Q18 6.5 21 9L24 11.5L22 14L20.5 12.5V24H11.5V12.5L10 14Z" fill="white"/></svg>
+        </div>
+        <div>
+          <div class="header-title">Uniform Order Manager</div>
+          <div class="header-sub">Golden Gate International School</div>
+        </div>
+      </div>
+      <div class="header-menu-wrap">
+        <button class="hamburger-btn" onclick="toggleHamburger()" id="hamburger-btn" title="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="6"  x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <div class="hamburger-dropdown" id="hamburger-menu">
+          <button class="menu-item" onclick="closeHamburger();showAnalytics()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Analytics
+          </button>
+          <div class="menu-divider"></div>
+          <button class="menu-item" onclick="closeHamburger();exportJSON()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Backup (JSON)
+          </button>
+          <button class="menu-item" onclick="closeHamburger();$('import-file').click()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Restore (JSON)
+          </button>
+          <button class="menu-item" onclick="closeHamburger();exportCSV()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
+  <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
+
   <div class="tabs">
-    <button class="tab active" onclick="showTab('new')">New Order</button>
-    <button class="tab"        onclick="showTab('orders')">Saved Orders</button>
+    <button class="tab active" id="tab-btn-new" onclick="showTab('new')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      New Order
+    </button>
+    <button class="tab" id="tab-btn-orders" onclick="showTab('orders')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Orders
+    </button>
   </div>
 
 
@@ -41,7 +77,6 @@
       <div class="row2">
         <div class="field">
           <label>Student Name</label>
-          <!-- Enter key moves focus to next field for faster entry -->
           <input id="sname" type="text" placeholder="e.g. Rahul" onkeydown="onEnter(event,'sclass')">
         </div>
         <div class="field">
@@ -56,20 +91,16 @@
         </div>
         <div class="field">
           <label>Mobile Number</label>
-          <input id="mobile" type="tel" placeholder="e.g. 9876543210" onkeydown="onEnter(event,'notes')">
+          <input id="mobile" type="tel" placeholder="e.g. 9876543210">
         </div>
       </div>
+      <!-- Location inline -->
       <div class="field">
-        <label>Payment Mode</label>
-        <div class="payment-toggle">
-          <button class="pay-btn active" id="pay-pending" onclick="setPayment('pending')">Pending</button>
-          <button class="pay-btn"        id="pay-cash"    onclick="setPayment('cash')">Cash</button>
-          <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
+        <label>Location</label>
+        <div class="location-pill">
+          <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
+          <button class="loc-btn"        id="loc-baghpat"  onclick="setLocation('baghpat')">Baghpat</button>
         </div>
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
-        <input id="notes" type="text" placeholder="e.g. alteration needed, half payment done">
       </div>
     </div>
 
@@ -80,17 +111,42 @@
         <span style="text-align:right">Line Total</span><span></span>
       </div>
       <div id="items-container"></div>
-      <!-- Add buttons injected here by buildAddButtons() -->
       <div id="add-btns-new" class="add-buttons"></div>
       <div class="total-card">
-        <div class="total-final">
-          <span>Total</span>
-          <span id="grand-total">Rs.0</span>
+        <div class="total-row">
+          <span class="total-label">Subtotal</span>
+          <span id="grand-total" class="total-amt">Rs.0</span>
         </div>
       </div>
     </div>
 
-    <button class="save-btn" onclick="saveOrder()">Save Order</button>
+    <!-- Payment section BELOW items so user sees total first -->
+    <div class="section payment-section">
+      <div class="section-title">Payment</div>
+      <div class="field">
+        <label>Mode</label>
+        <div class="payment-toggle">
+          <button class="pay-btn active" id="pay-pending" onclick="setPayment('pending')">Pending</button>
+          <button class="pay-btn"        id="pay-cash"    onclick="setPayment('cash')">Cash</button>
+          <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
+        </div>
+      </div>
+      <div class="field" id="paid-amt-field" style="display:none">
+        <label>Amount Paid <span style="font-weight:400;color:var(--text-3)">(leave blank = full amount)</span></label>
+        <input id="paid-amt" type="number" placeholder="e.g. 500" min="0">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+        <input id="notes" type="text" placeholder="e.g. alteration needed">
+      </div>
+    </div>
+
+    <div class="save-btn-wrap">
+      <button class="save-btn" onclick="saveOrder()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save Order
+      </button>
+    </div>
   </div>
 
 
@@ -99,7 +155,6 @@
   ══════════════════════════════════════ -->
   <div id="tab-orders" style="display:none">
 
-    <!-- Pending banner: tapping scrolls to first pending order -->
     <div id="pending-banner" class="pending-banner" style="display:none">
       <div class="pending-banner-left">
         <div class="pending-count" id="pending-count">0</div>
@@ -111,40 +166,71 @@
       <div class="pending-tap">tap to view</div>
     </div>
 
-    <div class="date-filter">
-      <button class="date-btn active" id="filter-all"   onclick="setDateFilter('all')">All</button>
-      <button class="date-btn"        id="filter-today" onclick="setDateFilter('today')">Today</button>
-      <button class="date-btn"        id="filter-week"  onclick="setDateFilter('week')">This Week</button>
-    </div>
-
-    <div class="search-box">
-      <input type="text" placeholder="Search by name, class, mobile or #order..." oninput="renderOrders(this.value)">
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div id="orders-summary" class="total-count"></div>
-      <div style="display:flex;gap:5px">
-        <button onclick="exportJSON()" style="font-size:12px;padding:5px 10px;border:1px solid #93c5fd;border-radius:7px;background:none;color:#1d4ed8;cursor:pointer">Backup</button>
-        <button onclick="$('import-file').click()" style="font-size:12px;padding:5px 10px;border:1px solid var(--border-2);border-radius:7px;background:none;color:var(--text-2);cursor:pointer">Restore</button>
-        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
-        <button onclick="exportCSV()" style="font-size:12px;padding:5px 10px;border:1px solid #86efac;border-radius:7px;background:none;color:#16a34a;cursor:pointer">CSV</button>
+    <div class="filter-row">
+      <div class="search-box" style="flex:1;margin-bottom:0">
+        <input type="text" placeholder="Search orders..." oninput="renderOrders(this.value)" style="margin-bottom:0">
       </div>
+      <div class="filter-btn-wrap" id="filter-btn-wrap">
+        <button class="filter-btn" onclick="toggleFilterSheet()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          Filter
+          <span class="filter-active-dot" id="filter-dot" style="display:none"></span>
+        </button>
+        <div class="filter-dropdown" id="filter-dropdown">
+          <div class="filter-section-label">Date</div>
+          <div class="filter-group">
+            <button class="filter-opt active" id="fopt-all"   onclick="setDateFilter('all');updateFilterBar()">All</button>
+            <button class="filter-opt"        id="fopt-today" onclick="setDateFilter('today');updateFilterBar()">Today</button>
+            <button class="filter-opt"        id="fopt-week"  onclick="setDateFilter('week');updateFilterBar()">This Week</button>
+          </div>
+          <div class="filter-section-label" style="margin-top:10px">Location</div>
+          <div class="filter-group">
+            <button class="filter-opt active" id="fopt-loc-all"      onclick="setLocationFilter('all')">All</button>
+            <button class="filter-opt"        id="fopt-loc-badagaon" onclick="setLocationFilter('badagaon')">Badagaon</button>
+            <button class="filter-opt"        id="fopt-loc-baghpat"  onclick="setLocationFilter('baghpat')">Baghpat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 8px">
+      <div id="orders-summary" class="total-count"></div>
+      <div id="filter-bar-label" style="font-size:11px;color:var(--text-3)"></div>
     </div>
 
     <div id="orders-list"></div>
   </div>
 
+
 </div><!-- end .app -->
+
+<!-- ══════════════════════════════════════
+     ANALYTICS OVERLAY SCREEN
+══════════════════════════════════════ -->
+<div id="analytics-screen" style="display:none">
+  <div class="analytics-screen-inner">
+    <div class="analytics-screen-header">
+      <button class="back-btn" onclick="closeAnalytics()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <div class="edit-screen-title">Analytics</div>
+    </div>
+    <div id="analytics-content"></div>
+  </div>
+</div>
 
 
 <!-- ══════════════════════════════════════
      FULL ORDER EDIT SCREEN
-     Fixed overlay shown when editing a saved order
 ══════════════════════════════════════ -->
 <div id="edit-order-screen">
   <div style="max-width:640px;margin:0 auto">
     <div class="edit-screen-header">
-      <button class="back-btn" onclick="closeEditOrder()">&#8592; Back</button>
+      <button class="back-btn" onclick="closeEditOrder()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
       <div class="edit-screen-title">Edit Order</div>
     </div>
     <div class="section">
@@ -191,10 +277,7 @@
 </div>
 
 
-<!-- ══════════════════════════════════════
-     BOTTOM SHEET — QUICK SET (Full Set)
-     Pick one size, all 7 items added at once
-══════════════════════════════════════ -->
+<!-- BOTTOM SHEET — QUICK SET -->
 <div class="sheet-modal" id="qs-modal" onclick="closeSheet('qs-modal',event)">
   <div class="sheet">
     <div class="sheet-title">Full Set</div>
@@ -217,11 +300,7 @@
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     BOTTOM SHEET — SINGLE ITEM PICKER
-     Pick item, size, quantity
-══════════════════════════════════════ -->
+<!-- BOTTOM SHEET — SINGLE ITEM -->
 <div class="sheet-modal" id="si-modal" onclick="closeSheet('si-modal',event)">
   <div class="sheet">
     <div class="sheet-title">Add Single Item</div>
@@ -242,12 +321,7 @@
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     BOTTOM SHEET — COMBO PICKER
-     Single size picker — both items get same size.
-     (User can adjust sizes in the row after adding if needed)
-══════════════════════════════════════ -->
+<!-- BOTTOM SHEET — COMBO -->
 <div class="sheet-modal" id="co-modal" onclick="closeSheet('co-modal',event)">
   <div class="sheet">
     <div class="sheet-title" id="co-title">Add Combo</div>
@@ -267,10 +341,9 @@
   </div>
 </div>
 
-
 <div id="toast-container"></div>
 
-<!-- Delete centered modal overlay-->
+<!-- Delete modal -->
 <div class="modal-backdrop" id="del-modal" onclick="if(event.target===this)closeDelModal()">
   <div class="modal-box">
     <div class="modal-icon">

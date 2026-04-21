@@ -62,6 +62,9 @@ let eoOrderId       = null;        // id of order being edited
 let eoPayMode       = 'cash';      // payment mode in edit screen
 let itemCounter     = 0;           // global — keeps item element IDs unique
 let dateFilter      = 'all';       // saved orders date filter
+let locationFilter  = 'all';       // saved orders location filter
+let analyticsDate   = 'today';     // analytics date toggle
+let analyticsLoc    = 'all';       // analytics location toggle
 let orderCounter    = parseInt(localStorage.getItem('uniform_order_counter') || '0');
 let savedOrders     = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
 
@@ -98,6 +101,26 @@ function toast(message, type = 'info', duration = 2500) {
     setTimeout(() => el.remove(), 250);
   }, duration);
 }
+
+/* ══════════════════════════════════════════════════════
+   HAMBURGER MENU
+══════════════════════════════════════════════════════ */
+
+function toggleHamburger() {
+  $('hamburger-menu').classList.toggle('open');
+}
+
+function closeHamburger() {
+  $('hamburger-menu').classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.header-menu-wrap')) {
+    closeHamburger();
+  }
+});
+
+
 
 /* ══════════════════════════════════════════════════════
    UTILITY FUNCTIONS
@@ -152,6 +175,8 @@ function setLocation(loc) {
 function setPayment(mode) {
   paymentMode = mode;
   ['cash', 'online', 'pending'].forEach(m => $('pay-' + m).classList.toggle('active', m === mode));
+  const f = $('paid-amt-field');
+  if (f) f.style.display = (mode === 'cash' || mode === 'online') ? '' : 'none';
 }
 
 function setEoPay(mode) {
@@ -625,9 +650,14 @@ function saveOrder() {
   orderCounter++;
   saveCounter();
 
+  // Read optional paid amount
+  const paidInput  = $('paid-amt');
+  const paidAmt    = paidInput && paidInput.value ? Math.min(parseInt(paidInput.value) || subtotal, subtotal) : subtotal;
+  const discount   = subtotal - paidAmt;
+
   const order = {
     id:          Date.now(),
-    orderNum:    orderCounter,     // unique order number shown as #001
+    orderNum:    orderCounter,
     location:    currentLocation,
     sname,
     sclass:      $('sclass').value.trim(),
@@ -637,25 +667,25 @@ function saveOrder() {
     paymentMode,
     items,
     subtotal,
-    discount:    0,
-    finalAmt:    subtotal,
+    discount,
+    finalAmt:    paidAmt,
     date:        new Date().toLocaleDateString('en-IN')
   };
 
   savedOrders.unshift(order);
   saveLocal();
   toast(`Order #${String(orderCounter).padStart(3,'0')} saved — ${sname}, ${rupees(subtotal)}`);
-  resetForm({ focusStudentName: false });
+  resetForm();
 }
 
-function resetForm({ focusStudentName = true } = {}) {
+function resetForm() {
   ['sname', 'sclass', 'pname', 'mobile', 'notes'].forEach(id => $(id).value = '');
+  if ($('paid-amt')) $('paid-amt').value = '';
   $('items-container').innerHTML = '';
   itemCounter = 0;
   setPayment('pending');
   recalc();
-  document.activeElement?.blur?.();
-  if (focusStudentName) $('sname').focus();
+  document.activeElement?.blur(); // dismiss keyboard on mobile
 }
 
 /* ══════════════════════════════════════════════════════
@@ -665,24 +695,198 @@ function resetForm({ focusStudentName = true } = {}) {
 function showTab(tab) {
   $('tab-new').style.display    = tab === 'new'    ? '' : 'none';
   $('tab-orders').style.display = tab === 'orders' ? '' : 'none';
-  document.querySelectorAll('.tab').forEach((el, i) =>
-    el.classList.toggle('active', (i===0&&tab==='new') || (i===1&&tab==='orders'))
-  );
+  ['new','orders'].forEach(t => $('tab-btn-' + t)?.classList.toggle('active', t === tab));
   if (tab === 'orders') renderOrders('');
+}
+
+function showAnalytics() {
+  renderAnalytics();
+  $('analytics-screen').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAnalytics() {
+  $('analytics-screen').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* ══════════════════════════════════════════════════════
+   ANALYTICS
+══════════════════════════════════════════════════════ */
+
+function setAnalyticsDate(v) {
+  analyticsDate = v;
+  renderAnalytics();
+}
+
+function setAnalyticsLoc(v) {
+  analyticsLoc = v;
+  renderAnalytics();
+}
+
+function renderAnalytics() {
+  const now        = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  function parseDate(str) {
+    const p = (str || '').split('/');
+    return new Date(p[2], p[1]-1, p[0]);
+  }
+
+  // Filter by date period
+  let base = savedOrders;
+  if (analyticsDate === 'today') {
+    base = base.filter(o => parseDate(o.date).getTime() === todayStart.getTime());
+  } else if (analyticsDate === 'week') {
+    const weekStart = new Date(todayStart); weekStart.setDate(todayStart.getDate() - 6);
+    base = base.filter(o => { const d = parseDate(o.date); return d >= weekStart && d <= todayStart; });
+  }
+
+  // Filter by location
+  const orders = analyticsLoc === 'all' ? base
+    : base.filter(o => (o.location || 'badagaon') === analyticsLoc);
+
+  function sum(arr, fn) { return arr.reduce((s,o) => s + fn(o), 0); }
+
+  const cash    = orders.filter(o => o.paymentMode === 'cash');
+  const online  = orders.filter(o => o.paymentMode === 'online');
+  const pending = orders.filter(o => o.paymentMode === 'pending');
+  const cashAmt    = sum(cash,    o => o.finalAmt);
+  const onlineAmt  = sum(online,  o => o.finalAmt);
+  const pendingAmt = sum(pending, o => o.finalAmt);
+  const collected  = cashAmt + onlineAmt;
+  const total      = collected + pendingAmt;
+  const badagaon   = orders.filter(o => (o.location||'badagaon') === 'badagaon');
+  const baghpat    = orders.filter(o => o.location === 'baghpat');
+
+  function underlineTabs(options, active, fn) {
+    return `<div class="an-tab-group">${options.map(([val, label]) =>
+      `<button class="an-tab${active===val?' active':''}" onclick="${fn}('${val}')">${label}</button>`
+    ).join('')}</div>`;
+  }
+
+  function row(label, count, amt, color) {
+    return `<div class="an-row">
+      <div class="an-row-left">
+        <span class="an-row-dot" style="background:${color}"></span>
+        <span class="an-row-label">${label}</span>
+        <span class="an-row-count">${count}</span>
+      </div>
+      <div class="an-row-amt">${rupees(amt)}</div>
+    </div>`;
+  }
+
+  const locVisible = analyticsLoc === 'all';
+
+  $('analytics-content').innerHTML = `
+    <div class="section an-header-card" style="margin-bottom:1rem">
+      <div class="an-filter-row">
+        <div class="an-filter-group">
+          <label class="an-filter-label">Period</label>
+          <div class="an-seg">
+            ${[['today','Today'],['week','Week'],['all','All Time']].map(([v,l]) =>
+              `<button class="an-seg-btn${analyticsDate===v?' active':''}" onclick="setAnalyticsDate('${v}')">${l}</button>`
+            ).join('')}
+          </div>
+        </div>
+        <div class="an-filter-group">
+          <label class="an-filter-label">Location</label>
+          <div class="an-seg">
+            ${[['all','All'],['badagaon','Badagaon'],['baghpat','Baghpat']].map(([v,l]) =>
+              `<button class="an-seg-btn${analyticsLoc===v?' active':''}" onclick="setAnalyticsLoc('${v}')">${l}</button>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="an-total-block">
+        <div class="an-total-label">Total Revenue</div>
+        <div class="an-total-amt">${rupees(total)}</div>
+        <div class="an-total-sub">${orders.length} order${orders.length!==1?'s':''}</div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:1rem">
+      <div class="section-title">Collection</div>
+      ${row('Collected', cash.length + online.length, collected, '#16a34a')}
+      ${row('Pending',   pending.length, pendingAmt, '#d97706')}
+      <div class="an-divider" style="margin:8px 0 10px"></div>
+      ${row('Cash',   cash.length,   cashAmt,   '#16a34a')}
+      ${row('Online', online.length, onlineAmt, '#1d4ed8')}
+    </div>
+
+    ${locVisible ? `
+    <div class="section" style="margin-bottom:1rem">
+      <div class="section-title">By Location</div>
+      ${row('Badagaon', badagaon.length, sum(badagaon, o=>o.finalAmt), '#6d28d9')}
+      ${row('Baghpat',  baghpat.length,  sum(baghpat,  o=>o.finalAmt), '#be185d')}
+    </div>` : ''}
+  `;
 }
 
 /* ══════════════════════════════════════════════════════
    DATE FILTER
 ══════════════════════════════════════════════════════ */
 
-function setDateFilter(filter) {
-  dateFilter = filter;
-  ['all', 'today', 'week'].forEach(f => $('filter-' + f).classList.toggle('active', f === filter));
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+function toggleFilterSheet() {
+  $('filter-dropdown').classList.toggle('open');
 }
 
-// Returns true if the order's date matches the active filter
+function setDateFilter(f) {
+  dateFilter = f;
+  ['all','today','week'].forEach(k => $('fopt-'+k)?.classList.toggle('active', k === f));
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+  updateFilterBar();
+}
+
+function setLocationFilter(f) {
+  locationFilter = f;
+  ['all','badagaon','baghpat'].forEach(k => $('fopt-loc-'+k)?.classList.toggle('active', k === f));
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+  updateFilterBar();
+}
+
+function updateFilterBar() {
+  const dateLabels = { today: 'Today', week: 'This Week' };
+  const locLabels  = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
+  const el  = $('filter-bar-label');
+  const dot = $('filter-dot');
+  const btn = document.querySelector('.filter-btn');
+
+  const pills = [];
+  if (dateFilter !== 'all')     pills.push(`<span class="filter-pill">${dateLabels[dateFilter]}</span>`);
+  if (locationFilter !== 'all') pills.push(`<span class="filter-pill loc">${locLabels[locationFilter]}</span>`);
+
+  if (el) el.innerHTML = pills.length
+    ? pills.join('') + ` <button class="filter-clear-btn" onclick="clearFilters()">✕ Clear</button>`
+    : '';
+
+  const isActive = dateFilter !== 'all' || locationFilter !== 'all';
+  if (dot) dot.style.display = isActive ? 'block' : 'none';
+  if (btn) btn.classList.toggle('active', isActive);
+}
+
+function clearFilters() {
+  dateFilter     = 'all';
+  locationFilter = 'all';
+  ['all','today','week'].forEach(k => $('fopt-'+k)?.classList.toggle('active', k === 'all'));
+  ['all','badagaon','baghpat'].forEach(k => $('fopt-loc-'+k)?.classList.toggle('active', k === 'all'));
+  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+  updateFilterBar();
+}
+
+// Close filter dropdown on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.filter-btn-wrap')) {
+    $('filter-dropdown')?.classList.remove('open');
+  }
+});
+
+// Returns true if the order matches active date + location filters
 function matchesDateFilter(order) {
+  if (locationFilter !== 'all') {
+    const loc = order.location || 'badagaon';
+    if (loc !== locationFilter) return false;
+  }
   if (dateFilter === 'all') return true;
   const parts     = (order.date || '').split('/');
   const orderDate = new Date(parts[2], parts[1] - 1, parts[0]);
@@ -824,7 +1028,7 @@ function renderOrders(query) {
 
         <!-- Bottom bar: Send Bill left, items toggle right -->
         <div class="card-bottom">
-          <button class="action-btn" onclick="openWhatsApp(${o.id})">
+          <button class="send-bill-btn" onclick="openWhatsApp(${o.id})">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Send Bill
           </button>
           <button class="items-toggle-btn" onclick="toggleItems(${o.id})">
@@ -1070,7 +1274,7 @@ function saveEditOrder() {
 /* ══════════════════════════════════════════════════════
    WHATSAPP BILL
    Mobile saved → opens WhatsApp directly to that number.
-   No mobile → copies bill to clipboard.
+   No mobile saved → copies bill to clipboard.
 ══════════════════════════════════════════════════════ */
 
 function openWhatsApp(id) {
@@ -1114,7 +1318,6 @@ Thank you!`;
       .catch(() => toast('Copy failed — please copy manually', 'error'));
   }
 }
-
 /* ══════════════════════════════════════════════════════
    EXPORT CSV
    Downloads all orders as .csv — open in Excel or Sheets.
@@ -1171,7 +1374,7 @@ function importJSON(event) {
       const imported = Array.isArray(parsed) ? parsed : (parsed.orders || []);
       const importRC = parsed.orderCounter || 0;
 
-      if (!imported.length) { toast('No orders found in file', 'error'); return; return; }
+      if (!imported.length) { toast('No orders found in file', 'error'); return; }
 
       const existingIds = new Set(savedOrders.map(o => o.id));
       const newOrders   = imported.filter(o => o.id && !existingIds.has(o.id));
