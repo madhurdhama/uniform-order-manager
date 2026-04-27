@@ -67,9 +67,7 @@
   </div>
 
 
-  <!-- ══════════════════════════════════════
-       TAB 1 — NEW ORDER
-  ══════════════════════════════════════ -->
+  <!-- NEW ORDER TAB -->
   <div id="tab-new">
 
     <div class="section">
@@ -91,11 +89,14 @@
         </div>
         <div class="field">
           <label>Mobile Number</label>
-          <input id="mobile" type="tel" placeholder="e.g. 9876543210">
+          <input id="mobile" type="tel" placeholder="e.g. 9876543210" onkeydown="onEnter(event,'notes')">
         </div>
       </div>
-      <!-- Location inline -->
       <div class="field">
+        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+        <input id="notes" type="text" placeholder="e.g. alteration needed">
+      </div>
+      <div class="field" style="margin-bottom:0">
         <label>Location</label>
         <div class="location-pill">
           <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
@@ -120,7 +121,6 @@
       </div>
     </div>
 
-    <!-- Payment section BELOW items so user sees total first -->
     <div class="section payment-section">
       <div class="section-title">Payment</div>
       <div class="field">
@@ -131,13 +131,9 @@
           <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
         </div>
       </div>
-      <div class="field" id="paid-amt-field" style="display:none">
+      <div class="field" id="paid-amt-field" style="display:none;margin-bottom:0">
         <label>Amount Paid <span style="font-weight:400;color:var(--text-3)">(leave blank = full amount)</span></label>
         <input id="paid-amt" type="number" placeholder="e.g. 500" min="0">
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
-        <input id="notes" type="text" placeholder="e.g. alteration needed">
       </div>
     </div>
 
@@ -150,9 +146,7 @@
   </div>
 
 
-  <!-- ══════════════════════════════════════
-       TAB 2 — SAVED ORDERS
-  ══════════════════════════════════════ -->
+  <!-- SAVED ORDERS TAB -->
   <div id="tab-orders" style="display:none">
 
     <div id="pending-banner" class="pending-banner" style="display:none">
@@ -204,9 +198,8 @@
 
 </div><!-- end .app -->
 
-<!-- ══════════════════════════════════════
-     ANALYTICS OVERLAY SCREEN
-══════════════════════════════════════ -->
+
+<!-- ANALYTICS OVERLAY -->
 <div id="analytics-screen" style="display:none">
   <div class="analytics-screen-inner">
     <div class="analytics-screen-header">
@@ -221,9 +214,7 @@
 </div>
 
 
-<!-- ══════════════════════════════════════
-     FULL ORDER EDIT SCREEN
-══════════════════════════════════════ -->
+<!-- EDIT ORDER SCREEN -->
 <div id="edit-order-screen">
   <div style="max-width:640px;margin:0 auto">
     <div class="edit-screen-header">
@@ -233,6 +224,7 @@
       </button>
       <div class="edit-screen-title">Edit Order</div>
     </div>
+
     <div class="section">
       <div class="section-title">Student Details</div>
       <div class="row2">
@@ -243,19 +235,12 @@
         <div class="field"><label>Parent Name</label><input id="eo-pname" type="text"></div>
         <div class="field"><label>Mobile Number</label><input id="eo-mobile" type="tel"></div>
       </div>
-      <div class="field">
-        <label>Payment Mode</label>
-        <div class="payment-toggle">
-          <button class="pay-btn" id="eo-pay-pending" onclick="setEoPay('pending')">Pending</button>
-          <button class="pay-btn" id="eo-pay-cash"    onclick="setEoPay('cash')">Cash</button>
-          <button class="pay-btn" id="eo-pay-online"  onclick="setEoPay('online')">Online</button>
-        </div>
-      </div>
       <div class="field" style="margin-bottom:0">
         <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
         <input id="eo-notes" type="text">
       </div>
     </div>
+
     <div class="section">
       <div class="section-title">Dress Items</div>
       <div class="col-labels">
@@ -271,8 +256,13 @@
         </div>
       </div>
     </div>
-    <button class="save-btn" onclick="saveEditOrder()">Save Changes</button>
-    <div style="height:2rem"></div>
+
+    <div class="save-btn-wrap" style="padding-bottom:2rem">
+      <button class="save-btn" onclick="saveEditOrder()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save Changes
+      </button>
+    </div>
   </div>
 </div>
 

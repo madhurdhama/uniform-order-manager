@@ -37,7 +37,7 @@ const PRICES = {
     "Lower":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
     "T-Shirt":      { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
     "Pant":         { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    "Shirt":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 }, 
+    "Shirt":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
   }
 };
 
@@ -59,7 +59,6 @@ const COMBOS = {
 let currentLocation = 'badagaon';  // active location
 let paymentMode     = 'pending';   // resets to pending after each save
 let eoOrderId       = null;        // id of order being edited
-let eoPayMode       = 'cash';      // payment mode in edit screen
 let itemCounter     = 0;           // global — keeps item element IDs unique
 let dateFilter      = 'all';       // saved orders date filter
 let locationFilter  = 'all';       // saved orders location filter
@@ -75,7 +74,14 @@ let siSize          = null;  // selected size in single-item sheet
 let qsSize          = null;  // selected size in quick-set sheet
 let coType          = null;  // combo type key in combo sheet
 let coSize1         = null;  // selected size in combo sheet
-let pendingDeleteId = null; // order id waiting for delete confirmation
+let pendingDeleteId = null;  // order id waiting for delete confirmation
+
+// Maps saved combo item1 names back to combo type keys when restoring the edit screen
+const COMBO_TYPE_BY_ITEM1 = {
+  'Pant':       'pant-shirt',
+  'Lower':      'lower-tshirt',
+  'Half Lower': 'half-set'
+};
 
 /* ══════════════════════════════════════════════════════
    TOAST NOTIFICATIONS
@@ -119,8 +125,6 @@ document.addEventListener('click', function(e) {
     closeHamburger();
   }
 });
-
-
 
 /* ══════════════════════════════════════════════════════
    UTILITY FUNCTIONS
@@ -177,11 +181,6 @@ function setPayment(mode) {
   ['cash', 'online', 'pending'].forEach(m => $('pay-' + m).classList.toggle('active', m === mode));
   const f = $('paid-amt-field');
   if (f) f.style.display = (mode === 'cash' || mode === 'online') ? '' : 'none';
-}
-
-function setEoPay(mode) {
-  eoPayMode = mode;
-  ['cash', 'online', 'pending'].forEach(m => $('eo-pay-' + m).classList.toggle('active', m === mode));
 }
 
 /* ══════════════════════════════════════════════════════
@@ -309,7 +308,6 @@ function selectSiItem(item, el) {
   // Build size chips for this item
   const sizes = Object.keys(getPrices()[item] || {});
   // Auto-select the first size (lowest number, or "All"/"Pair"/"Small")
-  // This is especially useful for Belt (All), Socks (Pair), Suit (All) etc.
   siSize = String(sizes[0]);
   buildChips('si-sizes', sizes, siSize, 'selectSiSize');
 }
@@ -525,13 +523,12 @@ function removeComboItem(sid, comboId, recalcFn) {
     // Both items removed — remove the whole combo row
     comboEl.remove();
   } else {
-    // One item remains — hide the combo-top label and show it as a plain row
+    // One item remains — shrink the combo-top label
     const topLabel = comboEl.querySelector('.combo-top div');
     if (topLabel) topLabel.style.fontSize = '11px';
   }
   window[recalcFn]();
 }
-
 
 /* ══════════════════════════════════════════════════════
    RECALCULATE TOTALS
@@ -1187,28 +1184,32 @@ function openEditOrder(id) {
   $('eo-pname').value  = order.pname  || '';
   $('eo-mobile').value = order.mobile || '';
   $('eo-notes').value  = order.notes  || '';
-  setEoPay(order.paymentMode || 'cash');
   $('eo-items-container').innerHTML = '';
-
-  // Map item1 name back to combo type key for restoring combos
-  const comboTypeByItem1 = {
-    'Pant':       'pant-shirt',
-    'Lower':      'lower-tshirt',
-    'Half Lower': 'half-set'
-  };
 
   (order.items || []).forEach(savedItem => {
     if (savedItem.isSuitSet) {
       const m = savedItem.label.match(/x (\d+)$/);
       eoAddCombo('suit-set', null, null, m ? parseInt(m[1]) : 1);
+
     } else if (savedItem.isCombo) {
       const m     = savedItem.label.match(/x (\d+)$/);
       const qty   = m ? parseInt(m[1]) : 1;
       const clean = savedItem.label.replace(/ x \d+$/, '');
+
+      // Split on ' + ' to get each item. A partial combo (one item removed before
+      // saving) has no ' + ', so parts will have only one element — handle both.
       const parts = clean.split(' + ');
       const [n1, s1] = parseItemLabel(parts[0]);
-      const [,   s2] = parseItemLabel(parts[1]);
-      eoAddCombo(comboTypeByItem1[n1] || 'pant-shirt', s1, s2, qty);
+      const [,   s2] = parts[1] ? parseItemLabel(parts[1]) : [null, null];
+
+      if (s2) {
+        // Both items present — restore as a normal combo row
+        eoAddCombo(COMBO_TYPE_BY_ITEM1[n1] || 'pant-shirt', s1, s2, qty);
+      } else {
+        // Only one item survived — restore it as a plain single-item row
+        eoAddItem(n1, s1, qty);
+      }
+
     } else {
       const m   = savedItem.label.match(/x (\d+)$/);
       const qty = m ? parseInt(m[1]) : 1;
@@ -1224,6 +1225,7 @@ function openEditOrder(id) {
 
 // Helper: "Shirt (30)" → ["Shirt", "30"]
 function parseItemLabel(str) {
+  if (!str) return ['', ''];
   const m = str.trim().match(/^(.+?)\s*\((.+)\)$/);
   return m ? [m[1].trim(), m[2].trim()] : [str.trim(), ''];
 }
@@ -1259,7 +1261,7 @@ function saveEditOrder() {
     pname:       $('eo-pname').value.trim(),
     mobile:      $('eo-mobile').value.trim(),
     notes:       $('eo-notes').value.trim(),
-    paymentMode: eoPayMode,
+    paymentMode: orig.paymentMode,  // payment is managed separately via Edit Payment
     items, subtotal, discount,
     finalAmt: subtotal - discount
   };
@@ -1269,7 +1271,6 @@ function saveEditOrder() {
   closeEditOrder();
   renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
 }
-
 
 /* ══════════════════════════════════════════════════════
    WHATSAPP BILL
@@ -1318,6 +1319,7 @@ Thank you!`;
       .catch(() => toast('Copy failed — please copy manually', 'error'));
   }
 }
+
 /* ══════════════════════════════════════════════════════
    EXPORT CSV
    Downloads all orders as .csv — open in Excel or Sheets.
