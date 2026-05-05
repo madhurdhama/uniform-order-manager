@@ -5,17 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Uniform Order Manager</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><path d='M8 11.5L11 9Q14 6.5 16 9Q18 6.5 21 9L24 11.5L22 14L20.5 12.5V24H11.5V12.5L10 14Z' fill='white'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="app">
 
+  <!-- ── HEADER ─────────────────────────────────────── -->
   <div class="header">
     <div class="header-inner">
       <div class="header-title-group">
         <div class="header-logo">
-          <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M8 11.5L11 9Q14 6.5 16 9Q18 6.5 21 9L24 11.5L22 14L20.5 12.5V24H11.5V12.5L10 14Z" fill="white"/></svg>
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+            <path d="M8 11.5L11 9Q14 6.5 16 9Q18 6.5 21 9L24 11.5L22 14L20.5 12.5V24H11.5V12.5L10 14Z" fill="white"/>
+          </svg>
         </div>
         <div>
           <div class="header-title">Uniform Order Manager</div>
@@ -23,7 +29,7 @@
         </div>
       </div>
       <div class="header-menu-wrap">
-        <button class="hamburger-btn" onclick="toggleHamburger()" id="hamburger-btn" title="Menu">
+        <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" title="Menu">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
             <line x1="3" y1="6"  x2="21" y2="6"/>
             <line x1="3" y1="12" x2="21" y2="12"/>
@@ -53,8 +59,23 @@
     </div>
   </div>
 
+  <!-- ── ANALYTICS OVERLAY ──────────────────────────── -->
+  <div id="analytics-screen" style="display:none">
+    <div class="analytics-screen-inner">
+      <div class="analytics-screen-header">
+        <button class="back-btn" onclick="closeAnalytics()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <div class="edit-screen-title">Analytics</div>
+      </div>
+      <div id="analytics-content"></div>
+    </div>
+  </div>
+
   <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
 
+  <!-- ── TABS ───────────────────────────────────────── -->
   <div class="tabs">
     <button class="tab active" id="tab-btn-new" onclick="showTab('new')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -66,74 +87,47 @@
     </button>
   </div>
 
+  <div id="toast-container"></div>
 
-  <!-- NEW ORDER TAB -->
+  <!-- ── NEW ORDER TAB ──────────────────────────────── -->
   <div id="tab-new">
 
-    <div class="section">
+    <!-- Student details -->
+    <div class="section" id="new-student-section">
       <div class="section-title">Student Details</div>
-      <div class="row2">
-        <div class="field">
-          <label>Student Name</label>
-          <input id="sname" type="text" placeholder="e.g. Rahul" onkeydown="onEnter(event,'sclass')">
-        </div>
-        <div class="field">
-          <label>Class</label>
-          <input id="sclass" type="text" placeholder="e.g. 5A" onkeydown="onEnter(event,'pname')">
-        </div>
-      </div>
-      <div class="row2">
-        <div class="field">
-          <label>Parent Name</label>
-          <input id="pname" type="text" placeholder="e.g. Suresh Sharma" onkeydown="onEnter(event,'mobile')">
-        </div>
-        <div class="field">
-          <label>Mobile Number</label>
-          <input id="mobile" type="tel" placeholder="e.g. 9876543210" onkeydown="onEnter(event,'notes')">
-        </div>
-      </div>
-      <div class="field">
-        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
-        <input id="notes" type="text" placeholder="e.g. alteration needed">
-      </div>
+      <div id="new-student-fields"></div>
       <div class="field" style="margin-bottom:0">
-        <label>Location</label>
-        <div class="location-pill">
-          <button class="loc-btn active" id="loc-badagaon" onclick="setLocation('badagaon')">Badagaon</button>
-          <button class="loc-btn"        id="loc-baghpat"  onclick="setLocation('baghpat')">Baghpat</button>
+        <label>Branch</label>
+        <div class="branch-pill">
+          <button class="branch-btn active" id="branch-badagaon" onclick="setBranch('badagaon')">Badagaon</button>
+          <button class="branch-btn"        id="branch-baghpat"  onclick="setBranch('baghpat')">Baghpat</button>
         </div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-title">Dress Items</div>
-      <div class="col-labels">
-        <span>Item</span><span>Size</span><span>Qty</span>
-        <span style="text-align:right">Line Total</span><span></span>
-      </div>
-      <div id="items-container"></div>
-      <div id="add-btns-new" class="add-buttons"></div>
-      <div class="total-card">
-        <div class="total-row">
-          <span class="total-label">Subtotal</span>
-          <span id="grand-total" class="total-amt">Rs.0</span>
-        </div>
-      </div>
-    </div>
+    <!-- Dress items -->
+    <div id="new-items-section"></div>
 
+    <!-- Payment -->
     <div class="section payment-section">
       <div class="section-title">Payment</div>
       <div class="field">
         <label>Mode</label>
         <div class="payment-toggle">
-          <button class="pay-btn active" id="pay-pending" onclick="setPayment('pending')">Pending</button>
-          <button class="pay-btn"        id="pay-cash"    onclick="setPayment('cash')">Cash</button>
-          <button class="pay-btn"        id="pay-online"  onclick="setPayment('online')">Online</button>
+          <button class="pay-btn active" id="pay-pending" onclick="setNewOrderPayMode('pending')">Pending</button>
+          <button class="pay-btn"        id="pay-cash"    onclick="setNewOrderPayMode('cash')">Cash</button>
+          <button class="pay-btn"        id="pay-online"  onclick="setNewOrderPayMode('online')">Online</button>
         </div>
       </div>
-      <div class="field" id="paid-amt-field" style="display:none;margin-bottom:0">
-        <label>Amount Paid <span style="font-weight:400;color:var(--text-3)">(leave blank = full amount)</span></label>
-        <input id="paid-amt" type="number" placeholder="e.g. 500" min="0">
+      <div class="row2" id="payment-extra-row" style="display:none;margin-bottom:0">
+        <div class="field" id="new-discount-field" style="margin-bottom:0">
+          <label>Discount <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+          <input id="new-discount" type="number" placeholder="e.g. 60" min="0">
+        </div>
+        <div class="field" id="paid-amt-field" style="margin-bottom:0">
+          <label>Amount Paid <span style="font-weight:400;color:var(--text-3)">(blank = full)</span></label>
+          <input id="paid-amt" type="number" placeholder="e.g. 500" min="0">
+        </div>
       </div>
     </div>
 
@@ -145,24 +139,32 @@
     </div>
   </div>
 
-
-  <!-- SAVED ORDERS TAB -->
+  <!-- ── SAVED ORDERS TAB ───────────────────────────── -->
   <div id="tab-orders" style="display:none">
 
-    <div id="pending-banner" class="pending-banner" style="display:none">
-      <div class="pending-banner-left">
+    <div class="banners-row" id="banners-row" style="display:none">
+      <div id="pending-banner" class="pending-banner">
         <div class="pending-count" id="pending-count">0</div>
-        <div>
+        <div class="pending-banner-info">
           <div class="pending-label">Pending payments</div>
           <div class="pending-today" id="pending-today"></div>
         </div>
       </div>
-      <div class="pending-tap">tap to view</div>
+      <div id="delivery-banner" class="delivery-banner">
+        <div class="delivery-count-num" id="delivery-count">0</div>
+        <div class="pending-banner-info">
+          <div class="delivery-label">Items pending</div>
+          <div class="delivery-sub" id="delivery-items-count"></div>
+        </div>
+      </div>
     </div>
 
     <div class="filter-row">
       <div class="search-box" style="flex:1;margin-bottom:0">
-        <input type="text" placeholder="Search orders..." oninput="renderOrders(this.value)" style="margin-bottom:0">
+        <div class="search-input-wrap">
+          <input type="text" placeholder="Search orders..." oninput="renderOrders(this.value); updateSearchClear(this)" id="orders-search" style="margin-bottom:0">
+          <button class="search-clear-btn" id="orders-search-clear" onclick="clearSearch('orders-search')" style="display:none" aria-label="Clear search">✕</button>
+        </div>
       </div>
       <div class="filter-btn-wrap" id="filter-btn-wrap">
         <button class="filter-btn" onclick="toggleFilterSheet()">
@@ -182,11 +184,16 @@
             <button class="filter-opt active" id="fopt-pay-all"     onclick="setPaymentFilter('all')">All</button>
             <button class="filter-opt"        id="fopt-pay-pending" onclick="setPaymentFilter('pending')">Pending / Partial</button>
           </div>
-          <div class="filter-section-label" style="margin-top:10px">Location</div>
+          <div class="filter-section-label" style="margin-top:10px">Delivery</div>
           <div class="filter-group">
-            <button class="filter-opt active" id="fopt-loc-all"      onclick="setLocationFilter('all')">All</button>
-            <button class="filter-opt"        id="fopt-loc-badagaon" onclick="setLocationFilter('badagaon')">Badagaon</button>
-            <button class="filter-opt"        id="fopt-loc-baghpat"  onclick="setLocationFilter('baghpat')">Baghpat</button>
+            <button class="filter-opt active" id="fopt-del-all"              onclick="setDeliveryFilter('all')">All</button>
+            <button class="filter-opt"        id="fopt-del-pending-delivery" onclick="setDeliveryFilter('pending-delivery')">Items Pending</button>
+          </div>
+          <div class="filter-section-label" style="margin-top:10px">Branch</div>
+          <div class="filter-group">
+            <button class="filter-opt active" id="fopt-branch-all"      onclick="setBranchFilter('all')">All</button>
+            <button class="filter-opt"        id="fopt-branch-badagaon" onclick="setBranchFilter('badagaon')">Badagaon</button>
+            <button class="filter-opt"        id="fopt-branch-baghpat"  onclick="setBranchFilter('baghpat')">Baghpat</button>
           </div>
         </div>
       </div>
@@ -194,32 +201,18 @@
 
     <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 8px">
       <div id="orders-summary" class="total-count"></div>
-      <div id="filter-bar-label" style="font-size:11px;color:var(--text-3)"></div>
+      <div id="filter-bar-label"></div>
     </div>
 
     <div id="orders-list"></div>
   </div>
 
-
 </div><!-- end .app -->
 
 
-<!-- ANALYTICS OVERLAY -->
-<div id="analytics-screen" style="display:none">
-  <div class="analytics-screen-inner">
-    <div class="analytics-screen-header">
-      <button class="back-btn" onclick="closeAnalytics()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        Back
-      </button>
-      <div class="edit-screen-title">Analytics</div>
-    </div>
-    <div id="analytics-content"></div>
-  </div>
-</div>
-
-
-<!-- EDIT ORDER SCREEN -->
+<!-- ══════════════════════════════════════════════════
+     EDIT ORDER SCREEN
+═════════════════════════════════════════════════════→ -->
 <div id="edit-order-screen">
   <div style="max-width:640px;margin:0 auto">
     <div class="edit-screen-header">
@@ -228,39 +221,17 @@
         Back
       </button>
       <div class="edit-screen-title">Edit Order</div>
+      <span id="eo-branch-badge" class="badge"></span>
     </div>
 
+    <!-- Student details -->
     <div class="section">
       <div class="section-title">Student Details</div>
-      <div class="row2">
-        <div class="field"><label>Student Name</label><input id="eo-sname" type="text"></div>
-        <div class="field"><label>Class</label><input id="eo-sclass" type="text"></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Parent Name</label><input id="eo-pname" type="text"></div>
-        <div class="field"><label>Mobile Number</label><input id="eo-mobile" type="tel"></div>
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
-        <input id="eo-notes" type="text">
-      </div>
+      <div id="edit-student-fields"></div>
     </div>
 
-    <div class="section">
-      <div class="section-title">Dress Items</div>
-      <div class="col-labels">
-        <span>Item</span><span>Size</span><span>Qty</span>
-        <span style="text-align:right">Line Total</span><span></span>
-      </div>
-      <div id="eo-items-container"></div>
-      <div id="add-btns-eo" class="add-buttons"></div>
-      <div class="total-card">
-        <div class="total-final">
-          <span>Total</span>
-          <span id="eo-grand-total">Rs.0</span>
-        </div>
-      </div>
-    </div>
+    <!-- Dress items -->
+    <div id="edit-items-section"></div>
 
     <div class="save-btn-wrap" style="padding-bottom:2rem">
       <button class="save-btn" onclick="saveEditOrder()">
@@ -272,11 +243,15 @@
 </div>
 
 
-<!-- BOTTOM SHEET — QUICK SET -->
+<!-- ══════════════════════════════════════════════════
+     BOTTOM SHEETS
+═════════════════════════════════════════════════════→ -->
+
+<!-- Quick Set -->
 <div class="sheet-modal" id="qs-modal" onclick="closeSheet('qs-modal',event)">
   <div class="sheet">
     <div class="sheet-title">Full Set</div>
-    <div class="sheet-sub">Adds: Pant + Shirt + Lower + T-Shirt + Tie + Belt + Socks ×2</div>
+    <div class="sheet-sub">Adds: Pant + Shirt + Lower + T-Shirt + Tie + Belt + 2xSocks </div>
     <div class="sheet-label">Pick size — all items use same size</div>
     <div class="chip-grid" id="qs-sizes"></div>
     <div style="font-size:12px;color:var(--text-3);margin-bottom:8px">
@@ -295,34 +270,13 @@
   </div>
 </div>
 
-<!-- BOTTOM SHEET — SINGLE ITEM -->
-<div class="sheet-modal" id="si-modal" onclick="closeSheet('si-modal',event)">
-  <div class="sheet">
-    <div class="sheet-title">Add Single Item</div>
-    <div class="sheet-label">Select item</div>
-    <div class="chip-grid wide" id="si-items"></div>
-    <div class="sheet-label">Select size</div>
-    <div class="chip-grid" id="si-sizes"></div>
-    <div class="qty-row">
-      <label>Quantity</label>
-      <div class="qty-stepper">
-        <button onclick="stepQty('si-qty',-1)">−</button>
-        <span id="si-qty">1</span>
-        <button onclick="stepQty('si-qty',1)">+</button>
-      </div>
-    </div>
-    <button class="sheet-confirm" onclick="confirmSingleItem()">Add Item</button>
-    <button class="sheet-cancel"  onclick="closeSheet('si-modal')">Cancel</button>
-  </div>
-</div>
-
-<!-- BOTTOM SHEET — COMBO -->
+<!-- Combo -->
 <div class="sheet-modal" id="co-modal" onclick="closeSheet('co-modal',event)">
   <div class="sheet">
     <div class="sheet-title" id="co-title">Add Combo</div>
-    <div class="sheet-sub" id="co-sub"></div>
+    <div class="sheet-sub"   id="co-sub"></div>
     <div class="sheet-label" id="co-label1">Select size</div>
-    <div class="chip-grid" id="co-sizes1"></div>
+    <div class="chip-grid"   id="co-sizes1"></div>
     <div class="qty-row">
       <label>Quantity</label>
       <div class="qty-stepper">
@@ -336,35 +290,74 @@
   </div>
 </div>
 
-<div id="toast-container"></div>
+<!-- Single Item -->
+<div class="sheet-modal" id="si-modal" onclick="closeSheet('si-modal',event)">
+  <div class="sheet">
+    <div class="sheet-title">Add Single Item</div>
+    <div class="sheet-label">Select item</div>
+    <div class="chip-grid wide" id="si-items"></div>
+    <div class="sheet-label">Select size</div>
+    <div class="chip-grid"      id="si-sizes"></div>
+    <div class="qty-row">
+      <label>Quantity</label>
+      <div class="qty-stepper">
+        <button onclick="stepQty('si-qty',-1)">−</button>
+        <span id="si-qty">1</span>
+        <button onclick="stepQty('si-qty',1)">+</button>
+      </div>
+    </div>
+    <button class="sheet-confirm" onclick="confirmSingleItem()">Add Item</button>
+    <button class="sheet-cancel"  onclick="closeSheet('si-modal')">Cancel</button>
+  </div>
+</div>
 
-<!-- BOTTOM SHEET — EDIT PAYMENT -->
+<!-- Delivery Tracking -->
+<div class="sheet-modal" id="dv-modal" onclick="closeSheet('dv-modal',event)">
+  <div class="sheet">
+    <div class="sheet-title">Mark Item Delivery</div>
+    <div id="dv-student" style="font-size:13px;color:var(--text-3);margin-bottom:6px"></div>
+    <div id="dv-summary" style="font-size:13px;margin-bottom:14px"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="sheet-label" style="margin:0">Items — toggle to mark as given</div>
+      <button class="dv-mark-all-btn" onclick="markAllDelivered(deliverySheetOrderId)">
+        Mark All Given
+      </button>
+    </div>
+    <div id="dv-items" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px"></div>
+    <button class="sheet-confirm" style="background:var(--text);box-shadow:none" onclick="closeSheet('dv-modal')">Done</button>
+  </div>
+</div>
+
+<!-- Edit Payment -->
 <div class="sheet-modal" id="ep-modal" onclick="closeSheet('ep-modal',event)">
   <div class="sheet">
-    <div class="sheet-title">Add Payment Entry</div>
+    <div class="sheet-title">Payment &amp; Discount</div>
     <div id="ep-history"></div>
     <div class="sheet-label" style="margin-top:14px">Payment Mode</div>
     <div class="edit-pay-toggle">
-      <button class="edit-pay-btn" id="ep-pending" onclick="epSetMode('pending')">Pending</button>
-      <button class="edit-pay-btn" id="ep-cash"    onclick="epSetMode('cash')">Cash</button>
-      <button class="edit-pay-btn" id="ep-online"  onclick="epSetMode('online')">Online</button>
+      <button class="edit-pay-btn" id="ep-cash"   onclick="setPaymentSheetMode('cash')">Cash</button>
+      <button class="edit-pay-btn" id="ep-online" onclick="setPaymentSheetMode('online')">Online</button>
     </div>
-    <div class="sheet-label">Amount Received</div>
-    <input id="ep-amt" type="number" placeholder="e.g. 1000" min="0"
-      style="width:100%;padding:9px 11px;font-size:14px;border:1px solid var(--border-2);border-radius:8px;background:var(--surface);color:var(--text);outline:none;margin-bottom:4px">
-    <div id="ep-discount-row">
-      <div class="sheet-label">Discount Amount <span style="font-weight:400;color:var(--text-3);text-transform:none">(optional)</span></div>
-      <input id="ep-discount" type="number" placeholder="e.g. 60" min="0"
-        style="width:100%;padding:9px 11px;font-size:14px;border:1px solid var(--border-2);border-radius:8px;background:var(--surface);color:var(--text);outline:none;margin-bottom:4px"
-        oninput="epSyncFromDiscount()">
+    <div id="ep-discount-row" class="row2" style="gap:10px;margin-top:4px">
+      <div>
+        <div class="sheet-label">Discount <span style="font-weight:400;color:var(--text-3);text-transform:none">(optional)</span></div>
+        <input id="ep-discount" type="number" placeholder="e.g. 60" min="0"
+          class="sheet-input"
+          oninput="syncDiscountAmount()">
+      </div>
+      <div>
+        <div class="sheet-label">Amount Received <span style="font-weight:400;color:var(--text-3);text-transform:none">(blank = full)</span></div>
+        <input id="ep-amt" type="number" placeholder="e.g. 1000" min="0"
+          class="sheet-input">
+      </div>
     </div>
-    <div id="ep-orig" style="font-size:11px;color:var(--text-3);margin-bottom:2px"></div>
-    <button class="sheet-confirm" onclick="applyPaySheet()">Add Payment Entry</button>
+    <div id="ep-orig" style="display:none"></div>
+    <button class="sheet-confirm" onclick="savePaymentEntry()">Add Payment</button>
     <button class="sheet-cancel"  onclick="closeSheet('ep-modal')">Cancel</button>
   </div>
 </div>
 
-<!-- Delete modal -->
+<!-- Delete Confirm -->
 <div class="modal-backdrop" id="del-modal" onclick="if(event.target===this)closeDelModal()">
   <div class="modal-box">
     <div class="modal-icon">
@@ -375,7 +368,7 @@
         <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
       </svg>
     </div>
-    <div class="modal-title">Delete order?</div>
+    <div class="modal-title">Delete?</div>
     <div class="modal-sub" id="del-modal-sub">This cannot be undone.</div>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeDelModal()">Cancel</button>
@@ -383,6 +376,267 @@
     </div>
   </div>
 </div>
+
+
+<!-- ══════════════════════════════════════════════════
+     HTML TEMPLATES
+═════════════════════════════════════════════════════→ -->
+
+<!--
+  tpl-student-fields
+  Shared between New Order and Edit Order.
+  JS: buildStudentFields(containerId, prefix, isNew)
+  New  → prefix="n",  ids: n-name, n-class, n-parent, n-mobile, n-notes
+  Edit → prefix="eo", ids: eo-name, eo-class, eo-parent, eo-mobile, eo-notes
+-->
+<template id="tpl-student-fields">
+  <div>
+    <div class="row2">
+      <div class="field">
+        <label>Student Name</label>
+        <input class="sf-name" type="text" placeholder="e.g. Rahul">
+      </div>
+      <div class="field">
+        <label>Class</label>
+        <input class="sf-class" type="text" placeholder="e.g. 5A">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Parent Name</label>
+        <input class="sf-parent" type="text" placeholder="e.g. Suresh Sharma">
+      </div>
+      <div class="field">
+        <label>Mobile Number</label>
+        <input class="sf-mobile" type="tel" placeholder="e.g. 9876543210" maxlength="13">
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:0">
+      <label>Notes <span style="font-weight:400;color:var(--text-3)">(optional)</span></label>
+      <input class="sf-notes" type="text" placeholder="e.g. alteration needed">
+    </div>
+  </div>
+</template>
+
+<!--
+  tpl-items-section
+  Shared between New Order and Edit Order.
+  JS: buildItemsSection(wrapId, itemsCtnId, addBtnsId, totalId, totalLabel, isEdit)
+-->
+<template id="tpl-items-section">
+  <div class="section">
+    <div class="section-title">Dress Items</div>
+    <div class="col-labels">
+      <span>Item</span><span>Size</span><span>Qty</span>
+      <span style="text-align:right">Line Total</span><span></span>
+    </div>
+    <div class="is-items-ctn"></div>
+    <div class="is-add-btns add-buttons"></div>
+    <div class="total-card">
+      <div class="is-total-row"></div>
+    </div>
+  </div>
+</template>
+
+<!-- Order card -->
+<template id="tpl-order-card">
+  <div class="order-card">
+    <div class="order-card-top">
+      <div style="flex:1;min-width:0">
+        <div class="order-name">
+          <span class="oc-student-name"></span>
+          <span class="oc-student-class" style="font-size:12px;font-weight:400;color:var(--text-3)"></span>
+        </div>
+        <div class="oc-contact order-contact" style="margin-top:3px"></div>
+        <div class="oc-meta   order-contact" style="margin-top:1px"></div>
+        <div class="oc-badges" style="margin-top:6px;display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+          <span class="oc-status-badge badge"></span>
+          <span class="oc-order-num" style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;font-family:monospace;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:#6b7280"></span>
+        </div>
+        <div class="oc-notes" style="font-size:12px;color:var(--orange);margin-top:4px;display:none;align-items:center;gap:4px;font-style:italic">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span class="oc-notes-text"></span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:10px;flex-shrink:0">
+        <div class="menu-wrap oc-menu-wrap">
+          <button class="menu-btn oc-menu-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="2.5" r="1.4"/><circle cx="8" cy="8" r="1.4"/><circle cx="8" cy="13.5" r="1.4"/></svg>
+          </button>
+          <div class="menu-dropdown oc-menu-dropdown">
+            <button class="menu-item oc-edit-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit Order
+            </button>
+            <button class="menu-item oc-delivery-menu-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              Mark Delivery
+            </button>
+            <button class="menu-item oc-payment-menu-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              Payment &amp; Off
+            </button>
+            <button class="menu-item oc-whatsapp-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Send Bill
+            </button>
+            <button class="menu-item destructive oc-delete-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              Delete
+            </button>
+          </div>
+        </div>
+        <div class="order-amount oc-amount"></div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="card-bottom-left">
+        <button class="oc-quick-pay card-action-btn" style="display:none">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Payment
+        </button>
+        <span class="oc-delivery-badge card-action-btn delivery-action" style="display:none">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <span class="oc-delivery-text"></span>
+        </span>
+      </div>
+      <button class="items-toggle-btn oc-toggle-btn">
+        <svg class="oc-details-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span class="oc-item-count">Details</span>
+        <span class="items-chevron oc-chevron">▸</span>
+      </button>
+    </div>
+    <div class="order-items oc-items-panel" style="display:none"></div>
+  </div>
+</template>
+
+<!-- Order item line -->
+<template id="tpl-order-item-line">
+  <div class="order-item-line">
+    <span style="display:flex;align-items:center;gap:6px">
+      <span class="item-status-dot oil-dot"></span>
+      <span class="oil-label"></span>
+      <span class="oil-pend-note" style="font-size:10px;color:#e11d48;font-weight:600;margin-left:4px;display:none"></span>
+    </span>
+    <span class="oil-price"></span>
+  </div>
+</template>
+
+<!-- Payment history row -->
+<template id="tpl-pay-history-row">
+  <div class="order-item-line" style="color:var(--text-3)">
+    <span class="phr-label"></span>
+    <span class="phr-amt" style="color:var(--green);font-weight:600"></span>
+  </div>
+</template>
+
+<!-- Single item row -->
+<template id="tpl-item-row">
+  <div class="item-row js-item-row" data-type="single">
+    <select class="ir-item-sel"></select>
+    <select class="ir-size-sel"></select>
+    <input  class="ir-qty" type="number" value="1" min="1" max="99" style="text-align:center">
+    <div    class="ir-price item-price">Rs.0</div>
+    <button class="remove-btn ir-remove">&#215;</button>
+  </div>
+</template>
+
+<!-- Suit-set combo row -->
+<template id="tpl-suit-row">
+  <div class="combo-row js-item-row" data-type="suit-set">
+    <div class="combo-top">
+      <div style="font-size:12px;font-weight:600;color:var(--text-2)">Suit Set</div>
+      <input class="sr-qty" type="number" value="1" min="1" max="99" style="text-align:center">
+      <div class="sr-price item-price"></div>
+      <button class="remove-btn sr-remove">&#215;</button>
+    </div>
+    <div class="sr-info" style="font-size:11px;color:var(--text-3);padding:2px 0 4px"></div>
+  </div>
+</template>
+
+<!-- Pant/Lower/Half combo row -->
+<template id="tpl-combo-row">
+  <div class="combo-row js-item-row" data-type="combo">
+    <div class="combo-top">
+      <div class="cr-label" style="font-size:12px;font-weight:600;color:var(--text-2)"></div>
+      <input class="cr-qty" type="number" value="1" min="1" max="99" style="text-align:center">
+      <div class="cr-price item-price">Rs.0</div>
+      <button class="remove-btn cr-remove" title="Remove both">&#215;</button>
+    </div>
+    <div class="combo-sub">
+      <div class="combo-item-row cr-row1">
+        <div class="combo-label cr-label1"></div>
+        <select class="cr-size1"></select>
+        <button class="remove-btn cr-remove1" style="width:24px;height:24px;font-size:14px">&#215;</button>
+      </div>
+      <div class="combo-item-row cr-row2">
+        <div class="combo-label cr-label2"></div>
+        <select class="cr-size2"></select>
+        <button class="remove-btn cr-remove2" style="width:24px;height:24px;font-size:14px">&#215;</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Delivery item toggle row -->
+<template id="tpl-dv-item">
+  <label class="dv-item-row">
+    <div class="dv-item-info">
+      <span class="item-status-dot dvi-dot" style="flex-shrink:0"></span>
+      <span class="dv-item-label dvi-label"></span>
+    </div>
+    <div class="dv-toggle-wrap">
+      <span class="dv-status-text dvi-status"></span>
+      <label class="dv-switch">
+        <input type="checkbox" class="dvi-check">
+        <span class="dv-slider"></span>
+      </label>
+    </div>
+  </label>
+</template>
+
+<!-- Analytics row with amount -->
+<template id="tpl-an-row">
+  <div class="an-row">
+    <div class="an-row-left">
+      <span class="an-row-dot anr-dot"></span>
+      <span class="an-row-label anr-label"></span>
+      <span class="an-row-count anr-count"></span>
+    </div>
+    <div class="an-row-amt anr-amt"></div>
+  </div>
+</template>
+
+<!-- Analytics plain row -->
+<template id="tpl-an-row-plain">
+  <div class="an-row">
+    <div class="an-row-left">
+      <span class="an-row-dot anrp-dot"></span>
+      <span class="an-row-label anrp-label"></span>
+      <span class="an-row-count anrp-count"></span>
+    </div>
+  </div>
+</template>
+
+<!-- Payment sheet history entry -->
+<template id="tpl-pay-entry">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--surface);border-radius:8px;margin-bottom:5px;font-size:13px">
+    <div>
+      <span class="pe-mode" style="font-weight:600;color:var(--text-2)"></span>
+      <span class="pe-date" style="color:var(--text-3);margin-left:6px"></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="pe-amt" style="font-weight:700;color:var(--green)"></span>
+      <button class="pe-del" style="background:none;border:none;cursor:pointer;color:var(--text-3);display:flex;align-items:center;padding:2px" title="Delete">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</template>
+
 
 <script src="js/app.js"></script>
 </body>
