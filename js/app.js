@@ -1,41 +1,37 @@
-/* ══════════════════════════════════════════════════════
-   PRICE TABLES
-══════════════════════════════════════════════════════ */
+/* ----------------------------------------------------------
+   1. PRICE DATA
+---------------------------------------------------------- */
 
 const PRICES = {
   badagaon: {
-    "Tie":          { "Small": 50, "Large": 100 },
-    "Belt":         { "All": 100 },
-    "Socks":        { "Pair": 30 },
-    "Suit":         { "All": 350 },
-    "Trouser":      { "All": 350 },
-    "Jacket":       { "All": 300 },
-    "Half Lower":   { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
-    "Half T-Shirt": { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
-    "Lower":        { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
-    "T-Shirt":      { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
-    "Pant":         { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 },
-    "Shirt":        { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 }
+    'Tie':          { Small: 50, Large: 100 },
+    'Belt':         { All: 100 },
+    'Socks':        { Pair: 30 },
+    'Suit':         { All: 350 },
+    'Trouser':      { All: 350 },
+    'Jacket':       { All: 300 },
+    'Half Lower':   { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
+    'Half T-Shirt': { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
+    'Lower':        { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
+    'T-Shirt':      { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
+    'Pant':         { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 },
+    'Shirt':        { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 }
   },
   baghpat: {
-    "Tie":          { "Small": 50, "Large": 100 },
-    "Belt":         { "All": 100 },
-    "Socks":        { "Pair": 40 },
-    "Suit":         { "All": 400 },
-    "Trouser":      { "All": 400 },
-    "Jacket":       { "All": 300 },
-    "Half Lower":   { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
-    "Half T-Shirt": { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
-    "Lower":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    "T-Shirt":      { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    "Pant":         { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    "Shirt":        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    'Tie':          { Small: 50, Large: 100 },
+    'Belt':         { All: 100 },
+    'Socks':        { Pair: 40 },
+    'Suit':         { All: 400 },
+    'Trouser':      { All: 400 },
+    'Jacket':       { All: 300 },
+    'Half Lower':   { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
+    'Half T-Shirt': { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
+    'Lower':        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    'T-Shirt':      { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    'Pant':         { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
+    'Shirt':        { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 }
   }
 };
-
-/* ══════════════════════════════════════════════════════
-   COMBO SETS
-══════════════════════════════════════════════════════ */
 
 const COMBOS = {
   'pant-shirt':   { item1: 'Pant',       item2: 'Shirt',        label: 'Pant & Shirt Set' },
@@ -43,576 +39,324 @@ const COMBOS = {
   'half-set':     { item1: 'Half Lower', item2: 'Half T-Shirt', label: 'Half Lower & T-Shirt Set' }
 };
 
-/* ══════════════════════════════════════════════════════
-   APP STATE
-══════════════════════════════════════════════════════ */
-
-let currentLocation    = 'badagaon';
-let paymentMode        = 'pending';
-let eoOrderId          = null;
-let itemCounter        = 0;
-let dateFilter         = 'all';
-let locationFilter     = 'all';
-let paymentFilter      = 'all';
-let analyticsDate      = 'today';
-let analyticsLoc       = 'all';
-let orderCounter       = parseInt(localStorage.getItem('uniform_order_counter') || '0');
-let savedOrders        = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
-
-let sheetTarget        = null;
-let siItem             = null;
-let siSize             = null;
-let qsSize             = null;
-let coType             = null;
-let coSize1            = null;
-let pendingDeleteId    = null;
-let epOrderId          = null;
-let pendingPayDeleteId = null;
-
 const COMBO_TYPE_BY_ITEM1 = {
   'Pant':       'pant-shirt',
   'Lower':      'lower-tshirt',
   'Half Lower': 'half-set'
 };
 
-/* ══════════════════════════════════════════════════════
-   PAYMENT MODEL HELPERS
-══════════════════════════════════════════════════════ */
+const BRANCH_LABEL = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
 
-function normalisedPayments(order) {
-  if (order.payments && Array.isArray(order.payments)) return order.payments;
-  if (order.paymentMode && order.paymentMode !== 'pending') {
-    return [{
-      mode:   order.paymentMode,
-      amount: order.finalAmt || 0,
-      date:   order.date     || ''
-    }];
-  }
-  return [];
+
+/* ----------------------------------------------------------
+   2. APP STATE
+---------------------------------------------------------- */
+
+let currentBranch = localStorage.getItem('uniform_branch') || 'badagaon';
+
+// Migrate legacy key written by older versions of the app
+if (!localStorage.getItem('uniform_branch') && localStorage.getItem('uniform_location')) {
+  currentBranch = localStorage.getItem('uniform_location');
+  localStorage.setItem('uniform_branch', currentBranch);
 }
 
-function totalCollected(order) {
-  return normalisedPayments(order).reduce((s, p) => s + (p.amount || 0), 0);
-}
+let prices = PRICES[currentBranch];
 
-function totalDiscount(order) {
-  return order.orderDiscount || 0;
-}
+let newOrderPayMode = 'pending';
+let editOrderId     = null;
+let itemCounter     = 0;
 
-function balanceDue(order) {
-  return Math.max(0, (order.subtotal || 0) - totalCollected(order) - totalDiscount(order));
-}
+// Active filter state — 'all' means no filter applied
+let dateFilter     = 'all';
+let branchFilter   = 'all';   // was: locationFilter
+let paymentFilter  = 'all';
+let deliveryFilter = 'all';
 
-function paymentStatus(order) {
-  const payments = normalisedPayments(order);
-  if (payments.length === 0) return 'pending';
-  if (balanceDue(order) > 0) return 'partial';
-  const modes = [...new Set(payments.map(p => p.mode))];
-  if (modes.length > 1) return 'split';
-  return modes[0] || 'cash';
-}
+// Analytics panel filter state
+let analyticsDate   = 'today';
+let analyticsBranch = 'all';  // was: analyticsLoc
 
-/* ══════════════════════════════════════════════════════
-   TOAST NOTIFICATIONS
-══════════════════════════════════════════════════════ */
+let orderCounter = parseInt(localStorage.getItem('uniform_order_counter') || '0');
 
-function toast(message, type = 'info', duration = 2500) {
-  const container = document.getElementById('toast-container');
-  const el = document.createElement('div');
-  el.className = 'toast' + (type === 'error' ? ' error' : '');
-  el.textContent = message;
-  container.appendChild(el);
-  requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
-  setTimeout(() => {
-    el.classList.remove('show');
-    setTimeout(() => el.remove(), 250);
-  }, duration);
-}
+// Orders are stored under 'uniform_orders2'. Each order object carries a
+// `branch` field (was `location`) — old data with `.location` is read via
+// the fallback `order.branch || order.location || 'badagaon'` below.
+let savedOrders = JSON.parse(localStorage.getItem('uniform_orders2') || '[]');
 
-/* ══════════════════════════════════════════════════════
-   HAMBURGER MENU
-══════════════════════════════════════════════════════ */
+let sheetTarget          = null;
+let pendingDeleteId      = null;
+let paySheetOrderId      = null;
+let pendingPayDeleteId   = null;
+let deliverySheetOrderId = null;
 
-function toggleHamburger() { $('hamburger-menu').classList.toggle('open'); }
-function closeHamburger()  { $('hamburger-menu').classList.remove('open'); }
+const sheet = { quickSetSize: null, comboType: null, comboSize: null, singleItem: null, singleSize: null };
 
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.header-menu-wrap')) closeHamburger();
-});
+// ctx holds live references to the DOM inputs for the current form context
+// ('new' = new-order tab, 'edit' = edit-order screen)
+const ctx = {
+  new:  { name: null, cls: null, parent: null, mobile: null, notes: null },
+  edit: { name: null, cls: null, parent: null, mobile: null, notes: null }
+};
 
-/* ══════════════════════════════════════════════════════
-   UTILITY FUNCTIONS
-══════════════════════════════════════════════════════ */
+
+/* ----------------------------------------------------------
+   3. UTILITIES
+---------------------------------------------------------- */
 
 const $           = id => document.getElementById(id);
 const rupees      = n  => 'Rs.' + (n || 0).toLocaleString('en-IN');
 const saveLocal   = () => localStorage.setItem('uniform_orders2', JSON.stringify(savedOrders));
 const saveCounter = () => localStorage.setItem('uniform_order_counter', String(orderCounter));
-const getPrices   = () => PRICES[currentLocation];
+
+function cloneTemplate(id) {
+  return document.getElementById(id).content.cloneNode(true).firstElementChild;
+}
 
 function getUnitPrice(itemName, size) {
-  const t = getPrices();
-  return t[itemName]?.[size] || t[itemName]?.[parseInt(size)] || 0;
+  return prices[itemName]?.[size] || prices[itemName]?.[parseInt(size)] || 0;
 }
 
-function getSizeOptions(itemName, selectedSize) {
-  return Object.keys(getPrices()[itemName] || {})
-    .map(s => `<option${String(s) === String(selectedSize) ? ' selected' : ''}>${s}</option>`)
-    .join('');
-}
-
-function onEnter(event, nextId) {
-  if (event.key === 'Enter') { event.preventDefault(); $(nextId)?.focus(); }
-}
-
-/* ══════════════════════════════════════════════════════
-   LOCATION / PAYMENT MODE
-══════════════════════════════════════════════════════ */
-
-function setLocation(loc) {
-  currentLocation = loc;
-  ['badagaon', 'baghpat'].forEach(l => $('loc-' + l).classList.toggle('active', l === loc));
-  $('items-container').innerHTML = '';
-  itemCounter = 0;
-  recalc();
-}
-
-function setPayment(mode) {
-  paymentMode = mode;
-  ['cash', 'online', 'pending'].forEach(m => $('pay-' + m).classList.toggle('active', m === mode));
-  const f = $('paid-amt-field');
-  if (f) f.style.display = (mode === 'cash' || mode === 'online') ? '' : 'none';
-}
-function setPaymentFilter(f) {
-  paymentFilter = f;
-  ['all','pending'].forEach(k => $('fopt-pay-'+k)?.classList.toggle('active', k === f));
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
-  updateFilterBar();
-}
-
-/* ══════════════════════════════════════════════════════
-   BUILD ADD BUTTONS
-══════════════════════════════════════════════════════ */
-
-function buildAddButtons(containerId, isEo) {
-  const target = isEo ? 'eo' : 'new';
-  let html = `<button class="add-btn quickset" onclick="openQsSheet('${target}')">
-    Full Set (Pant+Shirt+Lower+T-Shirt+Tie+Belt+Socks)
-  </button>`;
-  Object.entries(COMBOS).forEach(([key, cfg]) => {
-    html += `<button class="add-btn combo" onclick="openCoSheet('${target}','${key}')">${cfg.label}</button>`;
+function buildSizeOptions(itemName, selectedSize) {
+  const frag = document.createDocumentFragment();
+  Object.keys(prices[itemName] || {}).forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    if (String(s) === String(selectedSize)) opt.selected = true;
+    frag.appendChild(opt);
   });
-  html += `<button class="add-btn combo" onclick="openCoSheet('${target}','suit-set')">Suit Set</button>`;
-  html += `<button class="add-btn" onclick="openSiSheet('${target}')">+ Single Item</button>`;
-  $(containerId).innerHTML = html;
+  return frag;
 }
 
-/* ══════════════════════════════════════════════════════
-   BOTTOM SHEET HELPERS
-══════════════════════════════════════════════════════ */
-
-function openSheet(id) { $(id).classList.add('open'); }
-
-function closeSheet(id, event) {
-  if (event && event.target !== $(id)) return;
-  $(id).classList.remove('open');
-}
-
-function stepQty(spanId, delta) {
-  const el  = $(spanId);
-  const val = Math.max(1, Math.min(99, parseInt(el.textContent) + delta));
-  el.textContent = val;
-}
-
-function buildChips(containerId, values, selectedValue, onClickFn) {
-  $(containerId).innerHTML = values.map(v => `
-    <div class="chip${String(v) === String(selectedValue) ? ' selected' : ''}"
-         onclick="${onClickFn}('${v}',this)">${v}</div>
-  `).join('');
-}
-
-function selectChip(containerId, value, el) {
-  $(containerId).querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  return value;
-}
-
-/* ══════════════════════════════════════════════════════
-   QUICK-SET SHEET
-══════════════════════════════════════════════════════ */
-
-function openQsSheet(target) {
-  sheetTarget = target;
-  $('qs-qty').textContent = '1';
-  const sizes = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44];
-  qsSize = String(sizes[0]);
-  buildChips('qs-sizes', sizes, qsSize, 'selectQsSize');
-  openSheet('qs-modal');
-}
-
-function selectQsSize(size, el) { qsSize = selectChip('qs-sizes', size, el); }
-
-function confirmQuickSet() {
-  closeSheet('qs-modal');
-  const isEo  = sheetTarget === 'eo';
-  const ctr   = isEo ? 'eo-items-container' : 'items-container';
-  const pfx   = isEo ? 'e' : 'n';
-  const fn    = isEo ? 'eoRecalc' : 'recalc';
-  const size  = String(qsSize);
-  const tieSz = parseInt(size) >= 34 ? 'Large' : 'Small';
-  const qty   = parseInt($('qs-qty').textContent);
-  _addCombo(ctr, pfx, fn, 'pant-shirt',   size, size, qty);
-  _addCombo(ctr, pfx, fn, 'lower-tshirt', size, size, qty);
-  _addItem(ctr,  pfx, fn, 'Tie',   tieSz, qty);
-  _addItem(ctr,  pfx, fn, 'Belt',  'All', qty);
-  _addItem(ctr,  pfx, fn, 'Socks', 'Pair', qty * 2);
-}
-
-/* ══════════════════════════════════════════════════════
-   SINGLE ITEM SHEET
-══════════════════════════════════════════════════════ */
-
-function openSiSheet(target) {
-  sheetTarget = target;
-  siItem = null; siSize = null;
-  $('si-qty').textContent = '1';
-  const items = Object.keys(getPrices());
-  buildChips('si-items', items, null, 'selectSiItem');
-  $('si-sizes').innerHTML = '<div style="color:var(--text-3);font-size:12px">Select an item first</div>';
-  openSheet('si-modal');
-}
-
-function selectSiItem(item, el) {
-  siItem = selectChip('si-items', item, el);
-  siSize = null;
-  const sizes = Object.keys(getPrices()[item] || {});
-  siSize = String(sizes[0]);
-  buildChips('si-sizes', sizes, siSize, 'selectSiSize');
-}
-
-function selectSiSize(size, el) { siSize = selectChip('si-sizes', size, el); }
-
-function confirmSingleItem() {
-  if (!siItem) { toast('Select an item first', 'error'); return; }
-  if (!siSize) { toast('Select a size first',  'error'); return; }
-  closeSheet('si-modal');
-  const isEo = sheetTarget === 'eo';
-  const ctr  = isEo ? 'eo-items-container' : 'items-container';
-  const pfx  = isEo ? 'e' : 'n';
-  const fn   = isEo ? 'eoRecalc' : 'recalc';
-  _addItem(ctr, pfx, fn, siItem, String(siSize), parseInt($('si-qty').textContent));
-}
-
-/* ══════════════════════════════════════════════════════
-   COMBO SHEET
-══════════════════════════════════════════════════════ */
-
-function openCoSheet(target, type) {
-  sheetTarget = target; coType = type; coSize1 = null;
-  $('co-qty').textContent = '1';
-  if (type === 'suit-set') {
-    const p    = getPrices();
-    const unit = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
-    $('co-title').textContent  = 'Suit Set';
-    $('co-sub').textContent    = `Suit + Trouser + Jacket = ${rupees(unit)} each`;
-    $('co-label1').textContent = '';
-    $('co-sizes1').innerHTML   = '';
-  } else {
-    const cfg   = COMBOS[type];
-    const sizes = Object.keys(getPrices()[cfg.item1] || {});
-    $('co-title').textContent  = cfg.label;
-    $('co-sub').textContent    = 'Both items use the same size';
-    $('co-label1').textContent = 'Select size';
-    coSize1 = String(sizes[0]);
-    buildChips('co-sizes1', sizes, coSize1, 'selectCoSize1');
-  }
-  openSheet('co-modal');
-}
-
-function selectCoSize1(size, el) { coSize1 = selectChip('co-sizes1', size, el); }
-
-function confirmCombo() {
-  const isEo = sheetTarget === 'eo';
-  const ctr  = isEo ? 'eo-items-container' : 'items-container';
-  const pfx  = isEo ? 'e' : 'n';
-  const fn   = isEo ? 'eoRecalc' : 'recalc';
-  const qty  = parseInt($('co-qty').textContent);
-  if (coType === 'suit-set') {
-    closeSheet('co-modal');
-    _addCombo(ctr, pfx, fn, 'suit-set', null, null, qty);
-    return;
-  }
-  if (!coSize1) { toast('Select a size first', 'error'); return; }
-  closeSheet('co-modal');
-  _addCombo(ctr, pfx, fn, coType, String(coSize1), String(coSize1), qty);
-}
-
-/* ══════════════════════════════════════════════════════
-   ADD SINGLE ITEM ROW (internal)
-══════════════════════════════════════════════════════ */
-
-function _addItem(containerId, prefix, recalcFn, defaultItem, defaultSize, defaultQty) {
-  itemCounter++;
-  const id        = prefix + itemCounter;
-  const itemNames = Object.keys(getPrices());
-  const firstItem = defaultItem || itemNames[0];
-  const qty       = defaultQty  || 1;
-  const itemOptions = itemNames
-    .map(n => `<option${n === firstItem ? ' selected' : ''}>${n}</option>`)
-    .join('');
-  const row = document.createElement('div');
-  row.className    = 'item-row';
-  row.id           = 'item-' + id;
-  row.dataset.type = 'single';
-  row.innerHTML = `
-    <select id="isel-${id}" onchange="onItemChange('${id}','${recalcFn}')">${itemOptions}</select>
-    <select id="ssel-${id}" onchange="${recalcFn}()">${getSizeOptions(firstItem, defaultSize)}</select>
-    <input  id="qty-${id}"  type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
-    <div    id="price-${id}" class="item-price">Rs.0</div>
-    <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
-  `;
-  $(containerId).appendChild(row);
-  window[recalcFn]();
-}
-
-/* ══════════════════════════════════════════════════════
-   ADD COMBO ROW (internal)
-══════════════════════════════════════════════════════ */
-
-function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSize2, defaultQty) {
-  itemCounter++;
-  const id  = prefix + itemCounter;
-  const qty = defaultQty || 1;
-  const row = document.createElement('div');
-  row.className = 'combo-row';
-  row.id        = 'item-' + id;
-
-  if (type === 'suit-set') {
-    const p    = getPrices();
-    const unit = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
-    row.dataset.type = 'suit-set';
-    row.innerHTML = `
-      <div class="combo-top">
-        <div style="font-size:12px;font-weight:600;color:var(--text-2)">Suit Set</div>
-        <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
-        <div id="price-${id}" class="item-price">${rupees(unit)}</div>
-        <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')">&#215;</button>
-      </div>
-      <div style="font-size:11px;color:var(--text-3);padding:2px 0 4px">
-        Suit ${rupees(p['Suit']['All'])} + Trouser ${rupees(p['Trouser']['All'])} + Jacket ${rupees(p['Jacket']['All'])} = ${rupees(unit)} each
-      </div>`;
-  } else {
-    const cfg  = COMBOS[type];
-    const sid1 = id + 'a';
-    const sid2 = id + 'b';
-    row.dataset.type  = 'combo';
-    row.dataset.item1 = cfg.item1;
-    row.dataset.item2 = cfg.item2;
-    row.innerHTML = `
-      <div class="combo-top">
-        <div style="font-size:12px;font-weight:600;color:var(--text-2)">${cfg.label}</div>
-        <input id="qty-${id}" type="number" value="${qty}" min="1" max="99" style="text-align:center" oninput="${recalcFn}()">
-        <div id="price-${id}" class="item-price">Rs.0</div>
-        <button class="remove-btn" onclick="removeItem('${id}','${recalcFn}')" title="Remove both">&#215;</button>
-      </div>
-      <div class="combo-sub">
-        <div class="combo-item-row" id="crow-${sid1}">
-          <div class="combo-label">${cfg.item1}</div>
-          <select id="s1-${id}" onchange="${recalcFn}()">${getSizeOptions(cfg.item1, defaultSize1)}</select>
-          <button class="remove-btn" style="width:24px;height:24px;font-size:14px" onclick="removeComboItem('${sid1}','${id}','${recalcFn}')">&#215;</button>
-        </div>
-        <div class="combo-item-row" id="crow-${sid2}">
-          <div class="combo-label">${cfg.item2}</div>
-          <select id="s2-${id}" onchange="${recalcFn}()">${getSizeOptions(cfg.item2, defaultSize2 || defaultSize1)}</select>
-          <button class="remove-btn" style="width:24px;height:24px;font-size:14px" onclick="removeComboItem('${sid2}','${id}','${recalcFn}')">&#215;</button>
-        </div>
-      </div>`;
-  }
-  $(containerId).appendChild(row);
-  window[recalcFn]();
-}
-
-/* ══════════════════════════════════════════════════════
-   ITEM HELPERS
-══════════════════════════════════════════════════════ */
-
-function onItemChange(id, recalcFn) {
-  $('ssel-' + id).innerHTML = getSizeOptions($('isel-' + id).value);
-  window[recalcFn]();
-}
-
-function removeItem(id, recalcFn) {
-  const el = $('item-' + id);
-  if (el) el.remove();
-  window[recalcFn]();
-}
-
-function removeComboItem(sid, comboId, recalcFn) {
-  const subRow  = $('crow-' + sid);
-  const comboEl = $('item-' + comboId);
-  if (!subRow || !comboEl) return;
-  subRow.remove();
-  const remaining = comboEl.querySelectorAll('.combo-item-row');
-  if (remaining.length === 0) {
-    comboEl.remove();
-  } else {
-    const topLabel = comboEl.querySelector('.combo-top div');
-    if (topLabel) topLabel.style.fontSize = '11px';
-  }
-  window[recalcFn]();
-}
-
-/* ══════════════════════════════════════════════════════
-   RECALCULATE TOTALS
-══════════════════════════════════════════════════════ */
-
-function _recalc(containerId, totalId) {
-  let subtotal = 0;
-  $(containerId).querySelectorAll('[id^="item-"]').forEach(row => {
-    const id      = row.id.replace('item-', '');
-    const type    = row.dataset.type;
-    const qtyEl   = $('qty-'   + id);
-    const priceEl = $('price-' + id);
-    if (!qtyEl) return;
-    const qty = parseInt(qtyEl.value) || 1;
-    let unit = 0;
-    if (type === 'single') {
-      const is = $('isel-' + id), ss = $('ssel-' + id);
-      if (!is) return;
-      unit = getUnitPrice(is.value, ss.value);
-    } else if (type === 'suit-set') {
-      const p = getPrices();
-      unit = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
-    } else if (type === 'combo') {
-      const s1 = $('s1-' + id), s2 = $('s2-' + id);
-      if (s1) unit += getUnitPrice(row.dataset.item1, s1.value);
-      if (s2) unit += getUnitPrice(row.dataset.item2, s2.value);
-      if (!s1 && !s2) return;
-    }
-    const line = unit * qty;
-    subtotal += line;
-    priceEl.textContent = rupees(line);
+function buildItemOptions(selectedItem) {
+  const frag = document.createDocumentFragment();
+  Object.keys(prices).forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name; opt.textContent = name;
+    if (name === selectedItem) opt.selected = true;
+    frag.appendChild(opt);
   });
-  $(totalId).textContent = rupees(subtotal);
-  return subtotal;
+  return frag;
 }
 
-function addItem(di, ds, dq)           { _addItem('items-container',    'n', 'recalc',   di, ds, dq); }
-function addCombo(type, s1, s2, qty)   { _addCombo('items-container',   'n', 'recalc',   type, s1, s2, qty); }
-function recalc()                      { _recalc('items-container',     'grand-total'); }
-function eoAddItem(di, ds, dq)         { _addItem('eo-items-container', 'e', 'eoRecalc', di, ds, dq); }
-function eoAddCombo(type, s1, s2, qty) { _addCombo('eo-items-container','e', 'eoRecalc', type, s1, s2, qty); }
-function eoRecalc()                    { _recalc('eo-items-container',  'eo-grand-total'); }
+function toast(message, type = 'info', duration = 2500) {
+  const el = document.createElement('div');
+  el.className   = 'toast' + (type === 'error' ? ' error' : '');
+  el.textContent = message;
+  $('toast-container').appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 250); }, duration);
+}
 
-/* ══════════════════════════════════════════════════════
-   COLLECT ITEMS
-══════════════════════════════════════════════════════ */
+// Prepend country code 91 for WhatsApp deep-links.
+// Raw input may include spaces, dashes, or a leading zero.
+function normaliseMobile(raw) {
+  const digits = (raw || '').replace(/\D/g, '').replace(/^0+/, '');
+  return digits.length === 10 ? '91' + digits : digits;
+}
 
-function collectItems(containerId) {
-  let items = [], subtotal = 0;
-  $(containerId).querySelectorAll('[id^="item-"]').forEach(row => {
-    const id   = row.id.replace('item-', '');
-    const type = row.dataset.type;
-    const qty  = parseInt($('qty-' + id)?.value) || 1;
-    let unit = 0, label = '', extra = {};
-    if (type === 'single') {
-      const is = $('isel-' + id), ss = $('ssel-' + id);
-      if (!is) return;
-      unit  = getUnitPrice(is.value, ss.value);
-      label = `${is.value} (${ss.value})${qty > 1 ? ' x ' + qty : ''}`;
-    } else if (type === 'suit-set') {
-      const p = getPrices();
-      unit    = p['Suit']['All'] + p['Trouser']['All'] + p['Jacket']['All'];
-      label   = `Suit Set (Suit + Trouser + Jacket)${qty > 1 ? ' x ' + qty : ''}`;
-      extra   = { isSuitSet: true };
-    } else if (type === 'combo') {
-      const s1 = $('s1-' + id), s2 = $('s2-' + id);
-      if (!s1 && !s2) return;
-      const name1 = row.dataset.item1, name2 = row.dataset.item2;
-      if (s1) unit += getUnitPrice(name1, s1.value);
-      if (s2) unit += getUnitPrice(name2, s2.value);
-      const parts = [];
-      if (s1) parts.push(`${name1} (${s1.value})`);
-      if (s2) parts.push(`${name2} (${s2.value})`);
-      label = parts.join(' + ') + (qty > 1 ? ' x ' + qty : '');
-      extra = { isCombo: true };
-    }
-    const lineTotal = unit * qty;
-    subtotal += lineTotal;
-    items.push({ label, lineTotal, ...extra });
+function getSearchValue() {
+  return $('orders-search')?.value || '';
+}
+
+function clearSearch(inputId) {
+  const input = $(inputId);
+  if (!input) return;
+  input.value = '';
+  const clearBtn = $(inputId + '-clear');
+  if (clearBtn) clearBtn.style.display = 'none';
+  renderOrders('');
+  input.focus();
+}
+
+function updateSearchClear(input) {
+  const clearBtn = $(input.id + '-clear');
+  if (clearBtn) clearBtn.style.display = input.value ? 'block' : 'none';
+}
+
+// Helper: returns the branch for an order, handling legacy data that stored
+// the value under the old key name `.location`
+function getOrderBranch(order) {
+  return order.branch || order.location || 'badagaon';
+}
+
+
+/* ----------------------------------------------------------
+   4. FORM HELPERS
+---------------------------------------------------------- */
+
+function buildStudentFields(containerId, ctxKey) {
+  const wrap = $(containerId);
+  wrap.innerHTML = '';
+  wrap.appendChild(cloneTemplate('tpl-student-fields'));
+  ctx[ctxKey].name   = wrap.querySelector('.sf-name');
+  ctx[ctxKey].cls    = wrap.querySelector('.sf-class');
+  ctx[ctxKey].parent = wrap.querySelector('.sf-parent');
+  ctx[ctxKey].mobile = wrap.querySelector('.sf-mobile');
+  ctx[ctxKey].notes  = wrap.querySelector('.sf-notes');
+
+  // Wire up Enter-key navigation between fields for faster data entry
+  const fields = [ctx[ctxKey].name, ctx[ctxKey].cls, ctx[ctxKey].parent, ctx[ctxKey].mobile, ctx[ctxKey].notes];
+  fields.forEach((field, i) => {
+    if (!field) return;
+    field.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const next = fields[i + 1];
+        if (next) next.focus();
+        else field.blur();
+      }
+    });
   });
-  return { items, subtotal };
 }
 
-/* ══════════════════════════════════════════════════════
-   SAVE ORDER
-══════════════════════════════════════════════════════ */
+function buildItemsSection(wrapId, itemsCtnId, addBtnsId, totalId, totalLabel, isEdit) {
+  const wrap = $(wrapId);
+  wrap.innerHTML = '';
+  const sec  = cloneTemplate('tpl-items-section');
+  const ctn  = sec.querySelector('.is-items-ctn');
+  const btns = sec.querySelector('.is-add-btns');
+  const tot  = sec.querySelector('.is-total-row');
 
-function saveOrder() {
-  const sname = $('sname').value.trim();
-  if (!sname) { toast('Please enter student name', 'error'); return; }
-  if (!$('items-container').querySelector('[id^="item-"]')) { toast('Please add at least one item', 'error'); return; }
+  ctn.id  = itemsCtnId;
+  btns.id = addBtnsId;
 
-  const { items, subtotal } = collectItems('items-container');
-  orderCounter++;
-  saveCounter();
-
-  let payments = [];
-  if (paymentMode !== 'pending') {
-    const paidInput = $('paid-amt');
-    const paidAmt   = paidInput && paidInput.value
-      ? Math.min(parseInt(paidInput.value) || subtotal, subtotal)
-      : subtotal;
-    payments = [{
-      mode:   paymentMode,
-      amount: paidAmt,
-      date:   new Date().toLocaleDateString('en-IN')
-    }];
+  if (isEdit) {
+    tot.className = 'total-final';
+    tot.innerHTML = `<span>${totalLabel}</span><span id="${totalId}">Rs.0</span>`;
+  } else {
+    tot.className = 'total-row';
+    tot.innerHTML = `<span class="total-label">${totalLabel}</span><span id="${totalId}" class="total-amt">Rs.0</span>`;
   }
 
-  const order = {
-    id:          Date.now(),
-    orderNum:    orderCounter,
-    location:    currentLocation,
-    sname,
-    sclass:      $('sclass').value.trim(),
-    pname:       $('pname').value.trim(),
-    mobile:      $('mobile').value.trim(),
-    notes:       $('notes').value.trim(),
-    payments,
-    items,
-    subtotal,
-    paymentMode,
-    orderDiscount: 0,
-    discount:      0,
-    finalAmt:      subtotal,
-    date:        new Date().toLocaleDateString('en-IN')
+  wrap.appendChild(sec);
+  buildAddButtons(addBtnsId, isEdit);
+}
+
+function readStudentFields(ctxKey) {
+  const c = ctx[ctxKey];
+  return {
+    studentName:  (c.name?.value   || '').trim(),
+    studentClass: (c.cls?.value    || '').trim(),
+    parentName:   (c.parent?.value || '').trim(),
+    mobile:       (c.mobile?.value || '').trim(),
+    notes:        (c.notes?.value  || '').trim()
   };
-
-  savedOrders.unshift(order);
-  saveLocal();
-  toast(`Order #${String(orderCounter).padStart(3,'0')} saved — ${sname}, ${rupees(subtotal)}`);
-  resetForm();
 }
 
-function resetForm() {
-  ['sname', 'sclass', 'pname', 'mobile', 'notes'].forEach(id => $(id).value = '');
-  if ($('paid-amt')) $('paid-amt').value = '';
-  $('items-container').innerHTML = '';
+function writeStudentFields(ctxKey, order) {
+  const c = ctx[ctxKey];
+  if (c.name)   c.name.value   = order.studentName  || '';
+  if (c.cls)    c.cls.value    = order.studentClass || '';
+  if (c.parent) c.parent.value = order.parentName   || '';
+  if (c.mobile) c.mobile.value = order.mobile       || '';
+  if (c.notes)  c.notes.value  = order.notes        || '';
+}
+
+function clearStudentFields(ctxKey) {
+  const c = ctx[ctxKey];
+  ['name', 'cls', 'parent', 'mobile', 'notes'].forEach(k => { if (c[k]) c[k].value = ''; });
+}
+
+
+/* ----------------------------------------------------------
+   5. DELIVERY HELPERS
+---------------------------------------------------------- */
+
+// Builds the flat list of individual physical items that need to be handed
+// over. Each unit gets a unique key so its given/pending state can be
+// toggled independently even when the same item appears multiple times.
+function buildDeliveryUnits(items) {
+  const units = [];
+  let seq = 0;
+  (items || []).forEach(item => {
+    const qty = item.qty || 1;
+    if (item.itemType === 'single') {
+      for (let q = 0; q < qty; q++)
+        units.push({ key: `${item.itemName}(${item.itemSize})#${seq++}`, label: `${item.itemName} (${item.itemSize})`, given: false });
+    } else if (item.itemType === 'suit-set') {
+      for (let q = 0; q < qty; q++) {
+        units.push({ key: `Suit#${seq++}`,    label: 'Suit',    given: false });
+        units.push({ key: `Trouser#${seq++}`, label: 'Trouser', given: false });
+        units.push({ key: `Jacket#${seq++}`,  label: 'Jacket',  given: false });
+      }
+    } else if (item.itemType === 'combo') {
+      for (let q = 0; q < qty; q++) {
+        if (item.item1Name) units.push({ key: `${item.item1Name}(${item.item1Size})#${seq++}`, label: `${item.item1Name} (${item.item1Size})`, given: false });
+        if (item.item2Name) units.push({ key: `${item.item2Name}(${item.item2Size})#${seq++}`, label: `${item.item2Name} (${item.item2Size})`, given: false });
+      }
+    }
+  });
+  return units;
+}
+
+// Legacy orders created before the delivery-tracking feature was added have no
+// `deliveryUnits` array. We generate the units on the fly and mark them all as
+// already given so they don't incorrectly show as pending.
+function ensureDeliveryUnits(order) {
+  if (Array.isArray(order.deliveryUnits)) return order.deliveryUnits;
+  const units = buildDeliveryUnits(order.items);
+  units.forEach(u => u.given = true);
+  return units;
+}
+
+function pendingItemCount(order) { return ensureDeliveryUnits(order).filter(u => !u.given).length; }
+function allItemsDelivered(order){ return pendingItemCount(order) === 0; }
+
+
+/* ----------------------------------------------------------
+   6. PAYMENT HELPERS
+---------------------------------------------------------- */
+
+function getPayments(order)    { return Array.isArray(order.payments) ? order.payments : []; }
+function totalCollected(order) { return getPayments(order).reduce((s, p) => s + (p.amount || 0), 0); }
+function totalDiscount(order)  { return order.orderDiscount || 0; }
+function balanceDue(order)     { return Math.max(0, (order.subtotal || 0) - totalCollected(order) - totalDiscount(order)); }
+
+function paymentStatus(order) {
+  const payments = getPayments(order);
+  if (!payments.length)      return 'pending';
+  if (balanceDue(order) > 0) return 'partial';
+  const modes = [...new Set(payments.map(p => p.mode))];
+  if (modes.length > 1)      return 'split';
+  return modes[0] || 'cash';
+}
+
+
+/* ----------------------------------------------------------
+   7. UI — HEADER / TABS / BRANCH
+---------------------------------------------------------- */
+
+function toggleHamburger() { $('hamburger-menu').classList.toggle('open'); }
+function closeHamburger()  { $('hamburger-menu').classList.remove('open'); }
+
+// Called when the user taps a branch button on the New Order form.
+// Warns before switching if items are already in the cart (prices differ per branch).
+function setBranch(branch) {
+  const ctn = $('items-container');
+  if (ctn?.querySelector('.js-item-row')) {
+    if (!confirm(`Switch to ${BRANCH_LABEL[branch]}? Current items will be cleared.`)) return;
+  }
+  currentBranch = branch;
+  prices = PRICES[branch];
+  localStorage.setItem('uniform_branch', branch);
+  ['badagaon', 'baghpat'].forEach(b => $('branch-' + b).classList.toggle('active', b === branch));
+  if (ctn) ctn.innerHTML = '';
   itemCounter = 0;
-  setPayment('pending');
-  recalc();
-  document.activeElement?.blur();
+  recalcNew();
 }
 
-/* ══════════════════════════════════════════════════════
-   TABS
-══════════════════════════════════════════════════════ */
+function setNewOrderPayMode(mode) {
+  newOrderPayMode = mode;
+  ['cash', 'online', 'pending'].forEach(m => $('pay-' + m).classList.toggle('active', m === mode));
+  const show = mode !== 'pending';
+  const row = $('payment-extra-row');
+  if (row) row.style.display = show ? 'grid' : 'none';
+}
 
 function showTab(tab) {
   $('tab-new').style.display    = tab === 'new'    ? '' : 'none';
   $('tab-orders').style.display = tab === 'orders' ? '' : 'none';
-  ['new','orders'].forEach(t => $('tab-btn-' + t)?.classList.toggle('active', t === tab));
+  ['new', 'orders'].forEach(t => $('tab-btn-' + t)?.classList.toggle('active', t === tab));
   if (tab === 'orders') renderOrders('');
 }
 
@@ -627,367 +371,1021 @@ function closeAnalytics() {
   document.body.style.overflow = '';
 }
 
-/* ══════════════════════════════════════════════════════
-   ANALYTICS
-══════════════════════════════════════════════════════ */
 
-function setAnalyticsDate(v) { analyticsDate = v; renderAnalytics(); }
-function setAnalyticsLoc(v)  { analyticsLoc  = v; renderAnalytics(); }
+/* ----------------------------------------------------------
+   8. UI — ADD BUTTONS & BOTTOM SHEETS
+---------------------------------------------------------- */
+
+function buildAddButtons(containerId, isEdit) {
+  // sheetTarget ('new' or 'edit') tells the sheet confirm handlers which
+  // item container to add rows into when the user confirms their selection.
+  const t    = isEdit ? 'edit' : 'new';
+  const wrap = $(containerId);
+  wrap.innerHTML = '';
+
+  const btn = (cls, text, handler) => {
+    const b = document.createElement('button');
+    b.className = cls; b.textContent = text; b.onclick = handler;
+    wrap.appendChild(b);
+  };
+
+  btn('add-btn quickset', 'Full Set (Pant+Shirt+Lower+T-Shirt+Tie+Belt+2Socks)', () => openQuickSetSheet(t));
+  Object.entries(COMBOS).forEach(([key, cfg]) => btn('add-btn combo', cfg.label, () => openComboSheet(t, key)));
+  btn('add-btn combo', 'Suit Set',      () => openComboSheet(t, 'suit-set'));
+  btn('add-btn',       '+ Single Item', () => openSingleItemSheet(t));
+}
+
+function openSheet(id)  { $(id).classList.add('open'); }
+function closeSheet(id, event) {
+  if (event && event.target !== $(id)) return;
+  $(id).classList.remove('open');
+}
+
+function stepQty(spanId, delta) {
+  const el = $(spanId);
+  el.textContent = Math.max(1, Math.min(99, parseInt(el.textContent) + delta));
+}
+
+function buildChips(containerId, values, selectedValue, onSelectFn) {
+  const wrap = $(containerId);
+  wrap.innerHTML = '';
+  values.forEach(v => {
+    const chip = document.createElement('div');
+    chip.className   = 'chip' + (String(v) === String(selectedValue) ? ' selected' : '');
+    chip.textContent = v;
+    chip.onclick     = () => onSelectFn(String(v), chip);
+    wrap.appendChild(chip);
+  });
+}
+
+function selectChip(containerId, value, el) {
+  $(containerId).querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  return value;
+}
+
+// ── Quick Set sheet ──
+function openQuickSetSheet(target) {
+  sheetTarget = target;
+  $('qs-qty').textContent = '1';
+  const sizes = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44];
+  sheet.quickSetSize = String(sizes[0]);
+  buildChips('qs-sizes', sizes, sheet.quickSetSize,
+    (v, el) => { sheet.quickSetSize = selectChip('qs-sizes', v, el); });
+  openSheet('qs-modal');
+}
+
+function confirmQuickSet() {
+  closeSheet('qs-modal');
+  const isEdit = sheetTarget === 'edit';
+  const ctr = isEdit ? 'edit-items-container' : 'items-container';
+  const pfx = isEdit ? 'e' : 'n';
+  const fn  = isEdit ? 'recalcEdit' : 'recalcNew';
+  const size = String(sheet.quickSetSize);
+  const qty  = parseInt($('qs-qty').textContent);
+  _addCombo(ctr, pfx, fn, 'pant-shirt',   size, size, qty);
+  _addCombo(ctr, pfx, fn, 'lower-tshirt', size, size, qty);
+  _addItem (ctr, pfx, fn, 'Tie',   parseInt(size) >= 34 ? 'Large' : 'Small', qty);
+  _addItem (ctr, pfx, fn, 'Belt',  'All',  qty);
+  _addItem (ctr, pfx, fn, 'Socks', 'Pair', qty * 2);
+}
+
+// ── Single Item sheet ──
+function openSingleItemSheet(target) {
+  sheetTarget = target;
+  sheet.singleItem = sheet.singleSize = null;
+  $('si-qty').textContent = '1';
+  $('si-sizes').innerHTML = '<div style="color:var(--text-3);font-size:12px">Select an item first</div>';
+  buildChips('si-items', Object.keys(prices), null, (item, el) => {
+    sheet.singleItem = selectChip('si-items', item, el);
+    const sizes = Object.keys(prices[item] || {});
+    let defaultSize = String(sizes[0]);
+    if (item === 'Tie') defaultSize = 'Large';
+    sheet.singleSize = defaultSize;
+    buildChips('si-sizes', sizes, sheet.singleSize,
+      (v, el2) => { sheet.singleSize = selectChip('si-sizes', v, el2); });
+  });
+  openSheet('si-modal');
+}
+
+function confirmSingleItem() {
+  if (!sheet.singleItem) { toast('Select an item first', 'error'); return; }
+  if (!sheet.singleSize) { toast('Select a size first',  'error'); return; }
+  closeSheet('si-modal');
+  const isEdit = sheetTarget === 'edit';
+  _addItem(
+    isEdit ? 'edit-items-container' : 'items-container',
+    isEdit ? 'e' : 'n',
+    isEdit ? 'recalcEdit' : 'recalcNew',
+    sheet.singleItem, sheet.singleSize, parseInt($('si-qty').textContent)
+  );
+}
+
+// ── Combo sheet ──
+function openComboSheet(target, type) {
+  sheetTarget = target; sheet.comboType = type; sheet.comboSize = null;
+  $('co-qty').textContent = '1';
+  if (type === 'suit-set') {
+    const unit = prices.Suit.All + prices.Trouser.All + prices.Jacket.All;
+    $('co-title').textContent  = 'Suit Set';
+    $('co-sub').textContent    = `Suit + Trouser + Jacket = ${rupees(unit)} each`;
+    $('co-label1').textContent = '';
+    $('co-sizes1').innerHTML   = '';
+  } else {
+    const cfg   = COMBOS[type];
+    const sizes = Object.keys(prices[cfg.item1] || {});
+    $('co-title').textContent  = cfg.label;
+    $('co-sub').textContent    = 'Both items use the same size';
+    $('co-label1').textContent = 'Select size';
+    sheet.comboSize = String(sizes[0]);
+    buildChips('co-sizes1', sizes, sheet.comboSize,
+      (v, el) => { sheet.comboSize = selectChip('co-sizes1', v, el); });
+  }
+  openSheet('co-modal');
+}
+
+function confirmCombo() {
+  const isEdit = sheetTarget === 'edit';
+  const ctr = isEdit ? 'edit-items-container' : 'items-container';
+  const pfx = isEdit ? 'e' : 'n';
+  const fn  = isEdit ? 'recalcEdit' : 'recalcNew';
+  const qty = parseInt($('co-qty').textContent);
+  if (sheet.comboType === 'suit-set') {
+    closeSheet('co-modal');
+    _addCombo(ctr, pfx, fn, 'suit-set', null, null, qty);
+    return;
+  }
+  if (!sheet.comboSize) { toast('Select a size first', 'error'); return; }
+  closeSheet('co-modal');
+  _addCombo(ctr, pfx, fn, sheet.comboType, sheet.comboSize, sheet.comboSize, qty);
+}
+
+
+/* ----------------------------------------------------------
+   9. UI — ITEM ROWS
+---------------------------------------------------------- */
+
+function _addItem(containerId, prefix, recalcFn, defaultItem, defaultSize, defaultQty) {
+  itemCounter++;
+  const id  = prefix + itemCounter;
+  const row = cloneTemplate('tpl-item-row');
+  row.id = 'item-' + id;
+
+  const itemSel = row.querySelector('.ir-item-sel');
+  const sizeSel = row.querySelector('.ir-size-sel');
+  const qtyIn   = row.querySelector('.ir-qty');
+  const priceEl = row.querySelector('.ir-price');
+  const remBtn  = row.querySelector('.ir-remove');
+
+  itemSel.id = 'isel-' + id;
+  sizeSel.id = 'ssel-' + id;
+  qtyIn.id   = 'qty-'  + id;
+  priceEl.id = 'price-'+ id;
+
+  itemSel.appendChild(buildItemOptions(defaultItem || Object.keys(prices)[0]));
+  sizeSel.appendChild(buildSizeOptions(defaultItem || Object.keys(prices)[0], defaultSize));
+  qtyIn.value = defaultQty || 1;
+
+  itemSel.addEventListener('change', () => {
+    sizeSel.innerHTML = '';
+    sizeSel.appendChild(buildSizeOptions(itemSel.value));
+    window[recalcFn]();
+  });
+  sizeSel.addEventListener('change', () => window[recalcFn]());
+  qtyIn.addEventListener('input',    () => window[recalcFn]());
+  remBtn.addEventListener('click',   () => { row.remove(); window[recalcFn](); });
+
+  $(containerId).appendChild(row);
+  window[recalcFn]();
+}
+
+function _addCombo(containerId, prefix, recalcFn, type, defaultSize1, defaultSize2, defaultQty) {
+  itemCounter++;
+  const id  = prefix + itemCounter;
+  const qty = defaultQty || 1;
+
+  if (type === 'suit-set') {
+    const row   = cloneTemplate('tpl-suit-row');
+    row.id      = 'item-' + id;
+    const qtyIn = row.querySelector('.sr-qty');
+    const price = row.querySelector('.sr-price');
+    const info  = row.querySelector('.sr-info');
+    const rem   = row.querySelector('.sr-remove');
+
+    qtyIn.id = 'qty-' + id; price.id = 'price-' + id;
+    qtyIn.value = qty;
+
+    const unit = prices.Suit.All + prices.Trouser.All + prices.Jacket.All;
+    info.textContent  = `Suit ${rupees(prices.Suit.All)} + Trouser ${rupees(prices.Trouser.All)} + Jacket ${rupees(prices.Jacket.All)} = ${rupees(unit)} each`;
+    price.textContent = rupees(unit * qty);
+
+    qtyIn.addEventListener('input', () => window[recalcFn]());
+    rem.addEventListener('click',   () => { row.remove(); window[recalcFn](); });
+    $(containerId).appendChild(row);
+
+  } else {
+    const cfg  = COMBOS[type];
+    const row  = cloneTemplate('tpl-combo-row');
+    row.id            = 'item-' + id;
+    row.dataset.item1 = cfg.item1;
+    row.dataset.item2 = cfg.item2;
+
+    const qtyIn   = row.querySelector('.cr-qty');
+    const price   = row.querySelector('.cr-price');
+    const size1   = row.querySelector('.cr-size1');
+    const size2   = row.querySelector('.cr-size2');
+    const subRow1 = row.querySelector('.cr-row1');
+    const subRow2 = row.querySelector('.cr-row2');
+
+    row.querySelector('.cr-label').textContent  = cfg.label;
+    row.querySelector('.cr-label1').textContent = cfg.item1;
+    row.querySelector('.cr-label2').textContent = cfg.item2;
+
+    qtyIn.id = 'qty-' + id; price.id = 'price-' + id;
+    size1.id = 's1-'  + id; size2.id  = 's2-'   + id;
+    qtyIn.value = qty;
+
+    size1.appendChild(buildSizeOptions(cfg.item1, defaultSize1));
+    size2.appendChild(buildSizeOptions(cfg.item2, defaultSize2 || defaultSize1));
+
+    const recalc = () => window[recalcFn]();
+    qtyIn.addEventListener('input',  recalc);
+    size1.addEventListener('change', recalc);
+    size2.addEventListener('change', recalc);
+    row.querySelector('.cr-remove').addEventListener('click', () => { row.remove(); recalc(); });
+
+    row.querySelector('.cr-remove1').addEventListener('click', () => {
+      subRow1.remove();
+      if (!row.querySelectorAll('.combo-item-row').length) row.remove();
+      recalc();
+    });
+    row.querySelector('.cr-remove2').addEventListener('click', () => {
+      subRow2.remove();
+      if (!row.querySelectorAll('.combo-item-row').length) row.remove();
+      recalc();
+    });
+
+    $(containerId).appendChild(row);
+  }
+
+  window[recalcFn]();
+}
+
+// Walk all item rows in containerId, compute their line totals using pricesObj,
+// update each row's price display, and return the overall subtotal.
+function _recalc(containerId, totalId, pricesObj = prices) {
+  let subtotal = 0;
+  $(containerId)?.querySelectorAll('.js-item-row').forEach(row => {
+    const id      = row.id.replace('item-', '');
+    const type    = row.dataset.type;
+    const qtyEl   = $('qty-'   + id);
+    const priceEl = $('price-' + id);
+    if (!qtyEl || !priceEl) return;
+    const qty = parseInt(qtyEl.value) || 1;
+    let unit = 0;
+    if (type === 'single') {
+      const is = $('isel-' + id), ss = $('ssel-' + id);
+      if (!is) return;
+      unit = pricesObj[is.value]?.[ss.value] || pricesObj[is.value]?.[parseInt(ss.value)] || 0;
+    } else if (type === 'suit-set') {
+      unit = pricesObj.Suit.All + pricesObj.Trouser.All + pricesObj.Jacket.All;
+    } else if (type === 'combo') {
+      const s1 = $('s1-' + id), s2 = $('s2-' + id);
+      if (s1) unit += pricesObj[row.dataset.item1]?.[s1.value] || pricesObj[row.dataset.item1]?.[parseInt(s1.value)] || 0;
+      if (s2) unit += pricesObj[row.dataset.item2]?.[s2.value] || pricesObj[row.dataset.item2]?.[parseInt(s2.value)] || 0;
+    }
+    const line = unit * qty;
+    subtotal  += line;
+    priceEl.textContent = rupees(line);
+  });
+  const el = $(totalId); if (el) el.textContent = rupees(subtotal);
+  return subtotal;
+}
+
+function recalcNew()  { _recalc('items-container', 'grand-total'); }
+function recalcEdit() {
+  // Use the edited order's own branch prices, not the current new-order branch
+  const order = editOrderId ? savedOrders.find(o => o.id === editOrderId) : null;
+  _recalc('edit-items-container', 'eo-grand-total', PRICES[getOrderBranch(order) || 'badagaon']);
+}
+
+function collectItems(containerId, pricesObj = prices) {
+  const items = [];
+  let subtotal = 0;
+  $(containerId)?.querySelectorAll('.js-item-row').forEach(row => {
+    const id   = row.id.replace('item-', '');
+    const type = row.dataset.type;
+    const qty  = parseInt($('qty-' + id)?.value) || 1;
+    let unit = 0, label = '', extra = {};
+
+    if (type === 'single') {
+      const is = $('isel-' + id), ss = $('ssel-' + id);
+      if (!is) return;
+      unit  = pricesObj[is.value]?.[ss.value] || pricesObj[is.value]?.[parseInt(ss.value)] || 0;
+      label = `${is.value} (${ss.value})${qty > 1 ? ' x ' + qty : ''}`;
+      extra = { itemType: 'single', itemName: is.value, itemSize: ss.value };
+
+    } else if (type === 'suit-set') {
+      unit  = pricesObj.Suit.All + pricesObj.Trouser.All + pricesObj.Jacket.All;
+      label = `Suit Set (Suit + Trouser + Jacket)${qty > 1 ? ' x ' + qty : ''}`;
+      extra = { itemType: 'suit-set' };
+
+    } else if (type === 'combo') {
+      const s1 = $('s1-' + id), s2 = $('s2-' + id);
+      if (!s1 && !s2) return;
+      const n1 = row.dataset.item1, n2 = row.dataset.item2;
+      if (s1) unit += pricesObj[n1]?.[s1.value] || pricesObj[n1]?.[parseInt(s1.value)] || 0;
+      if (s2) unit += pricesObj[n2]?.[s2.value] || pricesObj[n2]?.[parseInt(s2.value)] || 0;
+      const parts = [];
+      if (s1) parts.push(`${n1} (${s1.value})`);
+      if (s2) parts.push(`${n2} (${s2.value})`);
+      label = parts.join(' + ') + (qty > 1 ? ' x ' + qty : '');
+      extra = {
+        itemType:  'combo',
+        item1Name: s1 ? n1 : null, item1Size: s1 ? s1.value : null,
+        item2Name: s2 ? n2 : null, item2Size: s2 ? s2.value : null
+      };
+    }
+    subtotal += unit * qty;
+    items.push({ label, lineTotal: unit * qty, qty, unit, ...extra });
+  });
+  return { items, subtotal };
+}
+
+
+/* ----------------------------------------------------------
+   10. UI — SAVE & RESET
+---------------------------------------------------------- */
+
+function saveOrder() {
+  const fields = readStudentFields('new');
+  if (!fields.studentName) { toast('Please enter student name', 'error'); return; }
+  if (!$('items-container')?.querySelector('.js-item-row')) { toast('Please add at least one item', 'error'); return; }
+  if (fields.mobile && !/^[0-9+\s\-]{7,15}$/.test(fields.mobile)) {
+    toast('Mobile number looks incorrect — please check', 'error'); return;
+  }
+
+  const { items, subtotal } = collectItems('items-container');
+  orderCounter++;
+  saveCounter();
+
+  const newDiscount = parseFloat($('new-discount')?.value) || 0;
+  let payments = [];
+  if (newOrderPayMode !== 'pending') {
+    const raw   = $('paid-amt')?.value.trim();
+    let paidAmt = raw !== '' ? parseFloat(raw) : Math.max(0, subtotal - newDiscount);
+    paidAmt     = Math.min(Math.max(0, paidAmt), subtotal);
+    if (paidAmt > 0)
+      payments = [{ mode: newOrderPayMode, amount: paidAmt, date: new Date().toLocaleDateString('en-IN') }];
+  }
+
+  savedOrders.unshift({
+    id:            Date.now(),
+    orderNum:      orderCounter,
+    branch:        currentBranch,   // stored as 'branch' going forward
+    ...fields,
+    payments,
+    items,
+    subtotal,
+    orderDiscount: newDiscount,
+    date:          new Date().toLocaleDateString('en-IN'),
+    deliveryUnits: buildDeliveryUnits(items).map(u => ({ ...u, given: true }))
+  });
+
+  saveLocal();
+  toast(`Order #${String(orderCounter).padStart(3, '0')} saved — ${fields.studentName}, ${rupees(subtotal)}`);
+  resetNewForm();
+  showTab('orders');
+}
+
+function resetNewForm() {
+  clearStudentFields('new');
+  if ($('paid-amt'))     $('paid-amt').value     = '';
+  if ($('new-discount')) $('new-discount').value = '';
+  const ctn = $('items-container'); if (ctn) ctn.innerHTML = '';
+  itemCounter = 0;
+  setNewOrderPayMode('pending');
+  recalcNew();
+  document.activeElement?.blur();
+}
+
+
+/* ----------------------------------------------------------
+   11. UI — ANALYTICS
+---------------------------------------------------------- */
+
+function setAnalyticsDate(v)   { analyticsDate   = v; renderAnalytics(); }
+function setAnalyticsBranch(v) { analyticsBranch = v; renderAnalytics(); }
+
+function makeAnRow(label, count, amt, color) {
+  const row = cloneTemplate('tpl-an-row');
+  row.querySelector('.anr-dot').style.background = color;
+  row.querySelector('.anr-label').textContent    = label;
+  row.querySelector('.anr-count').textContent    = count;
+  row.querySelector('.anr-amt').textContent      = rupees(amt);
+  return row;
+}
+
+function makeAnRowPlain(label, count, color) {
+  const row = cloneTemplate('tpl-an-row-plain');
+  row.querySelector('.anrp-dot').style.background = color;
+  row.querySelector('.anrp-label').textContent    = label;
+  row.querySelector('.anrp-count').textContent    = count;
+  return row;
+}
+
+function makeAnSection(title) {
+  const sec = document.createElement('div');
+  sec.className = 'section'; sec.style.marginBottom = '1rem';
+  const t = document.createElement('div');
+  t.className = 'section-title'; t.textContent = title;
+  sec.appendChild(t);
+  return sec;
+}
 
 function renderAnalytics() {
-  const now        = new Date();
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  function parseDate(str) { const p = (str || '').split('/'); return new Date(p[2], p[1] - 1, p[0]); }
 
-  function parseDate(str) {
-    const p = (str || '').split('/');
-    return new Date(p[2], p[1]-1, p[0]);
-  }
+  const now   = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let base    = savedOrders;
 
-  let base = savedOrders;
   if (analyticsDate === 'today') {
-    base = base.filter(o => parseDate(o.date).getTime() === todayStart.getTime());
+    base = base.filter(o => parseDate(o.date).getTime() === today.getTime());
   } else if (analyticsDate === 'week') {
-    const weekStart = new Date(todayStart); weekStart.setDate(todayStart.getDate() - 6);
-    base = base.filter(o => { const d = parseDate(o.date); return d >= weekStart && d <= todayStart; });
+    const week = new Date(today); week.setDate(today.getDate() - 6);
+    base = base.filter(o => { const d = parseDate(o.date); return d >= week && d <= today; });
   }
 
-  const orders = analyticsLoc === 'all' ? base
-    : base.filter(o => (o.location || 'badagaon') === analyticsLoc);
+  const orders = analyticsBranch === 'all'
+    ? base
+    : base.filter(o => getOrderBranch(o) === analyticsBranch);
+
+  const sumC = arr => arr.reduce((s, o) => s + totalCollected(o), 0);
 
   let cashAmt = 0, onlineAmt = 0, pendingAmt = 0;
   orders.forEach(o => {
     pendingAmt += balanceDue(o);
-    normalisedPayments(o).forEach(p => {
+    getPayments(o).forEach(p => {
       if (p.mode === 'cash')   cashAmt   += p.amount || 0;
       if (p.mode === 'online') onlineAmt += p.amount || 0;
     });
   });
 
-  const collected     = cashAmt + onlineAmt;
-  const total         = collected + pendingAmt;
-  const cashOrders    = orders.filter(o => paymentStatus(o) === 'cash');
-  const onlineOrders  = orders.filter(o => paymentStatus(o) === 'online');
-  const splitOrders   = orders.filter(o => paymentStatus(o) === 'split');
-  const partialOrders = orders.filter(o => paymentStatus(o) === 'partial');
-  const pendingOrders = orders.filter(o => paymentStatus(o) === 'pending');
-  const badagaon      = orders.filter(o => (o.location||'badagaon') === 'badagaon');
-  const baghpat       = orders.filter(o => o.location === 'baghpat');
+  const collected         = cashAmt + onlineAmt;
+  const ordersWithPayment = orders.filter(o => totalCollected(o) > 0);
+  const ordersWithBalance = orders.filter(o => balanceDue(o) > 0);
+  const cashOrders        = orders.filter(o => paymentStatus(o) === 'cash');
+  const onlineOrders      = orders.filter(o => paymentStatus(o) === 'online');
+  const splitOrders       = orders.filter(o => paymentStatus(o) === 'split');
+  const partialOrders     = orders.filter(o => paymentStatus(o) === 'partial');
+  const pendingOrders     = orders.filter(o => paymentStatus(o) === 'pending');
+  const badagaon          = orders.filter(o => getOrderBranch(o) === 'badagaon');
+  const baghpat           = orders.filter(o => getOrderBranch(o) === 'baghpat');
+  const ordersWithPending = orders.filter(o => pendingItemCount(o) > 0);
+  const totalPendItems    = orders.reduce((s, o) => s + pendingItemCount(o), 0);
+  const fullyDelivered    = orders.filter(o => allItemsDelivered(o));
 
-  function sumCollected(arr) { return arr.reduce((s,o) => s + totalCollected(o), 0); }
+  const wrap = $('analytics-content');
+  wrap.innerHTML = '';
 
-  function row(label, count, amt, color) {
-    return `<div class="an-row">
-      <div class="an-row-left">
-        <span class="an-row-dot" style="background:${color}"></span>
-        <span class="an-row-label">${label}</span>
-        <span class="an-row-count">${count}</span>
-      </div>
-      <div class="an-row-amt">${rupees(amt)}</div>
-    </div>`;
+  const headerCard = document.createElement('div');
+  headerCard.className = 'section an-header-card';
+  headerCard.style.marginBottom = '1rem';
+
+  const makeSegBtn = (value, label, current, setter) => {
+    const b = document.createElement('button');
+    b.className   = 'an-seg-btn' + (current === value ? ' active' : '');
+    b.textContent = label;
+    b.onclick     = () => setter(value);
+    return b;
+  };
+
+  const makeFilterGroup = (labelText, pairs, current, setter) => {
+    const grp = document.createElement('div'); grp.className = 'an-filter-group';
+    const lbl = document.createElement('label'); lbl.className = 'an-filter-label'; lbl.textContent = labelText;
+    const seg = document.createElement('div');   seg.className = 'an-seg';
+    pairs.forEach(([v, l]) => seg.appendChild(makeSegBtn(v, l, current, setter)));
+    grp.appendChild(lbl); grp.appendChild(seg);
+    return grp;
+  };
+
+  const filterRow = document.createElement('div'); filterRow.className = 'an-filter-row';
+  filterRow.appendChild(makeFilterGroup('Period', [['today','Today'],['week','Week'],['all','All Time']], analyticsDate,   setAnalyticsDate));
+  filterRow.appendChild(makeFilterGroup('Branch', [['all','All'],['badagaon','Badagaon'],['baghpat','Baghpat']],           analyticsBranch, setAnalyticsBranch));
+
+  const totBlock = document.createElement('div'); totBlock.className = 'an-total-block';
+  totBlock.innerHTML = `
+    <div class="an-total-label">Total Revenue</div>
+    <div class="an-total-amt">${rupees(collected + pendingAmt)}</div>
+    <div class="an-total-sub">${orders.length} order${orders.length !== 1 ? 's' : ''}</div>`;
+
+  headerCard.appendChild(filterRow);
+  headerCard.appendChild(totBlock);
+  wrap.appendChild(headerCard);
+
+  const collSec = makeAnSection('Collection');
+  collSec.appendChild(makeAnRow('Any payment received',  ordersWithPayment.length, collected,   '#16a34a'));
+  collSec.appendChild(makeAnRow('Balance outstanding',   ordersWithBalance.length, pendingAmt,  '#d97706'));
+  const divider = document.createElement('div'); divider.className = 'an-divider'; divider.style.margin = '8px 0 10px';
+  collSec.appendChild(divider);
+  collSec.appendChild(makeAnRow('Cash',    cashOrders.length,    cashAmt,          '#16a34a'));
+  collSec.appendChild(makeAnRow('Online',  onlineOrders.length,  onlineAmt,        '#1d4ed8'));
+  if (splitOrders.length)   collSec.appendChild(makeAnRow('Split',   splitOrders.length,   sumC(splitOrders),   '#6d28d9'));
+  if (partialOrders.length) collSec.appendChild(makeAnRow('Partial', partialOrders.length, sumC(partialOrders), '#d97706'));
+  if (pendingOrders.length) collSec.appendChild(makeAnRow('Pending', pendingOrders.length, 0,                   '#9ca3af'));
+  wrap.appendChild(collSec);
+
+  const dvSec = makeAnSection('Delivery Status');
+  dvSec.appendChild(makeAnRowPlain('Orders with pending items', ordersWithPending.length, '#e11d48'));
+  dvSec.appendChild(makeAnRowPlain('Total items not yet given', totalPendItems,           '#e11d48'));
+  dvSec.appendChild(makeAnRowPlain('Fully delivered orders',    fullyDelivered.length,    '#16a34a'));
+  wrap.appendChild(dvSec);
+
+  if (analyticsBranch === 'all') {
+    const branchSec = makeAnSection('By Branch');
+    branchSec.appendChild(makeAnRow('Badagaon', badagaon.length, sumC(badagaon), '#16a34a'));
+    branchSec.appendChild(makeAnRow('Baghpat',  baghpat.length,  sumC(baghpat),  '#1d4ed8'));
+    wrap.appendChild(branchSec);
   }
-
-  $('analytics-content').innerHTML = `
-    <div class="section an-header-card" style="margin-bottom:1rem">
-      <div class="an-filter-row">
-        <div class="an-filter-group">
-          <label class="an-filter-label">Period</label>
-          <div class="an-seg">
-            ${[['today','Today'],['week','Week'],['all','All Time']].map(([v,l]) =>
-              `<button class="an-seg-btn${analyticsDate===v?' active':''}" onclick="setAnalyticsDate('${v}')">${l}</button>`
-            ).join('')}
-          </div>
-        </div>
-        <div class="an-filter-group">
-          <label class="an-filter-label">Location</label>
-          <div class="an-seg">
-            ${[['all','All'],['badagaon','Badagaon'],['baghpat','Baghpat']].map(([v,l]) =>
-              `<button class="an-seg-btn${analyticsLoc===v?' active':''}" onclick="setAnalyticsLoc('${v}')">${l}</button>`
-            ).join('')}
-          </div>
-        </div>
-      </div>
-      <div class="an-total-block">
-        <div class="an-total-label">Total Revenue</div>
-        <div class="an-total-amt">${rupees(total)}</div>
-        <div class="an-total-sub">${orders.length} order${orders.length!==1?'s':''}</div>
-      </div>
-    </div>
-
-    <div class="section" style="margin-bottom:1rem">
-      <div class="section-title">Collection</div>
-      ${row('Collected', cashOrders.length+onlineOrders.length+splitOrders.length+partialOrders.length, collected, '#16a34a')}
-      ${row('Pending / Due', pendingOrders.length+partialOrders.length, pendingAmt, '#d97706')}
-      <div class="an-divider" style="margin:8px 0 10px"></div>
-      ${row('Cash',   cashAmt,   cashAmt,   '#16a34a')}
-      ${row('Online', onlineAmt, onlineAmt, '#1d4ed8')}
-      ${splitOrders.length   ? row('Split',   splitOrders.length,   sumCollected(splitOrders),   '#6d28d9') : ''}
-      ${partialOrders.length ? row('Partial', partialOrders.length, sumCollected(partialOrders), '#d97706') : ''}
-    </div>
-
-    ${analyticsLoc === 'all' ? `
-    <div class="section" style="margin-bottom:1rem">
-      <div class="section-title">By Location</div>
-      ${row('Badagaon', badagaon.length, sumCollected(badagaon), '#6d28d9')}
-      ${row('Baghpat',  baghpat.length,  sumCollected(baghpat),  '#be185d')}
-    </div>` : ''}
-  `;
 }
 
-/* ══════════════════════════════════════════════════════
-   DATE / LOCATION FILTER
-══════════════════════════════════════════════════════ */
+
+/* ----------------------------------------------------------
+   12. UI — FILTERS
+---------------------------------------------------------- */
 
 function toggleFilterSheet() { $('filter-dropdown').classList.toggle('open'); }
 
 function setDateFilter(f) {
   dateFilter = f;
-  ['all','today','week'].forEach(k => $('fopt-'+k)?.classList.toggle('active', k === f));
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
-  updateFilterBar();
+  ['all', 'today', 'week'].forEach(k => $('fopt-' + k)?.classList.toggle('active', k === f));
+  renderOrders(getSearchValue()); updateFilterBar();
 }
 
-function setLocationFilter(f) {
-  locationFilter = f;
-  ['all','badagaon','baghpat'].forEach(k => $('fopt-loc-'+k)?.classList.toggle('active', k === f));
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
-  updateFilterBar();
+function setBranchFilter(f) {
+  branchFilter = f;
+  ['all', 'badagaon', 'baghpat'].forEach(k => $('fopt-branch-' + k)?.classList.toggle('active', k === f));
+  renderOrders(getSearchValue()); updateFilterBar();
+}
+
+function setDeliveryFilter(f) {
+  deliveryFilter = f;
+  ['all', 'pending-delivery'].forEach(k => $('fopt-del-' + k)?.classList.toggle('active', k === f));
+  renderOrders(getSearchValue()); updateFilterBar();
+}
+
+function setPaymentFilter(f) {
+  paymentFilter = f;
+  ['all', 'pending'].forEach(k => $('fopt-pay-' + k)?.classList.toggle('active', k === f));
+  renderOrders(getSearchValue()); updateFilterBar();
 }
 
 function updateFilterBar() {
-  const dateLabels = { today: 'Today', week: 'This Week' };
-  const locLabels  = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
   const el  = $('filter-bar-label');
   const dot = $('filter-dot');
   const btn = document.querySelector('.filter-btn');
-  const pills = [];
-  if (dateFilter !== 'all')     pills.push(`<span class="filter-pill">${dateLabels[dateFilter]}</span>`);
-  if (locationFilter !== 'all') pills.push(`<span class="filter-pill loc">${locLabels[locationFilter]}</span>`);
-  if (paymentFilter !== 'all')  pills.push(`<span class="filter-pill" style="background:#fef3c7;color:#d97706">Pending / Partial</span>`);
-  if (el) el.innerHTML = pills.length
-    ? pills.join('') + ` <button class="filter-clear-btn" onclick="clearFilters()">✕ Clear</button>` : '';
-  const isActive = dateFilter !== 'all' || locationFilter !== 'all' || paymentFilter !== 'all';
-  if (dot) dot.style.display = isActive ? 'block' : 'none';
-  if (btn) btn.classList.toggle('active', isActive);
+  const active = dateFilter !== 'all' || branchFilter !== 'all' || paymentFilter !== 'all' || deliveryFilter !== 'all';
+
+  if (el) {
+    if (active) {
+      el.innerHTML = `<button class="filter-clear-btn" onclick="clearFilters()">✕ Clear filters</button>`;
+    } else {
+      el.innerHTML = '';
+    }
+  }
+  if (dot) dot.style.display = active ? 'block' : 'none';
+  if (btn) btn.classList.toggle('active', active);
 }
 
 function clearFilters() {
-  dateFilter = 'all'; locationFilter = 'all'; paymentFilter = 'all';
-  ['all','today','week'].forEach(k => $('fopt-'+k)?.classList.toggle('active', k === 'all'));
-  ['all','badagaon','baghpat'].forEach(k => $('fopt-loc-'+k)?.classList.toggle('active', k === 'all'));
-  ['all','pending'].forEach(k => $('fopt-pay-'+k)?.classList.toggle('active', k === 'all'));
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
-  updateFilterBar();
+  dateFilter = branchFilter = paymentFilter = deliveryFilter = 'all';
+  ['all', 'today', 'week'].forEach(k      => $('fopt-' + k)?.classList.toggle('active',        k === 'all'));
+  ['all', 'badagaon', 'baghpat'].forEach(k => $('fopt-branch-' + k)?.classList.toggle('active', k === 'all'));
+  ['all', 'pending'].forEach(k            => $('fopt-pay-' + k)?.classList.toggle('active',     k === 'all'));
+  ['all', 'pending-delivery'].forEach(k   => $('fopt-del-' + k)?.classList.toggle('active',     k === 'all'));
+  renderOrders(getSearchValue()); updateFilterBar();
 }
 
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.filter-btn-wrap')) $('filter-dropdown')?.classList.remove('open');
-});
-
-function matchesDateFilter(order) {
+function matchesFilter(order) {
   if (paymentFilter === 'pending') {
     const s = paymentStatus(order);
     if (s !== 'pending' && s !== 'partial') return false;
   }
-  if (locationFilter !== 'all') {
-    if ((order.location || 'badagaon') !== locationFilter) return false;
-  }
+  if (deliveryFilter === 'pending-delivery' && pendingItemCount(order) === 0) return false;
+  if (branchFilter !== 'all' && getOrderBranch(order) !== branchFilter) return false;
   if (dateFilter === 'all') return true;
-  const parts     = (order.date || '').split('/');
-  const orderDate = new Date(parts[2], parts[1] - 1, parts[0]);
-  const now       = new Date();
-  const today     = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  if (dateFilter === 'today') return orderDate.getTime() === today.getTime();
-  if (dateFilter === 'week') {
-    const weekAgo = new Date(today); weekAgo.setDate(today.getDate() - 6);
-    return orderDate >= weekAgo && orderDate <= today;
-  }
+  const p = (order.date || '').split('/');
+  const d = new Date(p[2], p[1] - 1, p[0]);
+  const now   = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (dateFilter === 'today') return d.getTime() === today.getTime();
+  if (dateFilter === 'week')  { const w = new Date(today); w.setDate(today.getDate() - 6); return d >= w && d <= today; }
   return true;
 }
 
-/* ══════════════════════════════════════════════════════
-   RENDER SAVED ORDERS
-══════════════════════════════════════════════════════ */
+
+/* ----------------------------------------------------------
+   13. UI — RENDER ORDERS LIST
+---------------------------------------------------------- */
 
 function renderOrders(query) {
   query = (query || '').toLowerCase();
 
   const filtered = savedOrders.filter(o => {
-    if (!matchesDateFilter(o)) return false;
-    const orderNumStr = o.orderNum ? '#' + String(o.orderNum).padStart(3,'0') : '';
-    return (
-      (o.sname    || '').toLowerCase().includes(query) ||
-      (o.sclass   || '').toLowerCase().includes(query) ||
-      (o.mobile   || '').includes(query)               ||
-      (o.location || '').toLowerCase().includes(query) ||
-      (o.notes    || '').toLowerCase().includes(query) ||
-      orderNumStr.includes(query)
-    );
+    if (!matchesFilter(o)) return false;
+    const num = o.orderNum ? '#' + String(o.orderNum).padStart(3, '0') : '';
+    return (o.studentName  || '').toLowerCase().includes(query) ||
+           (o.studentClass || '').toLowerCase().includes(query) ||
+           (o.parentName   || '').toLowerCase().includes(query) ||
+           (o.mobile       || '').includes(query)               ||
+           (getOrderBranch(o)).toLowerCase().includes(query)    ||
+           (o.notes        || '').toLowerCase().includes(query) ||
+           num.includes(query);
   });
 
-  const now          = new Date();
-  const todayStart   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const pendingAll   = savedOrders.filter(o => balanceDue(o) > 0 || paymentStatus(o) === 'pending');
-  const pendingToday = pendingAll.filter(o => {
+  const now        = new Date();
+  const today      = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const pendingAll = savedOrders.filter(o => balanceDue(o) > 0 || paymentStatus(o) === 'pending');
+  const pendingTdy = pendingAll.filter(o => {
     const p = (o.date || '').split('/');
-    return new Date(p[2], p[1]-1, p[0]).getTime() === todayStart.getTime();
+    return new Date(p[2], p[1] - 1, p[0]).getTime() === today.getTime();
   });
+
+  const pendDelivAll = savedOrders.filter(o => pendingItemCount(o) > 0);
+  const delivBanner  = $('delivery-banner');
+  if (delivBanner) {
+    if (pendDelivAll.length) {
+      const tot = pendDelivAll.reduce((s, o) => s + pendingItemCount(o), 0);
+      delivBanner.style.display = 'flex';
+      $('delivery-count').textContent       = pendDelivAll.length;
+      $('delivery-items-count').textContent = `${tot} item${tot !== 1 ? 's' : ''} pending`;
+      delivBanner.onclick = () => {
+        $('orders-search').value = ''; $('orders-search-clear') && ($('orders-search-clear').style.display = 'none');
+        setDeliveryFilter('pending-delivery');
+      };
+    } else {
+      delivBanner.style.display = 'none';
+    }
+  }
+
   const banner = $('pending-banner');
-  if (pendingAll.length > 0) {
+  if (pendingAll.length) {
     banner.style.display = 'flex';
     $('pending-count').textContent = pendingAll.length;
-    $('pending-today').textContent = pendingToday.length > 0
-      ? `${pendingToday.length} from today` : 'none today';
+    // Note: banner always counts across all branches so the note only shows when
+    // a branch filter is active (which would cause the number to appear inconsistent)
+    const note = branchFilter !== 'all' ? ' (all branches)' : '';
+    $('pending-today').textContent = pendingTdy.length
+      ? `${pendingTdy.length} today${note}` : `none today${note}`;
     banner.onclick = () => {
-      $('tab-orders').querySelector('.search-box input').value = '';
+      $('orders-search').value = ''; $('orders-search-clear') && ($('orders-search-clear').style.display = 'none');
       setPaymentFilter('pending');
     };
   } else {
     banner.style.display = 'none';
   }
 
-  const totalAmt = filtered.reduce((s, o) => s + totalCollected(o), 0);
-  $('orders-summary').textContent =
-    `${filtered.length} order${filtered.length !== 1 ? 's' : ''} — Collected: ${rupees(totalAmt)}`;
+  const bannersRow = $('banners-row');
+  if (bannersRow) {
+    const eitherVisible = pendingAll.length || pendDelivAll.length;
+    bannersRow.style.display = eitherVisible ? 'flex' : 'none';
+  }
 
-  if (filtered.length === 0) {
-    $('orders-list').innerHTML = '<div class="empty">No orders found</div>';
+  const totalSub = filtered.reduce((s, o) => s + (o.subtotal || 0), 0);
+  const totalCol = filtered.reduce((s, o) => s + totalCollected(o), 0);
+  $('orders-summary').textContent =
+    `${filtered.length} order${filtered.length !== 1 ? 's' : ''} — Total: ${rupees(totalSub)} | Collected: ${rupees(totalCol)}`;
+
+  const list = $('orders-list');
+  list.innerHTML = '';
+
+  if (!filtered.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty'; empty.textContent = 'No orders found';
+    list.appendChild(empty);
     return;
   }
 
   const STATUS_LABEL = { cash: 'Cash', online: 'Online', split: 'Split', partial: 'Partial', pending: 'Pending' };
-  const LOC_TEXT     = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
 
-  const menuIcon = `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-    <circle cx="8" cy="2.5" r="1.4"/>
-    <circle cx="8" cy="8"   r="1.4"/>
-    <circle cx="8" cy="13.5" r="1.4"/>
-  </svg>`;
-
-  $('orders-list').innerHTML = filtered.map(o => {
+  filtered.forEach(o => {
     const status    = paymentStatus(o);
-    const loc       = o.location || 'badagaon';
-    const collected = totalCollected(o);
-    const balance   = balanceDue(o);
-    const discount  = totalDiscount(o);
-    const payments  = normalisedPayments(o);
-    const itemCount = (o.items || []).length;
-    const displayAmt = collected > 0 ? collected : o.subtotal;
+    const branch    = getOrderBranch(o);
+    const payments  = getPayments(o);
+    const pendCount = pendingItemCount(o);
 
-    const orderNum = o.orderNum
-      ? `<span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;font-family:monospace;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:#6b7280">#${String(o.orderNum).padStart(3,'0')}</span>`
-      : '';
+    const card = cloneTemplate('tpl-order-card');
+    card.id    = 'card-' + o.id;
 
-    const quickPay = (status === 'pending' || status === 'partial') ? `
-      <button onclick="openPaySheet(${o.id})"
-        style="font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px;border:1px solid var(--green);background:var(--green-bg);color:var(--green);cursor:pointer;display:inline-flex;align-items:center;gap:4px">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add Payment
-      </button>` : '';
+    card.querySelector('.oc-student-name').textContent  = o.studentName || '';
+    card.querySelector('.oc-student-class').textContent = o.studentClass ? ' ' + o.studentClass : '';
+    card.querySelector('.oc-meta').textContent          = `${BRANCH_LABEL[branch]} · ${o.date}`;
 
-    const paymentHistoryLines = payments.map((p, i) => `
-      <div class="order-item-line" style="color:var(--text-3)">
-        <span>Payment ${i+1} · ${p.mode.charAt(0).toUpperCase()+p.mode.slice(1)} · ${p.date}</span>
-        <span style="color:var(--green);font-weight:600">${rupees(p.amount)}</span>
-      </div>
-      ${p.discount > 0 ? `<div class="order-item-line" style="color:#dc2626;font-size:12px"><span>Discount</span><span>-${rupees(p.discount)}</span></div>` : ''}
-    `).join('');
+    const contactEl = card.querySelector('.oc-contact');
+    if (o.parentName || o.mobile) contactEl.textContent = [o.parentName, o.mobile].filter(Boolean).join(' · ');
+    else contactEl.style.display = 'none';
 
-    return `
-      <div class="order-card" id="card-${o.id}">
-        <div class="order-card-top">
-          <div style="flex:1;min-width:0">
-            <div class="order-name">
-              ${o.sname || ''}
-              <span style="font-size:12px;font-weight:400;color:var(--text-3)">${o.sclass || ''}</span>
-            </div>
-            ${(o.pname || o.mobile) ? `
-            <div class="order-contact">${[o.pname, o.mobile].filter(Boolean).join(' · ')}</div>` : ''}
-            <div class="order-contact" style="margin-top:1px">${[LOC_TEXT[loc], o.date].join(' · ')}</div>
-            <div style="margin-top:6px;display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-              <span class="badge ${status}">${STATUS_LABEL[status]}</span>
-              ${status === 'partial' ? `<span style="font-size:11px;color:#d97706;font-weight:600">Due: ${rupees(balance)}</span>` : ''}
-              ${orderNum}
-              ${quickPay}
-            </div>
-            ${o.notes ? `<div style="font-size:12px;color:var(--orange);margin-top:4px;display:flex;align-items:center;gap:4px;font-style:italic">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              ${o.notes}</div>` : ''}
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:10px;flex-shrink:0">
-            <div class="menu-wrap" id="menu-wrap-${o.id}">
-              <button class="menu-btn" onclick="toggleMenu(${o.id})">${menuIcon}</button>
-              <div class="menu-dropdown" id="menu-${o.id}">
-                <button class="menu-item" onclick="closeMenu(${o.id});openEditOrder(${o.id})">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit Order
-                </button>
-                <button class="menu-item" onclick="closeMenu(${o.id});openPaySheet(${o.id})">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Edit Payment
-                </button>
-                <button class="menu-item destructive" onclick="closeMenu(${o.id});deleteOrder(${o.id})">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete
-                </button>
-              </div>
-            </div>
-            <div class="order-amount">${rupees(displayAmt)}</div>
-            ${balance > 0 && collected > 0 ? `<div style="font-size:11px;color:#d97706;font-weight:600;text-align:right">+${rupees(balance)} due</div>` : ''}
-            ${discount > 0 ? `<div class="discount-badge" style="text-align:right">-${rupees(discount)} off</div>` : ''}
-          </div>
-        </div>
-        <div class="card-bottom">
-          <button class="send-bill-btn" onclick="openWhatsApp(${o.id})">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Send Bill
-          </button>
-          <button class="items-toggle-btn" onclick="toggleItems(${o.id})">
-            ${itemCount} item${itemCount !== 1 ? 's' : ''}
-            <span class="items-chevron" id="chev-${o.id}">▸</span>
-          </button>
-        </div>
-        <div class="order-items" id="items-${o.id}" style="display:none">
-          ${(o.items || []).map(i => `
-            <div class="order-item-line">
-              <span>${i.label}</span><span>${rupees(i.lineTotal)}</span>
-            </div>`).join('')}
-          <div class="order-final-row"><span>Subtotal</span><span>${rupees(o.subtotal)}</span></div>
-          ${paymentHistoryLines}
-          ${balance > 0 ? `<div class="order-final-row" style="color:#d97706"><span>Balance Due</span><span>${rupees(balance)}</span></div>` : ''}
-        </div>
-      </div>`;
-  }).join('');
+    const statusBadge = card.querySelector('.oc-status-badge');
+    statusBadge.textContent = STATUS_LABEL[status];
+    statusBadge.classList.add(status);
+
+    const numBadge = card.querySelector('.oc-order-num');
+    if (o.orderNum) numBadge.textContent = '#' + String(o.orderNum).padStart(3, '0');
+    else numBadge.style.display = 'none';
+
+    if (pendCount > 0) {
+      const dvBadge = card.querySelector('.oc-delivery-badge');
+      card.querySelector('.oc-delivery-text').textContent = `${pendCount} not given`;
+      dvBadge.style.display = 'inline-flex';
+      dvBadge.onclick = () => openDeliverySheet(o.id);
+    }
+
+    const qpBtn = card.querySelector('.oc-quick-pay');
+    if (status === 'pending' || status === 'partial') {
+      qpBtn.style.display = 'inline-flex';
+      qpBtn.onclick = () => openPaymentSheet(o.id);
+    }
+
+    if (o.notes) {
+      const notesEl = card.querySelector('.oc-notes');
+      notesEl.style.display = 'flex';
+      notesEl.querySelector('.oc-notes-text').textContent = o.notes;
+    }
+
+    card.querySelector('.oc-amount').textContent = rupees(o.subtotal);
+
+    const menuDrop = card.querySelector('.oc-menu-dropdown');
+    card.querySelector('.oc-menu-btn').onclick = e => {
+      e.stopPropagation();
+      const isOpen = menuDrop.classList.contains('open');
+      document.querySelectorAll('.menu-dropdown.open').forEach(m => m.classList.remove('open'));
+      if (!isOpen) menuDrop.classList.add('open');
+    };
+    card.querySelector('.oc-edit-btn').onclick          = () => { menuDrop.classList.remove('open'); openEditOrder(o.id); };
+    card.querySelector('.oc-delivery-menu-btn').onclick  = () => { menuDrop.classList.remove('open'); openDeliverySheet(o.id); };
+    card.querySelector('.oc-payment-menu-btn').onclick   = () => { menuDrop.classList.remove('open'); openPaymentSheet(o.id); };
+    card.querySelector('.oc-whatsapp-btn').onclick       = () => { menuDrop.classList.remove('open'); openWhatsApp(o.id); };
+    card.querySelector('.oc-delete-btn').onclick         = () => { menuDrop.classList.remove('open'); deleteOrder(o.id); };
+
+    const panel   = card.querySelector('.oc-items-panel');
+    const chevron = card.querySelector('.oc-chevron');
+    const togBtn  = card.querySelector('.oc-toggle-btn');
+    togBtn.querySelector('.oc-item-count').textContent = 'Details';
+    togBtn.onclick = () => {
+      const open = panel.style.display !== 'none';
+      panel.style.display = open ? 'none' : 'block';
+      chevron.textContent = open ? '▸' : '▾';
+    };
+
+    const units = ensureDeliveryUnits(o);
+    let dvOffset = 0;
+    (o.items || []).forEach(item => {
+      const qty  = item.qty || 1;
+      // uPQ = units per quantity: how many physical pieces one unit of this row represents
+      const uPQ  = item.itemType === 'suit-set' ? 3
+        : item.itemType === 'combo' ? [item.item1Name, item.item2Name].filter(Boolean).length : 1;
+      const rowUnits  = units.slice(dvOffset, dvOffset + qty * uPQ);
+      dvOffset += qty * uPQ;
+      const pendUnits = rowUnits.filter(u => !u.given).length;
+
+      const line = cloneTemplate('tpl-order-item-line');
+      line.querySelector('.oil-dot').classList.add(pendUnits > 0 ? 'dot-pending' : 'dot-given');
+      line.querySelector('.oil-label').textContent = item.label;
+      line.querySelector('.oil-price').textContent = rupees(item.lineTotal);
+      if (pendUnits > 0) {
+        const pn = line.querySelector('.oil-pend-note');
+        pn.style.display = 'inline'; pn.textContent = `${pendUnits} not given`;
+      }
+      panel.appendChild(line);
+    });
+
+    const subRow = document.createElement('div');
+    subRow.className = 'order-final-row';
+    subRow.innerHTML = `<span>Subtotal</span><span>${rupees(o.subtotal)}</span>`;
+    panel.appendChild(subRow);
+
+    payments.forEach((p, i) => {
+      const pRow = cloneTemplate('tpl-pay-history-row');
+      pRow.querySelector('.phr-label').textContent = `Payment ${i + 1} · ${p.mode.charAt(0).toUpperCase() + p.mode.slice(1)} · ${p.date}`;
+      pRow.querySelector('.phr-amt').textContent   = rupees(p.amount);
+      panel.appendChild(pRow);
+    });
+
+    const discount = totalDiscount(o);
+    if (discount > 0) {
+      const dRow = document.createElement('div');
+      dRow.className = 'order-item-line'; dRow.style.color = '#dc2626';
+      dRow.innerHTML = `<span>Discount</span><span>-${rupees(discount)}</span>`;
+      panel.appendChild(dRow);
+    }
+
+    const balance = balanceDue(o);
+    if (balance > 0) {
+      const bRow = document.createElement('div');
+      bRow.className = 'order-final-row'; bRow.style.color = '#d97706';
+      bRow.innerHTML = `<span>Balance Due</span><span>${rupees(balance)}</span>`;
+      panel.appendChild(bRow);
+    }
+
+    list.appendChild(card);
+  });
 }
 
-/* ══════════════════════════════════════════════════════
-   COLLAPSIBLE ITEM LINES
-══════════════════════════════════════════════════════ */
 
-function toggleItems(id) {
-  const panel = $('items-' + id);
-  const chev  = $('chev-'  + id);
-  const open  = panel.style.display !== 'none';
-  panel.style.display = open ? 'none' : 'block';
-  chev.textContent    = open ? '▸' : '▾';
+/* ----------------------------------------------------------
+   14. UI — DELIVERY SHEET
+---------------------------------------------------------- */
+
+function openDeliverySheet(id) {
+  const order = savedOrders.find(o => o.id === id);
+  if (!order) return;
+  deliverySheetOrderId = id;
+  renderDeliverySheet(order);
+  openSheet('dv-modal');
 }
 
-/* ══════════════════════════════════════════════════════
-   THREE-DOT MENU
-══════════════════════════════════════════════════════ */
+function renderDeliverySheet(order) {
+  const units      = ensureDeliveryUnits(order);
+  const pendCount  = units.filter(u => !u.given).length;
+  const givenCount = units.length - pendCount;
 
-function toggleMenu(id) {
-  const menu   = $('menu-' + id);
-  const isOpen = menu.classList.contains('open');
-  document.querySelectorAll('.menu-dropdown.open').forEach(m => m.classList.remove('open'));
-  if (!isOpen) menu.classList.add('open');
+  $('dv-student').textContent = `${order.studentName}${order.studentClass ? ' · ' + order.studentClass : ''}`;
+  $('dv-summary').textContent = pendCount === 0
+    ? `All ${units.length} piece${units.length !== 1 ? 's' : ''} given`
+    : `${pendCount} not given · ${givenCount} given`;
+
+  const ctn = $('dv-items');
+  ctn.innerHTML = '';
+  units.forEach(u => {
+    const row = cloneTemplate('tpl-dv-item');
+    const isPending = !u.given;
+    row.classList.add(isPending ? 'dv-pending' : 'dv-given');
+    row.querySelector('.dvi-dot').classList.add(isPending ? 'dot-pending' : 'dot-given');
+    row.querySelector('.dvi-label').textContent  = u.label;
+    row.querySelector('.dvi-status').textContent = isPending ? 'Not given' : 'Given';
+    const cb = row.querySelector('.dvi-check');
+    cb.checked = u.given;
+    cb.addEventListener('change', () => toggleItemDelivery(order.id, u.key, cb.checked));
+    ctn.appendChild(row);
+  });
 }
 
-function closeMenu(id) { $('menu-' + id)?.classList.remove('open'); }
+function toggleItemDelivery(orderId, unitKey, isGiven) {
+  const idx = savedOrders.findIndex(o => o.id === orderId);
+  if (idx === -1) return;
+  const units = ensureDeliveryUnits(savedOrders[idx]);
+  const unit  = units.find(u => u.key === unitKey);
+  if (unit) unit.given = isGiven;
+  savedOrders[idx].deliveryUnits = units;
+  saveLocal();
+  renderDeliverySheet(savedOrders[idx]);
+  renderOrders(getSearchValue());
+  if (units.every(u => u.given))
+    toast(`All items marked as given for ${savedOrders[idx].studentName}`);
+}
 
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.menu-wrap'))
-    document.querySelectorAll('.menu-dropdown.open').forEach(m => m.classList.remove('open'));
-});
+function markAllDelivered(orderId) {
+  const idx = savedOrders.findIndex(o => o.id === orderId);
+  if (idx === -1) return;
+  const units = ensureDeliveryUnits(savedOrders[idx]);
+  units.forEach(u => u.given = true);
+  savedOrders[idx].deliveryUnits = units;
+  saveLocal();
+  renderDeliverySheet(savedOrders[idx]);
+  renderOrders(getSearchValue());
+  toast('All items marked as given');
+}
 
-/* ══════════════════════════════════════════════════════
-   DELETE ORDER
-══════════════════════════════════════════════════════ */
+
+/* ----------------------------------------------------------
+   15. UI — PAYMENT SHEET
+---------------------------------------------------------- */
+
+function refreshPaymentSheetHistory(id) {
+  const order    = savedOrders.find(o => o.id === id);
+  if (!order) return;
+  const payments = getPayments(order);
+  const histWrap = $('ep-history');
+  histWrap.innerHTML = '';
+
+  const infoBlock = document.createElement('div');
+  infoBlock.className = 'ep-info-block';
+
+  if (payments.length) {
+    const histSec = document.createElement('div');
+    histSec.className = 'ep-info-section';
+
+    const histLabel = document.createElement('div');
+    histLabel.style.cssText = 'font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px';
+    histLabel.textContent = 'Payment History';
+    histSec.appendChild(histLabel);
+
+    payments.forEach((p, i) => {
+      const entry = cloneTemplate('tpl-pay-entry');
+      entry.querySelector('.pe-mode').textContent = p.mode.charAt(0).toUpperCase() + p.mode.slice(1);
+      entry.querySelector('.pe-date').textContent = p.date;
+      entry.querySelector('.pe-amt').textContent  = rupees(p.amount);
+      entry.querySelector('.pe-del').onclick      = () => confirmDeletePayEntry(id, i);
+      entry.style.background = 'transparent';
+      entry.style.borderRadius = '0';
+      entry.style.padding = '4px 0';
+      entry.style.marginBottom = '2px';
+      histSec.appendChild(entry);
+    });
+
+    infoBlock.appendChild(histSec);
+  }
+
+  const totalsSec = document.createElement('div');
+  totalsSec.className = 'ep-info-section';
+
+  const makeRow = (label, val, cls) => {
+    const row = document.createElement('div');
+    row.className = 'ep-totals-row';
+    row.innerHTML = `<span class="ep-totals-label">${label}</span><span class="ep-totals-val ${cls || ''}">${val}</span>`;
+    return row;
+  };
+
+  const bal = balanceDue(order);
+  totalsSec.appendChild(makeRow('Order total',    rupees(order.subtotal),         ''));
+  totalsSec.appendChild(makeRow('Collected',      rupees(totalCollected(order)),  'green'));
+  totalsSec.appendChild(makeRow('Balance due',    rupees(bal),                   bal > 0 ? 'orange' : ''));
+
+  infoBlock.appendChild(totalsSec);
+  histWrap.appendChild(infoBlock);
+
+  if (!(parseFloat($('ep-amt').value) || 0))
+    $('ep-amt').value = bal > 0 ? bal : '';
+}
+
+function openPaymentSheet(id) {
+  const order = savedOrders.find(o => o.id === id);
+  if (!order) return;
+  paySheetOrderId = id;
+  $('ep-amt').value      = '';
+  $('ep-discount').value = order.orderDiscount > 0 ? order.orderDiscount : '';
+  refreshPaymentSheetHistory(id);
+  setPaymentSheetMode('cash');
+  openSheet('ep-modal');
+}
+
+function setPaymentSheetMode(mode) {
+  ['cash', 'online'].forEach(m => { const b = $('ep-' + m); if (b) b.className = 'edit-pay-btn'; });
+  $('ep-' + mode)?.classList.add(mode + '-active');
+  $('ep-modal').dataset.chosenMode = mode;
+}
+
+function syncDiscountAmount() {
+  const order = savedOrders.find(o => o.id === paySheetOrderId);
+  if (!order) return;
+  const disc = parseFloat($('ep-discount').value) || 0;
+  $('ep-amt').value = Math.max(0, (order.subtotal || 0) - totalCollected(order) - disc);
+}
+
+function savePaymentEntry() {
+  if (!paySheetOrderId) return;
+  const idx = savedOrders.findIndex(o => o.id === paySheetOrderId);
+  if (idx === -1) return;
+
+  const newMode = $('ep-modal').dataset.chosenMode || 'cash';
+  const amtVal  = parseFloat($('ep-amt').value)      || 0;
+  const discVal = parseFloat($('ep-discount').value) || 0;
+
+  if (amtVal < 0) { toast('Amount cannot be negative', 'error'); return; }
+  const curBal = balanceDue(savedOrders[idx]);
+  if (amtVal > curBal && curBal > 0)
+    if (!confirm(`Amount (${rupees(amtVal)}) exceeds balance (${rupees(curBal)}). Continue?`)) return;
+  if (discVal > 0 && amtVal === 0)
+    if (!confirm(`Apply a discount of ${rupees(discVal)} with no payment received?`)) return;
+
+  const payments = [...getPayments(savedOrders[idx])];
+  if (amtVal > 0)
+    payments.push({ mode: newMode, amount: amtVal, date: new Date().toLocaleDateString('en-IN') });
+  savedOrders[idx].payments      = payments;
+  savedOrders[idx].orderDiscount = discVal;
+  saveLocal();
+  closeSheet('ep-modal');
+  renderOrders(getSearchValue());
+  toast(amtVal > 0 ? 'Payment added' : `Discount of ${rupees(discVal)} applied`);
+}
+
+function confirmDeletePayEntry(orderId, entryIndex) {
+  const order = savedOrders.find(o => o.id === orderId);
+  if (!order) return;
+  const entry = getPayments(order)[entryIndex];
+  if (!entry) return;
+  pendingPayDeleteId = { orderId, entryIndex };
+  $('del-modal-sub').textContent =
+    `${entry.mode.charAt(0).toUpperCase() + entry.mode.slice(1)} payment of ${rupees(entry.amount)} on ${entry.date}. This cannot be undone.`;
+  $('del-modal').dataset.mode = 'payment';
+  openDelModal();
+}
+
+
+/* ----------------------------------------------------------
+   16. UI — DELETE ORDER
+---------------------------------------------------------- */
 
 function openDelModal()  { $('del-modal').classList.add('open');    }
 function closeDelModal() { $('del-modal').classList.remove('open'); }
@@ -996,7 +1394,7 @@ function deleteOrder(id) {
   const order = savedOrders.find(o => o.id === id);
   pendingDeleteId = id;
   $('del-modal-sub').textContent = order
-    ? `${order.sname || 'This order'} — ${rupees(order.subtotal)}. This cannot be undone.`
+    ? `${order.studentName || 'This order'} — ${rupees(order.subtotal)}. This cannot be undone.`
     : 'This cannot be undone.';
   $('del-modal').dataset.mode = 'order';
   openDelModal();
@@ -1013,324 +1411,244 @@ function confirmDelete() {
     $('del-modal').dataset.mode = '';
     const idx = savedOrders.findIndex(o => o.id === orderId);
     if (idx === -1) return;
-    const payments = normalisedPayments(savedOrders[idx]);
+    const payments = [...getPayments(savedOrders[idx])];
     payments.splice(entryIndex, 1);
-    savedOrders[idx].payments    = payments;
-    savedOrders[idx].finalAmt    = totalCollected(savedOrders[idx]);
-    savedOrders[idx].discount    = totalDiscount(savedOrders[idx]);
-    savedOrders[idx].paymentMode = paymentStatus(savedOrders[idx]);
+    savedOrders[idx].payments      = payments;
+    savedOrders[idx].orderDiscount = savedOrders[idx].orderDiscount || 0;
     saveLocal();
     toast('Payment entry deleted');
-    openPaySheet(orderId);
-    renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+    closeSheet('ep-modal');
+    renderOrders(getSearchValue());
   } else {
     if (!pendingDeleteId) return;
-    savedOrders = savedOrders.filter(o => o.id !== pendingDeleteId);
+    savedOrders     = savedOrders.filter(o => o.id !== pendingDeleteId);
     pendingDeleteId = null;
     saveLocal();
     toast('Order deleted');
-    renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+    renderOrders(getSearchValue());
   }
 }
 
-/* ══════════════════════════════════════════════════════
-   PAYMENT BOTTOM SHEET
-══════════════════════════════════════════════════════ */
 
-function openPaySheet(id) {
-  const order = savedOrders.find(o => o.id === id);
-  if (!order) return;
-  epOrderId = id;
-
-  const balance  = balanceDue(order);
-  const payments = normalisedPayments(order);
-
-  const historyHtml = payments.length ? `
-    <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin:14px 0 6px">Payment History</div>
-    ${payments.map((p, i) => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--surface);border-radius:8px;margin-bottom:5px;font-size:13px">
-        <div>
-          <span style="font-weight:600;color:var(--text-2)">${p.mode.charAt(0).toUpperCase()+p.mode.slice(1)}</span>
-          <span style="color:var(--text-3);margin-left:6px">${p.date}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-weight:700;color:var(--green)">${rupees(p.amount)}</span>
-          <button onclick="confirmDeletePayEntry(${id},${i})"
-            style="background:none;border:none;cursor:pointer;color:var(--text-3);display:flex;align-items:center;padding:2px"
-            title="Delete this entry">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-              <path d="M10 11v6"/><path d="M14 11v6"/>
-              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-            </svg>
-          </button>
-        </div>
-      </div>`).join('')}
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-3);padding:4px 2px 0">
-      <span>Collected so far</span>
-      <span style="font-weight:600;color:var(--text)">${rupees(totalCollected(order))}</span>
-    </div>` : '';
-
-  $('ep-history').innerHTML = historyHtml;
-  $('ep-orig').textContent  = `Order total: ${rupees(order.subtotal)}  •  Balance: ${rupees(balance)}`;
-  $('ep-amt').value         = balance > 0 ? balance : '';
-  $('ep-discount').value    = '';
-
-  // Always show discount field — it's order-level, always editable
-  const existingDiscount = order.orderDiscount || 0;
-  const discRow = $('ep-discount-row');
-  if (discRow) discRow.style.display = '';
-  $('ep-discount').value = existingDiscount > 0 ? existingDiscount : '';
-
-  epSetMode('cash');
-  openSheet('ep-modal');
-}
-
-function epSetMode(mode) {
-  ['pending','cash','online'].forEach(m => {
-    const btn = $('ep-' + m);
-    if (btn) btn.className = 'edit-pay-btn';
-  });
-  const activeBtn = $('ep-' + mode);
-  if (activeBtn) activeBtn.classList.add(mode + '-active');
-  $('ep-modal').dataset.chosenMode = mode;
-}
-
-function epSyncFromDiscount() {
-  const order = savedOrders.find(o => o.id === epOrderId);
-  if (!order) return;
-  const disc = parseInt($('ep-discount').value) || 0;
-  $('ep-amt').value = Math.max(0, balanceDue(order) - disc);
-}
-
-function applyPaySheet() {
-  if (!epOrderId) return;
-  const idx = savedOrders.findIndex(o => o.id === epOrderId);
-  if (idx === -1) return;
-  const newMode = $('ep-modal').dataset.chosenMode || 'cash';
-  const amtVal  = parseFloat($('ep-amt').value)      || 0;
-  const discVal = parseFloat($('ep-discount').value) || 0;
-  if (amtVal < 0) { toast('Amount cannot be negative', 'error'); return; }
-  const payments = normalisedPayments(savedOrders[idx]);
-  // Only add a new payment entry if an amount was actually received
-  if (amtVal > 0) {
-    payments.push({ mode: newMode, amount: amtVal, date: new Date().toLocaleDateString('en-IN') });
-    savedOrders[idx].payments = payments;
-  }
-  // Discount always updates at order level regardless
-  savedOrders[idx].orderDiscount = discVal;
-  savedOrders[idx].finalAmt      = totalCollected(savedOrders[idx]);
-  savedOrders[idx].discount      = discVal;
-  savedOrders[idx].paymentMode   = paymentStatus(savedOrders[idx]);
-  saveLocal();
-  closeSheet('ep-modal');
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
-  toast('Payment entry added');
-}
-
-function confirmDeletePayEntry(orderId, entryIndex) {
-  const order = savedOrders.find(o => o.id === orderId);
-  if (!order) return;
-  const entry = normalisedPayments(order)[entryIndex];
-  if (!entry) return;
-  pendingPayDeleteId = { orderId, entryIndex };
-  $('del-modal-sub').textContent =
-    `${entry.mode.charAt(0).toUpperCase()+entry.mode.slice(1)} payment of ${rupees(entry.amount)} on ${entry.date}. This cannot be undone.`;
-  $('del-modal').dataset.mode = 'payment';
-  openDelModal();
-}
-
-/* ══════════════════════════════════════════════════════
-   FULL ORDER EDIT SCREEN
-══════════════════════════════════════════════════════ */
+/* ----------------------------------------------------------
+   17. UI — EDIT ORDER
+---------------------------------------------------------- */
 
 function openEditOrder(id) {
   const order = savedOrders.find(o => o.id === id);
   if (!order) return;
-  eoOrderId       = id;
-  itemCounter     = 0;
-  currentLocation = order.location || 'badagaon';
-  buildAddButtons('add-btns-eo', true);
-  $('eo-sname').value  = order.sname  || '';
-  $('eo-sclass').value = order.sclass || '';
-  $('eo-pname').value  = order.pname  || '';
-  $('eo-mobile').value = order.mobile || '';
-  $('eo-notes').value  = order.notes  || '';
-  $('eo-items-container').innerHTML = '';
+  editOrderId = id;
+  itemCounter = 0;
 
-  (order.items || []).forEach(savedItem => {
-    if (savedItem.isSuitSet) {
-      const m = savedItem.label.match(/x (\d+)$/);
-      eoAddCombo('suit-set', null, null, m ? parseInt(m[1]) : 1);
-    } else if (savedItem.isCombo) {
-      const m     = savedItem.label.match(/x (\d+)$/);
-      const qty   = m ? parseInt(m[1]) : 1;
-      const clean = savedItem.label.replace(/ x \d+$/, '');
-      const parts = clean.split(' + ');
-      const [n1, s1] = parseItemLabel(parts[0]);
-      const [,   s2] = parts[1] ? parseItemLabel(parts[1]) : [null, null];
-      if (s2) {
-        eoAddCombo(COMBO_TYPE_BY_ITEM1[n1] || 'pant-shirt', s1, s2, qty);
-      } else {
-        eoAddItem(n1, s1, qty);
-      }
+  const editBranch = getOrderBranch(order);
+  const editPrices = PRICES[editBranch];
+
+  // Temporarily override global prices so _addItem / _addCombo pick up the
+  // right price table for this order's branch, then restore afterwards.
+  const savedGlobalBranch = currentBranch;
+  const savedGlobalPrices = prices;
+  currentBranch = editBranch;
+  prices        = editPrices;
+
+  buildStudentFields('edit-student-fields', 'edit');
+  buildItemsSection('edit-items-section', 'edit-items-container', 'add-btns-eo', 'eo-grand-total', 'Total', true);
+  writeStudentFields('edit', order);
+
+  // Show the branch badge in the edit screen header
+  const branchBadge = $('eo-branch-badge');
+  if (branchBadge) { branchBadge.textContent = BRANCH_LABEL[editBranch]; branchBadge.className = `badge ${editBranch}`; }
+
+  $('edit-items-container').innerHTML = '';
+  (order.items || []).forEach(item => {
+    const qty = item.qty || 1;
+    if (item.itemType === 'suit-set') {
+      _addCombo('edit-items-container', 'e', 'recalcEdit', 'suit-set', null, null, qty);
+    } else if (item.itemType === 'combo') {
+      _addCombo('edit-items-container', 'e', 'recalcEdit',
+        COMBO_TYPE_BY_ITEM1[item.item1Name] || 'pant-shirt', item.item1Size, item.item2Size, qty);
     } else {
-      const m   = savedItem.label.match(/x (\d+)$/);
-      const qty = m ? parseInt(m[1]) : 1;
-      const [name, size] = parseItemLabel(savedItem.label.replace(/ x \d+$/, ''));
-      eoAddItem(name, size, qty);
+      _addItem('edit-items-container', 'e', 'recalcEdit', item.itemName, item.itemSize, qty);
     }
   });
 
-  eoRecalc();
+  currentBranch = savedGlobalBranch;
+  prices        = savedGlobalPrices;
+
+  recalcEdit();
   $('edit-order-screen').classList.add('open');
   window.scrollTo(0, 0);
 }
 
-function parseItemLabel(str) {
-  if (!str) return ['', ''];
-  const m = str.trim().match(/^(.+?)\s*\((.+)\)$/);
-  return m ? [m[1].trim(), m[2].trim()] : [str.trim(), ''];
-}
-
 function closeEditOrder() {
   $('edit-order-screen').classList.remove('open');
-  eoOrderId = null;
-  ['badagaon', 'baghpat'].forEach(l =>
-    $('loc-' + l).classList.toggle('active', l === currentLocation)
-  );
-  buildAddButtons('add-btns-new', false);
+  editOrderId = null;
 }
 
 function saveEditOrder() {
-  const sname = $('eo-sname').value.trim();
-  if (!sname) { toast('Please enter student name', 'error'); return; }
-  if (!$('eo-items-container').querySelector('[id^="item-"]')) { toast('Please add at least one item', 'error'); return; }
-  const { items, subtotal } = collectItems('eo-items-container');
-  const idx = savedOrders.findIndex(o => o.id === eoOrderId);
+  const fields = readStudentFields('edit');
+  if (!fields.studentName) { toast('Please enter student name', 'error'); return; }
+  if (!$('edit-items-container')?.querySelector('.js-item-row')) { toast('Please add at least one item', 'error'); return; }
+
+  const idx = savedOrders.findIndex(o => o.id === editOrderId);
   if (idx === -1) { toast('Order not found', 'error'); return; }
-  const orig     = savedOrders[idx];
-  const payments = normalisedPayments(orig);
-  let remaining  = subtotal;
-  const adjustedPayments = payments.map(p => {
+  const orig        = savedOrders[idx];
+  const savedPrices = prices;
+  prices            = PRICES[getOrderBranch(orig)];
+  const { items, subtotal } = collectItems('edit-items-container');
+  prices            = savedPrices;
+  const collected = totalCollected(orig);
+
+  if (subtotal < collected)
+    if (!confirm(
+      `Warning: new total (${rupees(subtotal)}) is less than already collected (${rupees(collected)}).\n` +
+      `Payment entries will be adjusted. Proceed?`
+    )) return;
+
+  // Cap each existing payment so totals don't exceed the new (lower) subtotal.
+  // We work through payments in order, reducing 'remaining' as we go.
+  let remaining = subtotal;
+  const adjustedPayments = [...getPayments(orig)].map(p => {
     const amt = Math.min(p.amount || 0, remaining);
     remaining = Math.max(0, remaining - amt);
     return { ...p, amount: amt };
   });
+
+  // Preserve given/pending state for items that still exist in the edited order.
+  // Keys that no longer appear start as pending (given: false by default).
+  const givenKeys = new Set(ensureDeliveryUnits(orig).filter(u => u.given).map(u => u.key));
+  const newUnits  = buildDeliveryUnits(items);
+  newUnits.forEach(u => { if (givenKeys.has(u.key)) u.given = true; });
+
   savedOrders[idx] = {
-    ...orig,
-    sname,
-    sclass:      $('eo-sclass').value.trim(),
-    pname:       $('eo-pname').value.trim(),
-    mobile:      $('eo-mobile').value.trim(),
-    notes:       $('eo-notes').value.trim(),
-    items, subtotal,
-    payments:    adjustedPayments,
-    finalAmt:    totalCollected({ payments: adjustedPayments }),
-    discount:    totalDiscount({ payments: adjustedPayments }),
-    paymentMode: paymentStatus({ subtotal, payments: adjustedPayments })
+    ...orig, ...fields, items, subtotal,
+    payments:      adjustedPayments,
+    orderDiscount: orig.orderDiscount || 0,
+    deliveryUnits: newUnits
   };
+
   saveLocal();
-  toast(`Order updated — ${sname}, ${rupees(subtotal)}`);
+  toast(`Order updated — ${fields.studentName}, ${rupees(subtotal)}`);
   closeEditOrder();
-  renderOrders($('tab-orders').querySelector('.search-box input')?.value || '');
+  renderOrders(getSearchValue());
 }
 
-/* ══════════════════════════════════════════════════════
-   WHATSAPP BILL
-══════════════════════════════════════════════════════ */
+
+/* ----------------------------------------------------------
+   18. WHATSAPP BILL
+---------------------------------------------------------- */
 
 function openWhatsApp(id) {
   const order = savedOrders.find(o => o.id === id);
   if (!order) return;
-  const orderLabel = order.orderNum ? ` | #${String(order.orderNum).padStart(3,'0')}` : '';
-  const payments   = normalisedPayments(order);
+
+  const payments   = getPayments(order);
   const balance    = balanceDue(order);
   const collected  = totalCollected(order);
   const discount   = totalDiscount(order);
-  const itemLines  = (order.items || []).map(i => `  ${i.label} = Rs.${i.lineTotal.toLocaleString('en-IN')}`).join('\n');
-  const paymentLines = payments.length
+  const orderLabel = order.orderNum ? ` | #${String(order.orderNum).padStart(3, '0')}` : '';
+
+  const dvUnits = ensureDeliveryUnits(order);
+  let dvOffset  = 0;
+  const itemLines = (order.items || []).map(item => {
+    const qty  = item.qty || 1;
+    const uPQ  = item.itemType === 'suit-set' ? 3
+      : item.itemType === 'combo' ? [item.item1Name, item.item2Name].filter(Boolean).length : 1;
+    const rowUnits = dvUnits.slice(dvOffset, dvOffset + qty * uPQ);
+    dvOffset += qty * uPQ;
+    const pend = rowUnits.filter(u => !u.given).length;
+    return `  ${item.label} = Rs.${item.lineTotal.toLocaleString('en-IN')}${pend > 0 ? ` (${pend} pending delivery)` : ''}`;
+  }).join('\n');
+
+  const payLines = payments.length
     ? payments.map((p, i) =>
-        `  Payment ${i+1} (${p.mode.charAt(0).toUpperCase()+p.mode.slice(1)}, ${p.date}) = Rs.${p.amount.toLocaleString('en-IN')}` +
-        (p.discount > 0 ? `\n  Discount = -Rs.${p.discount.toLocaleString('en-IN')}` : '')
+        `  Payment ${i + 1} (${p.mode.charAt(0).toUpperCase() + p.mode.slice(1)}, ${p.date}) = Rs.${p.amount.toLocaleString('en-IN')}`
       ).join('\n')
     : '  No payment received yet';
+
   const contactLines = [
-    order.pname  ? `Parent  : ${order.pname}`  : '',
-    order.mobile ? `Mobile  : ${order.mobile}` : ''
+    order.parentName ? `Parent  : ${order.parentName}` : '',
+    order.mobile     ? `Mobile  : ${order.mobile}`     : ''
   ].filter(Boolean).join('\n');
-  const statusLine = balance > 0
-    ? `*Balance Due = Rs.${balance.toLocaleString('en-IN')}*`
-    : `*Fully Paid ✓*`;
+
+  const totalPend = dvUnits.filter(u => !u.given).length;
+  const pendNote  = totalPend > 0
+    ? `\n *${totalPend} item${totalPend !== 1 ? 's' : ''} pending delivery — will be given when available*` : '';
 
   const message =
 `*Golden Gate International School*
 *Uniform Bill${orderLabel}*
 -------------------------
-Student : ${order.sname || ''}${order.sclass ? ' (' + order.sclass + ')' : ''}
+Student : ${order.studentName || ''}${order.studentClass ? ' (' + order.studentClass + ')' : ''}
 ${contactLines ? contactLines + '\n' : ''}Date    : ${order.date}${order.notes ? '\nNote    : ' + order.notes : ''}
 -------------------------
 *Items:*
-${itemLines}
+${itemLines}${pendNote}
 -------------------------
 *Total = Rs.${order.subtotal.toLocaleString('en-IN')}*
 
 *Payments:*
-${paymentLines}
-${discount > 0 ? `  Total Discount = -Rs.${discount.toLocaleString('en-IN')}\n` : ''}-------------------------
+${payLines}
+${discount > 0 ? `  Discount = -Rs.${discount.toLocaleString('en-IN')}\n` : ''}-------------------------
 *Collected = Rs.${collected.toLocaleString('en-IN')}*
-${statusLine}
+${balance > 0 ? `*Balance Due = Rs.${balance.toLocaleString('en-IN')}*` : '*Fully Paid ✓*'}
 -------------------------
 Thank you!`;
 
   if (order.mobile) {
-    window.open(`https://wa.me/${order.mobile}?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/${normaliseMobile(order.mobile)}?text=${encodeURIComponent(message)}`, '_blank');
   } else {
-    navigator.clipboard.writeText(message)
-      .then(() => toast('No mobile saved — bill copied to clipboard'))
-      .catch(() => toast('Copy failed — please copy manually', 'error'));
+    const fallback = text => {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); toast('No mobile saved — bill copied to clipboard'); }
+      catch { toast('Copy failed — please copy manually', 'error'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && window.isSecureContext)
+      navigator.clipboard.writeText(message).then(() => toast('No mobile saved — bill copied to clipboard')).catch(() => fallback(message));
+    else fallback(message);
   }
 }
 
-/* ══════════════════════════════════════════════════════
-   EXPORT CSV
-══════════════════════════════════════════════════════ */
+
+/* ----------------------------------------------------------
+   19. EXPORT / IMPORT
+---------------------------------------------------------- */
 
 function exportCSV() {
   if (!savedOrders.length) { toast('No orders to export'); return; }
-  const headers = ['Order#','Date','Location','Student','Class','Parent','Mobile','Notes',
-                   'Items','Subtotal','Collected','Discount','Balance','Status','Payment Detail'];
+  const headers = [
+    'Order#', 'Date', 'Branch', 'Student Name', 'Class', 'Parent Name', 'Mobile', 'Notes',
+    'Items', 'Items Pending Delivery', 'Subtotal', 'Collected', 'Discount', 'Balance', 'Status', 'Payment Detail'
+  ];
   const rows = savedOrders.map(o => {
-    const payments  = normalisedPayments(o);
-    const payDetail = payments.map(p =>
-      `${p.mode} Rs.${p.amount} on ${p.date}${p.discount > 0 ? ' (disc Rs.'+p.discount+')' : ''}`
-    ).join(' | ');
+    const payments   = getPayments(o);
+    const payDetail  = payments.map(p => `${p.mode} Rs.${p.amount} on ${p.date}`).join(' | ');
+    const pendLabels = ensureDeliveryUnits(o).filter(u => !u.given).map(u => u.label).join(' | ');
     return [
-      o.orderNum ? '#' + String(o.orderNum).padStart(3,'0') : '',
-      o.date, o.location || 'badagaon',
-      o.sname || '', o.sclass || '', o.pname || '', o.mobile || '', o.notes || '',
+      o.orderNum ? '#' + String(o.orderNum).padStart(3, '0') : '',
+      o.date, getOrderBranch(o),
+      o.studentName || '', o.studentClass || '', o.parentName || '', o.mobile || '', o.notes || '',
       (o.items || []).map(i => i.label + ' = Rs.' + i.lineTotal).join(' | '),
+      pendLabels || 'All given',
       o.subtotal, totalCollected(o), totalDiscount(o), balanceDue(o),
       paymentStatus(o), payDetail
     ];
   });
-  const csv  = [headers,...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const csv  = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
   const link = document.createElement('a');
-  link.href     = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  link.download = `uniform-orders-${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.csv`;
+  link.href     = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  link.download = `uniform-orders-${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.csv`;
   link.click();
 }
-
-/* ══════════════════════════════════════════════════════
-   EXPORT / IMPORT JSON
-══════════════════════════════════════════════════════ */
 
 function exportJSON() {
   if (!savedOrders.length) { toast('No orders to export'); return; }
   const backup = { exportedAt: new Date().toISOString(), orderCounter, orders: savedOrders };
   const link   = document.createElement('a');
-  link.href     = URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}));
-  link.download = `uniform-backup-${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.json`;
+  link.href     = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
+  link.download = `uniform-backup-${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.json`;
   link.click();
 }
 
@@ -1338,24 +1656,24 @@ function importJSON(event) {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = e => {
     try {
       const parsed   = JSON.parse(e.target.result);
       const imported = Array.isArray(parsed) ? parsed : (parsed.orders || []);
-      const importRC = parsed.orderCounter || 0;
       if (!imported.length) { toast('No orders found in file', 'error'); return; }
+
       const existingIds = new Set(savedOrders.map(o => o.id));
       const newOrders   = imported.filter(o => o.id && !existingIds.has(o.id));
-      if (newOrders.length === 0) {
-        toast('All orders already exist');
-      } else {
-        savedOrders  = [...savedOrders, ...newOrders].sort((a,b) => b.id - a.id);
-        orderCounter = Math.max(orderCounter, importRC);
-        saveLocal();
-        saveCounter();
-        renderOrders('');
-        toast(`Imported ${newOrders.length} order${newOrders.length !== 1 ? 's' : ''} successfully`);
-      }
+      if (!newOrders.length) { toast('All orders already exist'); return; }
+
+      savedOrders = [...savedOrders, ...newOrders].sort((a, b) => a.id - b.id);
+      savedOrders.forEach((o, i) => { o.orderNum = i + 1; });
+      orderCounter = savedOrders.length;
+      savedOrders.sort((a, b) => b.id - a.id);
+
+      saveLocal(); saveCounter();
+      renderOrders('');
+      toast(`Imported ${newOrders.length} order${newOrders.length !== 1 ? 's' : ''} — order numbers re-sequenced`);
     } catch (err) {
       toast('Import failed: ' + err.message, 'error', 4000);
     }
@@ -1364,10 +1682,27 @@ function importJSON(event) {
   reader.readAsText(file);
 }
 
-/* ══════════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════════ */
 
-buildAddButtons('add-btns-new', false);
-buildAddButtons('add-btns-eo',  true);
-recalc();
+/* ----------------------------------------------------------
+   20. GLOBAL EVENT LISTENERS
+---------------------------------------------------------- */
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.header-menu-wrap')) closeHamburger();
+  if (!e.target.closest('.filter-btn-wrap')) $('filter-dropdown')?.classList.remove('open');
+  if (!e.target.closest('.menu-wrap'))
+    document.querySelectorAll('.menu-dropdown.open').forEach(m => m.classList.remove('open'));
+});
+
+
+/* ----------------------------------------------------------
+   21. INIT
+---------------------------------------------------------- */
+
+buildStudentFields('new-student-fields', 'new');
+buildItemsSection('new-items-section', 'items-container', 'add-btns-new', 'grand-total', 'Subtotal', false);
+
+// Highlight the active branch button to match the persisted preference
+['badagaon', 'baghpat'].forEach(b => $('branch-' + b)?.classList.toggle('active', b === currentBranch));
+
+recalcNew();
