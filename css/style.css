@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------
-   1. DESIGN TOKENS
+   DESIGN TOKENS
 ---------------------------------------------------------- */
 :root {
   --green:      #059669;  --green-bg:   #d1fae5;
@@ -36,7 +36,7 @@
 }
 
 /* ----------------------------------------------------------
-   2. RESET & BASE
+   RESET & BASE
 ---------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -63,7 +63,7 @@ body {
 input, select, button, textarea { font-family: inherit; }
 
 /* ----------------------------------------------------------
-   3. LAYOUT
+   LAYOUT
 ---------------------------------------------------------- */
 .app {
   max-width: 600px;
@@ -277,7 +277,7 @@ input, select, button, textarea { font-family: inherit; }
 .bdot-baghpat  { background: #2563eb; }
 
 /* ----------------------------------------------------------
-   4. SECTION CARDS & FORM FIELDS
+   SECTION CARDS & FORM FIELDS
 ---------------------------------------------------------- */
 .section {
   background: rgba(255,255,255,0.82);
@@ -461,7 +461,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 
 /* ----------------------------------------------------------
-   5. PAYMENT TOGGLE
+   PAYMENT TOGGLE
 ---------------------------------------------------------- */
 .payment-toggle {
   display: flex;
@@ -493,7 +493,7 @@ input, select, button, textarea { font-family: inherit; }
 #pay-online.active  { background: #dbeafe; color: #1e3a8a; }
 
 /* ----------------------------------------------------------
-   6. ITEM TABLE
+   ITEM TABLE
 ---------------------------------------------------------- */
 .col-labels,
 .item-row {
@@ -587,7 +587,7 @@ input, select, button, textarea { font-family: inherit; }
 .remove-btn:hover { background: var(--red-bg); color: var(--red); }
 
 /* ----------------------------------------------------------
-   7. ADD BUTTONS
+   ADD BUTTONS
 ---------------------------------------------------------- */
 .add-buttons {
   display: grid;
@@ -624,7 +624,7 @@ input, select, button, textarea { font-family: inherit; }
 .add-btn.quickset:hover { color: #3730a3; }
 
 /* ----------------------------------------------------------
-   8. TOTAL CARD & SAVE BUTTON
+   TOTAL CARD & SAVE BUTTON
 ---------------------------------------------------------- */
 .total-card {
   margin-top: 14px;
@@ -675,7 +675,7 @@ input, select, button, textarea { font-family: inherit; }
 .save-btn:active { transform: scale(0.99); box-shadow: 0 2px 10px rgba(37,99,235,0.4); }
 
 /* ----------------------------------------------------------
-   9. ORDERS LIST
+   ORDERS LIST
 ---------------------------------------------------------- */
 .search-input-wrap { position: relative; display: flex; align-items: center; }
 .search-input-wrap input { width: 100%; padding-right: 36px; }
@@ -784,7 +784,7 @@ input, select, button, textarea { font-family: inherit; }
 .oc-notes-icon   { flex-shrink: 0; }
 
 /* ----------------------------------------------------------
-   10. BADGES & STATUS DOTS
+   BADGES & STATUS DOTS
 ---------------------------------------------------------- */
 .badge {
   display: inline-flex;
@@ -844,7 +844,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 
 /* ----------------------------------------------------------
-   11. ORDER CARD DETAIL
+   ORDER CARD DETAIL
 ---------------------------------------------------------- */
 .items-toggle-btn {
   display: inline-flex;
@@ -942,7 +942,7 @@ input, select, button, textarea { font-family: inherit; }
 .delivery-action.card-action-btn:hover { background: #ffe4e6; border-color: #fb7185; }
 
 /* ----------------------------------------------------------
-   12. THREE-DOT CARD MENU
+   THREE-DOT CARD MENU
 ---------------------------------------------------------- */
 .menu-wrap { position: relative; display: inline-block; }
 
@@ -997,7 +997,7 @@ input, select, button, textarea { font-family: inherit; }
 .menu-item.destructive:hover { background: var(--red-bg); }
 
 /* ----------------------------------------------------------
-   13. TOAST NOTIFICATIONS
+   TOAST NOTIFICATIONS
 ---------------------------------------------------------- */
 #toast-container {
   position: fixed;
@@ -1039,7 +1039,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 
 /* ----------------------------------------------------------
-   14. FILTER BAR
+   FILTER BAR
 ---------------------------------------------------------- */
 .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .filter-btn-wrap { position: relative; }
@@ -1129,7 +1129,7 @@ input, select, button, textarea { font-family: inherit; }
 .filter-clear-btn:hover { color: var(--red); border-color: var(--red); background: var(--red-bg); }
 
 /* ----------------------------------------------------------
-   15. ANALYTICS / OVERLAY SCREENS
+   ANALYTICS / OVERLAY SCREENS
 ---------------------------------------------------------- */
 #analytics-screen,
 #pricelist-screen,
@@ -1148,8 +1148,6 @@ input, select, button, textarea { font-family: inherit; }
   padding: 16px;
   padding-bottom: 48px;
 }
-/* Edit order screen is slightly wider */
-#edit-order-screen .overlay-inner { max-width: 640px; }
 
 .screen-header {
   display: flex;
@@ -1433,7 +1431,7 @@ input, select, button, textarea { font-family: inherit; }
 .pl-na { color: var(--text-3); font-weight: 400; }
 
 /* ----------------------------------------------------------
-   16. BOTTOM SHEETS
+   BOTTOM SHEETS
 ---------------------------------------------------------- */
 .sheet-modal {
   display: none;
@@ -1705,7 +1703,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 
 /* ----------------------------------------------------------
-   17. DELETE CONFIRM MODAL
+   DELETE CONFIRM MODAL
 ---------------------------------------------------------- */
 .modal-backdrop {
   display: none;
@@ -1780,7 +1778,7 @@ input, select, button, textarea { font-family: inherit; }
 .modal-delete:hover { background: #b91c1c; }
 
 /* ----------------------------------------------------------
-   18. EDIT ORDER SCREEN (back-btn, screen-header/title/overlay-inner shared in §15)
+   EDIT ORDER SCREEN (back-btn, screen-header/title/overlay-inner shared in overlay screens)
 ---------------------------------------------------------- */
 #edit-order-screen {
   display: none;
@@ -1811,7 +1809,7 @@ input, select, button, textarea { font-family: inherit; }
 .back-btn:hover { background: var(--surface); }
 
 /* ----------------------------------------------------------
-   19. DELIVERY SHEET — toggle switch
+   DELIVERY SHEET — toggle switch
 ---------------------------------------------------------- */
 .dv-item-row {
   display: flex;
@@ -1897,7 +1895,7 @@ input, select, button, textarea { font-family: inherit; }
 .dv-mark-all-btn:hover { background: var(--green); color: #fff; }
 
 /* ----------------------------------------------------------
-   20. QR SCREEN
+   QR SCREEN
 ---------------------------------------------------------- */
 .qr-img-section { text-align: center; padding: 24px 16px; margin-top: 4px; }
 .qr-img {
@@ -1912,7 +1910,7 @@ input, select, button, textarea { font-family: inherit; }
 .qr-img[src=""] { display: none; }
 
 /* ----------------------------------------------------------
-   21. ADJUSTMENT SHEET
+   ADJUSTMENT SHEET
 ---------------------------------------------------------- */
 .adj-sign-toggle {
   display: flex;
@@ -1977,7 +1975,7 @@ input, select, button, textarea { font-family: inherit; }
 .adj-row-price.negative { color: #dc2626; }
 
 /* ----------------------------------------------------------
-   22. SETTINGS SCREEN
+   SETTINGS SCREEN
 ---------------------------------------------------------- */
 .settings-field-hint {
   margin-top: 5px;
@@ -2045,7 +2043,7 @@ input, select, button, textarea { font-family: inherit; }
 .settings-clear-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
 
 /* ----------------------------------------------------------
-   23. DATE PICKER INPUTS
+   DATE PICKER INPUTS
 ---------------------------------------------------------- */
 .filter-date-input,
 .an-date-input {
@@ -2064,7 +2062,7 @@ input, select, button, textarea { font-family: inherit; }
 .an-date-input:focus { box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
 /* ----------------------------------------------------------
-   24. SEASON TOGGLE (Settings)
+   SEASON TOGGLE (Settings)
 ---------------------------------------------------------- */
 .season-header-badge { display: none !important; }
 
@@ -2104,7 +2102,7 @@ input, select, button, textarea { font-family: inherit; }
 .season-btn.season-inactive { opacity: 0.55; }
 
 /* ----------------------------------------------------------
-   25. SINGLE ITEM SHEET
+   SINGLE ITEM SHEET
 ---------------------------------------------------------- */
 .si-sheet { padding-bottom: 0; }
 
@@ -2300,7 +2298,7 @@ input, select, button, textarea { font-family: inherit; }
 .si-confirm-btn:active { transform: scale(0.98); }
 
 /* ----------------------------------------------------------
-   26. BOTTOM NAVIGATION BAR
+   BOTTOM NAVIGATION BAR
 ---------------------------------------------------------- */
 .bottom-nav-bar {
   position: fixed;
