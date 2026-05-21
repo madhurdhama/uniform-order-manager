@@ -1,31 +1,22 @@
 # Uniform Order Manager
 
-A mobile-first web app for managing school uniform orders — built for real daily use at a retail shop.
+![Vercel](https://img.shields.io/badge/Deployed-Vercel-0D1117?style=for-the-badge&logo=vercel)
+
+A mobile-first web app for managing school uniform orders.
 
 **Live:** https://uniform-order-manager.vercel.app/
 
 ---
 
-## What it does
-
-Takes uniform orders, calculates totals automatically, tracks payments, and sends bills directly via WhatsApp — fully offline, no backend needed.
-
 ## Tech
 
-Vanilla HTML · CSS · JavaScript — no frameworks, no build tools.
-Data stored in `localStorage`. Hosted on Vercel.
+Vanilla HTML · CSS · JavaScript — no frameworks, no build tools.  
+Data stored in `localStorage` — no server, no cloud. Keep regular backups.  
+Hosted on Vercel.
 
 ```
 uniform-order-manager/
 ├── index.html
-├── css/styles.css
+├── css/style.css
 └── js/app.js
 ```
-
-## Data backup
-
-Use **Backup** in Saved Orders regularly — localStorage is wiped if browser cache is cleared or you switch devices. **Restore** merges from any backup file without duplicates.
-
-## License
-
-MIT
