@@ -1,6 +1,4 @@
-/* ----------------------------------------------------------
-   1. PRICE DATA
----------------------------------------------------------- */
+/* ── PRICE DATA ──────────────────────────────────────────── */
 
 const PRICES_SUMMER = {
   badagaon: {
@@ -69,9 +67,7 @@ const DEFAULT_UPI_ID     = 'madhurdhama@okhdfcbank';
 const DEFAULT_UPI_NUMBER = '6398913135';
 
 
-/* ----------------------------------------------------------
-   2. APP STATE
----------------------------------------------------------- */
+/* ── APP STATE ───────────────────────────────────────────── */
 
 let currentBranch  = localStorage.getItem('uniform_branch')  || 'badagaon';
 let currentSeason  = localStorage.getItem('uniform_season')  || 'summer';
@@ -110,9 +106,7 @@ const ctx = {
 };
 
 
-/* ----------------------------------------------------------
-   3. UTILITIES
----------------------------------------------------------- */
+/* ── UTILITIES ───────────────────────────────────────────── */
 
 const $         = id => document.getElementById(id);
 const rupees    = n  => 'Rs.' + (n || 0).toLocaleString('en-IN');
@@ -187,9 +181,7 @@ function updateSearchClear(input) {
 }
 
 
-/* ----------------------------------------------------------
-   3b. SETTINGS HELPERS
----------------------------------------------------------- */
+/* ── SETTINGS ────────────────────────────────────────────── */
 
 function loadSettings() {
   return {
@@ -266,9 +258,7 @@ function handleQRFileSelect(input) {
 }
 
 
-/* ----------------------------------------------------------
-   3c. SEASON HELPERS
----------------------------------------------------------- */
+/* ── SEASON ──────────────────────────────────────────────── */
 
 function setSeason(season) {
   const ctn = $('items-container');
@@ -317,9 +307,7 @@ function syncSeasonBadge() {
 }
 
 
-/* ----------------------------------------------------------
-   4. FORM HELPERS
----------------------------------------------------------- */
+/* ── FORM HELPERS ────────────────────────────────────────── */
 
 function buildStudentFields(containerId, ctxKey) {
   const wrap = $(containerId);
@@ -383,7 +371,6 @@ function buildItemsSection(wrapId, itemsCtnId, addBtnsId, totalId, totalLabel, i
   if (isEdit) {
     const clearBtn = sec.querySelector('.clear-items-btn');
     if (clearBtn) clearBtn.remove();
-
     tot.className = 'total-final';
     tot.innerHTML = `<span>${totalLabel}</span><span id="${totalId}">Rs.0</span>`;
   } else {
@@ -425,9 +412,7 @@ function clearStudentFields(ctxKey) {
 }
 
 
-/* ----------------------------------------------------------
-   5. DELIVERY HELPERS
----------------------------------------------------------- */
+/* ── DELIVERY HELPERS ────────────────────────────────────── */
 
 function buildDeliveryUnits(items) {
   const units = [];
@@ -458,9 +443,7 @@ function ensureDeliveryUnits(order) { return order.deliveryUnits || []; }
 function pendingItemCount(order)    { return ensureDeliveryUnits(order).filter(u => !u.given).length; }
 
 
-/* ----------------------------------------------------------
-   6. PAYMENT HELPERS
----------------------------------------------------------- */
+/* ── PAYMENT HELPERS ─────────────────────────────────────── */
 
 function getPayments(order)    { return Array.isArray(order.payments) ? order.payments : []; }
 function totalCollected(order) { return getPayments(order).reduce((s, p) => s + (p.amount || 0), 0); }
@@ -477,9 +460,7 @@ function paymentStatus(order) {
 }
 
 
-/* ----------------------------------------------------------
-   7. UI — HEADER / TABS / BRANCH / SEASON
----------------------------------------------------------- */
+/* ── HEADER / TABS / BRANCH / SEASON UI ─────────────────── */
 
 function toggleHamburger() { $('hamburger-menu').classList.toggle('open'); }
 function closeHamburger()  { $('hamburger-menu').classList.remove('open'); }
@@ -546,9 +527,7 @@ function showAnalytics() { renderAnalytics(); $('analytics-screen').style.displa
 function closeAnalytics() { $('analytics-screen').style.display = 'none'; document.body.style.overflow = ''; }
 
 
-/* ----------------------------------------------------------
-   8. UI — ADD BUTTONS & BOTTOM SHEETS
----------------------------------------------------------- */
+/* ── ADD BUTTONS & BOTTOM SHEETS ────────────────────────── */
 
 function buildAddButtons(containerId, isEdit) {
   const t    = isEdit ? 'edit' : 'new';
@@ -613,10 +592,8 @@ function selectChip(containerId, value, el) {
   return value;
 }
 
-// ── Quick Set sheet ──
 function openQuickSetSheet(target) {
   sheetTarget = target;
-  $('qs-qty').textContent = '1';
   const sizes = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44];
   sheet.quickSetSize = String(sizes[0]);
   buildChips('qs-sizes', sizes, sheet.quickSetSize,
@@ -646,20 +623,14 @@ function updateQSPrice() {
   if (!size) { el.textContent = ''; return; }
 
   const p       = prices;
-  const pant    = p['Pant']?.[size]       || p['Pant']?.[parseInt(size)]       || 0;
-  const shirt   = p['Shirt']?.[size]      || p['Shirt']?.[parseInt(size)]      || 0;
-  const lower   = p['Lower']?.[size]      || p['Lower']?.[parseInt(size)]      || 0;
-  const tshirt  = p['T-Shirt']?.[size]    || p['T-Shirt']?.[parseInt(size)]    || 0;
+  const lookup  = (item, sz) => p[item]?.[sz] || p[item]?.[parseInt(sz)] || 0;
   const tieSize = parseInt(size) >= 34 ? 'Large' : 'Small';
-  const tie     = p['Tie']?.[tieSize]     || 0;
-  const belt    = p['Belt']?.['All']      || 0;
-  const socks   = (p['Socks']?.['Pair']   || 0) * 2;
-
-  const unit = pant + shirt + lower + tshirt + tie + belt + socks;
+  const unit    = lookup('Pant', size) + lookup('Shirt', size) + lookup('Lower', size) + lookup('T-Shirt', size)
+             + lookup('Tie', tieSize) + (p['Belt']?.['All'] || 0) + (p['Socks']?.['Pair'] || 0) * 2;
   el.textContent = unit ? rupees(unit * qty) : '';
 }
 
-// ── Single Item sheet ──
+/* Single Item sheet */
 const SI_ACCESSORIES = [
   { item: 'Tie',        size: 'Small'  },
   { item: 'Tie',        size: 'Large'  },
@@ -890,7 +861,7 @@ function confirmSingleItem() {
   items.forEach(({ item, size, qty }) => _addItem(ctr, pfx, fn, item, size, qty));
 }
 
-// ── Combo sheet ──
+/* Combo sheet */
 function openComboSheet(target, type) {
   sheetTarget = target; sheet.comboType = type; sheet.comboSize = null;
   $('co-qty').textContent = '1';
@@ -952,7 +923,7 @@ function confirmCombo() {
   _addCombo(ctr, pfx, fn, sheet.comboType, sheet.comboSize, sheet.comboSize, qty);
 }
 
-// ── Adjustment sheet ──
+/* Adjustment sheet */
 function openAdjSheet(target) {
   sheetTarget = target;
   adjSign = 1;
@@ -979,9 +950,7 @@ function confirmAdj() {
 }
 
 
-/* ----------------------------------------------------------
-   9. UI — ITEM ROWS
----------------------------------------------------------- */
+/* ── ITEM ROWS ───────────────────────────────────────────── */
 
 function _addItem(containerId, prefix, recalcFn, defaultItem, defaultSize, defaultQty, pricesObj) {
   itemCounter++;
@@ -1135,6 +1104,7 @@ function recalcNew() {
   const btn = document.querySelector('#tab-new .clear-items-btn');
   if (btn) btn.style.display = document.getElementById('items-container')?.querySelector('.js-item-row') ? 'block' : 'none';
 }
+
 function recalcEdit() {
   const order = editOrderId ? savedOrders.find(o => o.id === editOrderId) : null;
   _recalc('edit-items-container', 'eo-grand-total', buildPrices(order?.branch || 'badagaon', order?.season || currentSeason));
@@ -1196,9 +1166,7 @@ function collectItems(containerId, pricesObj) {
 }
 
 
-/* ----------------------------------------------------------
-   10. UI — SAVE & RESET
----------------------------------------------------------- */
+/* ── SAVE & RESET ────────────────────────────────────────── */
 
 function saveOrder() {
   const fields = readStudentFields('new');
@@ -1243,11 +1211,10 @@ function resetNewForm() {
 }
 
 function clearAllItems(btn) {
-  const isEdit = !!document.getElementById('edit-items-container')?.contains(btn.closest('.section'));
+  const isEdit      = !!document.getElementById('edit-items-container')?.contains(btn.closest('.section'));
   const containerId = isEdit ? 'edit-items-container' : 'items-container';
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  if (!container.querySelector('.js-item-row')) return;
+  const container   = document.getElementById(containerId);
+  if (!container || !container.querySelector('.js-item-row')) return;
   if (!confirm('Clear all items from this order?')) return;
   container.innerHTML = '';
   itemCounter = 0;
@@ -1256,9 +1223,7 @@ function clearAllItems(btn) {
 }
 
 
-/* ----------------------------------------------------------
-   11. UI — ANALYTICS  (redesigned)
----------------------------------------------------------- */
+/* ── ANALYTICS ───────────────────────────────────────────── */
 
 function setAnalyticsDate(v)  { analyticsDate = v; renderAnalytics(); }
 function setAnalyticsBranch(v){ analyticsBranch = v; renderAnalytics(); }
@@ -1290,8 +1255,8 @@ function renderAnalytics() {
     const outstanding = trueValue(o) - totalCollected(o);
     if (outstanding > 0) balanceAmt += outstanding;
     getPayments(o).forEach(p => {
-      if (p.mode === 'cash')   { cashAmt   += p.amount || 0; }
-      if (p.mode === 'online') { onlineAmt += p.amount || 0; }
+      if (p.mode === 'cash')   cashAmt   += p.amount || 0;
+      if (p.mode === 'online') onlineAmt += p.amount || 0;
     });
     const s = paymentStatus(o);
     if (s === 'cash')   cashOrders++;
@@ -1309,11 +1274,9 @@ function renderAnalytics() {
   const wrap = $('analytics-content');
   wrap.innerHTML = '';
 
-  // ── Filter row: period chips + branch toggle ──
   const filterWrap = document.createElement('div');
   filterWrap.className = 'an-filter-wrap';
 
-  // Branch toggle (top, full width, 3 options)
   const branchRow = document.createElement('div');
   branchRow.className = 'an-branch-row';
   const branchToggle = document.createElement('div');
@@ -1328,7 +1291,6 @@ function renderAnalytics() {
   branchRow.appendChild(branchToggle);
   filterWrap.appendChild(branchRow);
 
-  // Period chips row
   const chipsRow = document.createElement('div');
   chipsRow.className = 'an-chips-row';
   [['today','Today'],['week','This week'],['all','All time'],['specific','Specific Date ↓']].forEach(([v,l]) => {
@@ -1340,7 +1302,6 @@ function renderAnalytics() {
   });
   filterWrap.appendChild(chipsRow);
 
-  // Specific date picker (shown only when 'specific' selected)
   if (analyticsDate === 'specific') {
     if (!analyticsSpecificDate) {
       const t = new Date();
@@ -1359,7 +1320,6 @@ function renderAnalytics() {
 
   wrap.appendChild(filterWrap);
 
-  // ── Revenue metric (full width) ──
   const metricsWrap = document.createElement('div');
   metricsWrap.className = 'an-metrics-wrap';
 
@@ -1371,7 +1331,6 @@ function renderAnalytics() {
     <div class="an-metric-sub">${orders.length} order${orders.length !== 1 ? 's' : ''}</div>`;
   metricsWrap.appendChild(revCard);
 
-  // Collected + Balance side by side
   const collCard = document.createElement('div');
   collCard.className = 'an-metric an-metric-green';
   collCard.innerHTML = `
@@ -1390,13 +1349,11 @@ function renderAnalytics() {
 
   wrap.appendChild(metricsWrap);
 
-  // ── By payment mode section ──
   const modeCard = makeAnSection('By payment mode');
   makeAnRow2(modeCard, '#059669', 'Cash',   cashOrders,   cashAmt);
   makeAnRow2(modeCard, '#2563eb', 'Online', onlineOrders, onlineAmt);
   wrap.appendChild(modeCard);
 
-  // ── By branch section (only when showing all branches) ──
   if (analyticsBranch === 'all') {
     const branchCard = makeAnSection('By branch');
     makeAnRow2(branchCard, '#059669', 'Badagaon', badagaon.length, sumC(badagaon));
@@ -1428,9 +1385,7 @@ function makeAnRow2(container, dotColor, label, count, amt) {
 }
 
 
-/* ----------------------------------------------------------
-   12. UI — FILTERS
----------------------------------------------------------- */
+/* ── FILTERS ─────────────────────────────────────────────── */
 
 function toggleFilterSheet() { $('filter-dropdown').classList.toggle('open'); }
 
@@ -1502,16 +1457,13 @@ function matchesFilter(order) {
   if (dateFilter === 'specific') {
     if (!specificDateFilter) return true;
     const [y, m, day] = specificDateFilter.split('-').map(Number);
-    const picked = new Date(y, m - 1, day);
-    return d.getTime() === picked.getTime();
+    return d.getTime() === new Date(y, m - 1, day).getTime();
   }
   return true;
 }
 
 
-/* ----------------------------------------------------------
-   13. UI — RENDER ORDERS LIST
----------------------------------------------------------- */
+/* ── RENDER ORDERS LIST ──────────────────────────────────── */
 
 function renderOrders(query) {
   query = (query || '').toLowerCase();
@@ -1710,9 +1662,7 @@ function renderOrders(query) {
 }
 
 
-/* ----------------------------------------------------------
-   14. UI — DELIVERY SHEET
----------------------------------------------------------- */
+/* ── DELIVERY SHEET ──────────────────────────────────────── */
 
 function openDeliverySheet(id) {
   const order = savedOrders.find(o => o.id === id);
@@ -1766,9 +1716,7 @@ function markAllDelivered(orderId) {
 }
 
 
-/* ----------------------------------------------------------
-   15. UI — PAYMENT SHEET
----------------------------------------------------------- */
+/* ── PAYMENT SHEET ───────────────────────────────────────── */
 
 function refreshPaymentSheetHistory(id) {
   const order = savedOrders.find(o => o.id === id);
@@ -1869,9 +1817,7 @@ function confirmDeletePayEntry(orderId, entryIndex) {
 }
 
 
-/* ----------------------------------------------------------
-   16. UI — DELETE ORDER
----------------------------------------------------------- */
+/* ── DELETE ORDER ────────────────────────────────────────── */
 
 function openDelModal()  { $('del-modal').classList.add('open');    }
 function closeDelModal() { $('del-modal').classList.remove('open'); }
@@ -1902,9 +1848,7 @@ function confirmDelete() {
 }
 
 
-/* ----------------------------------------------------------
-   17. UI — EDIT ORDER
----------------------------------------------------------- */
+/* ── EDIT ORDER ──────────────────────────────────────────── */
 
 function openEditOrder(id) {
   const order = savedOrders.find(o => o.id === id);
@@ -1992,9 +1936,7 @@ function saveEditOrder() {
 }
 
 
-/* ----------------------------------------------------------
-   18. WHATSAPP BILL
----------------------------------------------------------- */
+/* ── WHATSAPP BILL ───────────────────────────────────────── */
 
 function openWhatsApp(id) {
   const order = savedOrders.find(o => o.id === id);
@@ -2008,7 +1950,6 @@ function openWhatsApp(id) {
   const balance   = balanceDue(order);
   const discount  = totalDiscount(order);
   const dvUnits   = ensureDeliveryUnits(order);
-  let dvOffset    = 0;
 
   const itemLines = (order.items || []).map(item => {
     if (item.itemType === 'adjustment') {
@@ -2019,9 +1960,6 @@ function openWhatsApp(id) {
         ? `  • ${item.note} (${sign}Rs.${absAmt.toLocaleString('en-IN')})`
         : `  • ${isCharge ? 'Charge' : 'Refund'} ${sign}Rs.${absAmt.toLocaleString('en-IN')}`;
     }
-    const qty = item.qty || 1;
-    const uPQ = item.itemType === 'suit-set' ? 3 : item.itemType === 'combo' ? [item.item1Name, item.item2Name].filter(Boolean).length : 1;
-    dvOffset += qty * uPQ;
     return `  • ${item.label} = Rs.${item.lineTotal.toLocaleString('en-IN')}`;
   }).join('\n');
 
@@ -2077,9 +2015,7 @@ ${balanceLine}${exchangePolicy}`;
 }
 
 
-/* ----------------------------------------------------------
-   19. EXPORT / IMPORT
----------------------------------------------------------- */
+/* ── EXPORT / IMPORT ─────────────────────────────────────── */
 
 function exportCSV() {
   if (!savedOrders.length) { toast('No orders to export'); return; }
@@ -2139,9 +2075,7 @@ function importJSON(event) {
 }
 
 
-/* ----------------------------------------------------------
-   20. UI — PRICE LIST OVERLAY  (redesigned)
----------------------------------------------------------- */
+/* ── PRICE LIST OVERLAY ──────────────────────────────────── */
 
 function showPriceList() {
   priceBranch = currentBranch;
@@ -2157,12 +2091,11 @@ function setPriceBranch(branch) {
 }
 
 function renderPriceList() {
-  const p    = buildPrices(priceBranch, 'summer');  // always use summer base; winter extras added separately
-  const pw   = buildPrices(priceBranch, 'winter');  // full winter set for winter-only sections
+  const p    = buildPrices(priceBranch, 'summer');
+  const pw   = buildPrices(priceBranch, 'winter');
   const wrap = $('price-list-content');
   wrap.innerHTML = '';
 
-  // ── Branch toggle at top ──
   const branchRow = document.createElement('div');
   branchRow.className = 'pl-branch-row';
   const branchToggle = document.createElement('div');
@@ -2215,55 +2148,49 @@ function renderPriceList() {
     wrap.appendChild(card);
   }
 
-  // 1. Pant / Shirt / Lower / T-Shirt
   if (priceBranch === 'baghpat') {
-    // Baghpat: same price for all four → single price column + combo total
     makeTable('Pant / Shirt / Lower / T-Shirt',
-      ['Size', 'Each', { label: 'Combo total', total: true }],
+      ['Size', 'Each', { label: '(Pant+Shirt) / ...', total: true }],
       Object.entries(p['Pant']).map(([size, price]) => [
         size, pr(price), { val: pr(price * 2), total: true }
       ])
     );
   } else {
-    // Badagaon: Pant/Shirt vs Lower/T-Shirt differ by size range
     const allSizes = [...new Set([...Object.keys(p['Pant']), ...Object.keys(p['Lower'])])].sort((a,b) => parseInt(a)-parseInt(b));
     makeTable('Pant / Shirt / Lower / T-Shirt',
-      ['Size', 'Pant / Shirt', 'Lower / T-Shirt', { label: 'Pant+Shirt', total: true }, { label: 'Lower+T-Shirt', total: true }],
+      ['Size', 'P..... | L.....', { label: 'Pant+Shirt', total: true }, { label: 'Lower+T-Shirt', total: true }],
       allSizes.map(size => {
         const pp = p['Pant'][size] || null;
         const lp = p['Lower'][size] || null;
-        return [size, pr(pp), pr(lp), { val: pr(pp && pp * 2), total: true }, { val: pr(lp && lp * 2), total: true }];
+        const eachLabel = pp && lp ? `${pr(pp)} | ${lp}` : pp ? pr(pp) : pr(lp);
+        return [size, eachLabel, { val: pr(pp && pp * 2), total: true }, { val: pr(lp && lp * 2), total: true }];
       })
     );
   }
 
-  // 2. Half Lower + Half T-Shirt (summer)
   makeTable('Half Lower / Half T-Shirt — Summer',
-    ['Size', 'Half Lower / Half T-Shirt', { label: 'Combo', total: true }],
+    ['Size', 'Each', { label: 'Half Lower + Half T-Shirt', total: true }],
     Object.keys(p['Half Lower']).map(size => {
-      const s = p['Half Lower'][size] || 0;
+      const l = p['Half Lower'][size] || 0;
       const t = p['Half T-Shirt'][size] || 0;
-      return [size, `${pr(s)} / ${pr(t)}`, { val: pr(s + t), total: true }];
+      return [size, `${pr(l)} + ${t}`, { val: pr(l + t), total: true }];
     })
   );
 
-  // 3. Full Lower + Full T-Shirt (winter)
   makeTable('Full Lower / Full T-Shirt — Winter',
-    ['Size', 'Full Lower / Full T-Shirt', { label: 'Combo', total: true }],
+    ['Size', 'Each', { label: 'Full Lower + Full T-Shirt', total: true }],
     Object.keys(pw['Full Lower']).map(size => {
       const l = pw['Full Lower'][size] || 0;
       const t = pw['Full T-Shirt'][size] || 0;
-      return [size, `${pr(l)} / ${pr(t)}`, { val: pr(l + t), total: true }];
+      return [size, `${pr(l)} + ${t}`, { val: pr(l + t), total: true }];
     })
   );
 
-  // 4. Blazer & Sweater (winter)
   makeTable('Blazer & Sweater — Winter',
-    ['Size', 'Blazer', 'Sweater'],
-    Object.keys(pw['Blazer']).map(size => [size, pr(pw['Blazer'][size]), pr(pw['Sweater'][size])])
+    ['Size', { label: 'Blazer', total: true }, { label: 'Sweater', total: true }],
+    Object.keys(pw['Blazer']).map(size => [size, { val: pr(pw['Blazer'][size]), total: true }, { val: pr(pw['Sweater'][size]), total: true }])
   );
 
-  // 5. Suit Set
   const suitTotal = pw.Suit.All + pw.Trouser.All + pw.Jacket.All;
   makeTable('Suit Set',
     ['Item', { label: 'Price', total: true }],
@@ -2275,7 +2202,6 @@ function renderPriceList() {
     ]
   );
 
-  // 6. Accessories
   makeTable('Accessories',
     ['Item', { label: 'Price', total: true }],
     [
@@ -2289,9 +2215,7 @@ function renderPriceList() {
 }
 
 
-/* ----------------------------------------------------------
-   21. UI — QR PAYMENT OVERLAY
----------------------------------------------------------- */
+/* ── QR PAYMENT OVERLAY ──────────────────────────────────── */
 
 function showQR() {
   const s    = loadSettings();
@@ -2303,9 +2227,7 @@ function showQR() {
 function closeQR() { $('qr-screen').style.display = 'none'; document.body.style.overflow = ''; }
 
 
-/* ----------------------------------------------------------
-   22. GLOBAL EVENT LISTENERS
----------------------------------------------------------- */
+/* ── GLOBAL EVENT LISTENERS ──────────────────────────────── */
 
 document.addEventListener('click', e => {
   if (!e.target.closest('.header-menu-wrap')) closeHamburger();
@@ -2315,9 +2237,7 @@ document.addEventListener('click', e => {
 });
 
 
-/* ----------------------------------------------------------
-   23. INIT
----------------------------------------------------------- */
+/* ── INIT ────────────────────────────────────────────────── */
 
 buildStudentFields('new-student-fields', 'new');
 buildItemsSection('new-items-section', 'items-container', 'add-btns-new', 'grand-total', 'Subtotal', false);
