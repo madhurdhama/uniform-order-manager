@@ -33,7 +33,6 @@ const PRICES_SUMMER = {
   }
 };
 
-// Winter items — same prices both branches
 const PRICES_WINTER_EXTRA = {
   'Blazer':             { 26: 650, 28: 650, 30: 700, 32: 700, 34: 750, 36: 800, 38: 850, 40: 900, 42: 950, 44: 1000, 46: 1050 },
   'Sweater':            { 26: 250, 28: 270, 30: 300, 32: 320, 34: 350, 36: 370, 38: 390, 40: 400, 42: 420, 44: 430, 46: 450 },
@@ -42,7 +41,6 @@ const PRICES_WINTER_EXTRA = {
   'Full T-Shirt':       { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400 }
 };
 
-// Items that are winter-only (hidden in summer single item sheet)
 const WINTER_ONLY_ITEMS = new Set(['Blazer', 'Sweater', 'Winter Cap', 'Full Lower', 'Full T-Shirt']);
 
 function buildPrices(branch, season) {
@@ -67,7 +65,6 @@ const COMBO_TYPE_BY_ITEM1 = {
 
 const BRANCH_LABEL = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
 
-// Default payment details — overridden per-device via Settings
 const DEFAULT_UPI_ID     = 'madhurdhama@okhdfcbank';
 const DEFAULT_UPI_NUMBER = '6398913135';
 
@@ -217,9 +214,7 @@ function showSettings() {
     $('settings-qr-current').textContent = 'Using GooglePay_QR.png (default)';
   }
 
-  // Sync season toggle in settings
   syncSeasonToggleUI();
-
   $('settings-screen').style.display = 'block';
   document.body.style.overflow = 'hidden';
 }
@@ -291,7 +286,6 @@ function setSeason(season) {
   if (ctn) ctn.innerHTML = '';
   itemCounter = 0;
   recalcNew();
-  // Rebuild add buttons so season-specific combos appear/disappear
   buildAddButtons('add-btns-new', false);
   toast(`Switched to ${season === 'winter' ? '❄️ Winter' : '☀️ Summer'} season`);
 }
@@ -348,7 +342,6 @@ function buildStudentFields(containerId, ctxKey) {
     pill.setAttribute('aria-expanded', String(!isOpen));
   });
 
-  // Auto-expand when address or notes already have a value (edit order)
   ctx[ctxKey]._expandExtra = () => {
     if ((ctx[ctxKey].address?.value || '').trim() || (ctx[ctxKey].notes?.value || '').trim()) {
       extra.style.display = 'block';
@@ -356,7 +349,6 @@ function buildStudentFields(containerId, ctxKey) {
     }
   };
 
-  // Enter key flow: Name → Class → Parent → Mobile → (opens extra) Address → Notes
   const coreFields = [ctx[ctxKey].name, ctx[ctxKey].cls, ctx[ctxKey].parent, ctx[ctxKey].mobile];
   const allFields  = [...coreFields, ctx[ctxKey].address, ctx[ctxKey].notes];
 
@@ -564,8 +556,6 @@ function buildAddButtons(containerId, isEdit) {
   if (!wrap) return;
   wrap.innerHTML = '';
 
-  // Determine season for this context
-  // For edit, we use the order's season (or current), for new we use currentSeason
   const season = isEdit ? (editOrderId ? (savedOrders.find(o => o.id === editOrderId)?.season || currentSeason) : currentSeason) : currentSeason;
 
   const btn = (cls, text, handler) => {
@@ -678,7 +668,6 @@ const SI_ACCESSORIES = [
   { item: 'Winter Cap', size: 'All', winterOnly: true }
 ];
 
-// Sized items in display order
 function getSiSizedOrder(season) {
   const winter = season === 'winter' ? ['Blazer','Sweater'] : [];
   return [
@@ -707,7 +696,6 @@ function openSingleItemSheet(target) {
   siSelections = {};
   const { p, season } = siGetCtx(target);
 
-  // ── Accessories ──
   const accCtn = $('si-accessories');
   accCtn.innerHTML = '';
   SI_ACCESSORIES.forEach(({ item, size, winterOnly }) => {
@@ -743,7 +731,6 @@ function openSingleItemSheet(target) {
     accCtn.appendChild(row);
   });
 
-  // ── Sized items ──
   const sizedCtn = $('si-sized');
   sizedCtn.innerHTML = '';
 
@@ -753,7 +740,6 @@ function openSingleItemSheet(target) {
 
     const sizes = Object.entries(p[itemName]);
 
-    // Single-size items (Suit, Trouser, Jacket) → accessory-style tap-to-select
     if (sizes.length === 1) {
       const [size, price] = sizes[0];
       const key    = siKey(itemName, size);
@@ -784,7 +770,6 @@ function openSingleItemSheet(target) {
       return;
     }
 
-    // Multi-size items — always expanded inline, no collapse
     const wrap = document.createElement('div');
     wrap.className    = 'si-sized-row';
     wrap.dataset.item = itemName;
@@ -850,11 +835,9 @@ function siToggleSized(itemName, size, price, chip, wrap) {
   const key     = siKey(itemName, size);
   const prevKey = Object.keys(siSelections).find(k => k.startsWith(itemName + '|'));
 
-  // Deselect previous size for this item
   if (prevKey) {
     delete siSelections[prevKey];
     wrap.querySelectorAll('.si-size-chip').forEach(c => c.classList.remove('selected'));
-    // If same chip tapped → collapse and clear
     if (prevKey === key) {
       wrap.classList.remove('has-selection');
       const priceEl = document.getElementById('si-sized-price-' + itemName);
@@ -864,7 +847,6 @@ function siToggleSized(itemName, size, price, chip, wrap) {
     }
   }
 
-  // Select new chip — ensure row stays expanded
   const qtyEl = document.getElementById('si-sized-qty-' + itemName);
   const qty   = qtyEl ? parseInt(qtyEl.textContent) || 1 : 1;
   siSelections[key] = { item: itemName, size, price, qty };
@@ -905,7 +887,6 @@ function confirmSingleItem() {
   if (!items.length) { toast('Select at least one item', 'error'); return; }
   closeSheet('si-modal');
   const { ctr, pfx, fn } = sheetCtx(sheetTarget);
-  // Suit/Trouser/Jacket go in as single items using their 'All' size
   items.forEach(({ item, size, qty }) => _addItem(ctr, pfx, fn, item, size, qty));
 }
 
@@ -914,7 +895,6 @@ function openComboSheet(target, type) {
   sheetTarget = target; sheet.comboType = type; sheet.comboSize = null;
   $('co-qty').textContent = '1';
 
-  // Use correct prices for context
   let ctxPrices = prices;
   if (target === 'edit' && editOrderId) {
     const ord = savedOrders.find(o => o.id === editOrderId);
@@ -1263,22 +1243,12 @@ function resetNewForm() {
 }
 
 function clearAllItems(btn) {
-  // Find the items container sibling — works for both new and edit contexts
-  const section = btn.closest('.section');
-  const ctn = section.querySelector('.is-items-ctn') 
-    ? section.querySelector('.is-items-ctn') 
-    : null;
-  
-  // Determine which container by checking id
-  const isEdit = !!document.getElementById('edit-items-container')
-    ?.contains(btn.closest('.section'));
+  const isEdit = !!document.getElementById('edit-items-container')?.contains(btn.closest('.section'));
   const containerId = isEdit ? 'edit-items-container' : 'items-container';
   const container = document.getElementById(containerId);
   if (!container) return;
-
-  if (!container.querySelector('.js-item-row')) return; // nothing to clear
+  if (!container.querySelector('.js-item-row')) return;
   if (!confirm('Clear all items from this order?')) return;
-
   container.innerHTML = '';
   itemCounter = 0;
   btn.style.display = 'none';
@@ -1287,30 +1257,12 @@ function clearAllItems(btn) {
 
 
 /* ----------------------------------------------------------
-   11. UI — ANALYTICS
+   11. UI — ANALYTICS  (redesigned)
 ---------------------------------------------------------- */
 
 function setAnalyticsDate(v)  { analyticsDate = v; renderAnalytics(); }
 function setAnalyticsBranch(v){ analyticsBranch = v; renderAnalytics(); }
 function setAnalyticsSpecificDate(val) { analyticsSpecificDate = val; renderAnalytics(); }
-
-function makeAnRow(label, count, amt, color) {
-  const row = cloneTemplate('tpl-an-row');
-  row.querySelector('.anr-dot').style.background = color;
-  row.querySelector('.anr-label').textContent    = label;
-  row.querySelector('.anr-count').textContent    = count;
-  row.querySelector('.anr-amt').textContent      = rupees(amt);
-  return row;
-}
-
-function makeAnSection(title) {
-  const sec = document.createElement('div');
-  sec.className = 'section'; sec.style.marginBottom = '1rem';
-  const t = document.createElement('div');
-  t.className = 'section-title'; t.textContent = title;
-  sec.appendChild(t);
-  return sec;
-}
 
 function renderAnalytics() {
   function parseDate(str) { const p = (str || '').split('/'); return new Date(p[2], p[1] - 1, p[0]); }
@@ -1331,107 +1283,148 @@ function renderAnalytics() {
 
   const orders = analyticsBranch === 'all' ? base : base.filter(o => o.branch === analyticsBranch);
   const trueValue = o => (o.subtotal || 0) - totalDiscount(o);
-  const sumC      = arr => arr.reduce((s, o) => s + totalCollected(o), 0);
 
-  let cashAmt = 0, onlineAmt = 0, balanceAmt = 0, refundOwedAmt = 0;
+  let cashAmt = 0, onlineAmt = 0, balanceAmt = 0;
+  let cashOrders = 0, onlineOrders = 0;
   orders.forEach(o => {
     const outstanding = trueValue(o) - totalCollected(o);
-    if (outstanding > 0) balanceAmt    += outstanding;
-    if (outstanding < 0) refundOwedAmt += Math.abs(outstanding);
+    if (outstanding > 0) balanceAmt += outstanding;
     getPayments(o).forEach(p => {
-      if (p.mode === 'cash')   cashAmt   += p.amount || 0;
-      if (p.mode === 'online') onlineAmt += p.amount || 0;
+      if (p.mode === 'cash')   { cashAmt   += p.amount || 0; }
+      if (p.mode === 'online') { onlineAmt += p.amount || 0; }
     });
+    const s = paymentStatus(o);
+    if (s === 'cash')   cashOrders++;
+    if (s === 'online') onlineOrders++;
   });
 
   const collected         = cashAmt + onlineAmt;
   const totalRevenue      = orders.reduce((s, o) => s + trueValue(o), 0);
-  const ordersWithPayment = orders.filter(o => totalCollected(o) > 0);
   const ordersWithBalance = orders.filter(o => balanceDue(o) > 0);
-  const refundOrders      = orders.filter(o => o.subtotal <= 0);
-  const cashOrders        = orders.filter(o => paymentStatus(o) === 'cash');
-  const onlineOrders      = orders.filter(o => paymentStatus(o) === 'online');
+  const ordersWithPayment = orders.filter(o => totalCollected(o) > 0);
   const badagaon          = orders.filter(o => o.branch === 'badagaon');
   const baghpat           = orders.filter(o => o.branch === 'baghpat');
+  const sumC              = arr => arr.reduce((s, o) => s + totalCollected(o), 0);
 
   const wrap = $('analytics-content');
   wrap.innerHTML = '';
 
-  const headerCard = document.createElement('div');
-  headerCard.className = 'section an-header-card';
-  headerCard.style.marginBottom = '1rem';
+  // ── Filter row: period chips + branch toggle ──
+  const filterWrap = document.createElement('div');
+  filterWrap.className = 'an-filter-wrap';
 
-  const makeSegBtn = (value, label, current, setter) => {
-    const b = document.createElement('button');
-    b.className = 'an-seg-btn' + (current === value ? ' active' : '');
-    b.textContent = label; b.onclick = () => setter(value);
-    return b;
-  };
-
-  const makeFilterGroup = (labelText, pairs, current, setter) => {
-    const grp = document.createElement('div'); grp.className = 'an-filter-group';
-    const lbl = document.createElement('label'); lbl.className = 'an-filter-label'; lbl.textContent = labelText;
-    const seg = document.createElement('div');   seg.className = 'an-seg';
-    pairs.forEach(([v, l]) => seg.appendChild(makeSegBtn(v, l, current, setter)));
-    grp.appendChild(lbl); grp.appendChild(seg);
-    return grp;
-  };
-
-  const filterRow = document.createElement('div'); filterRow.className = 'an-filter-row';
-
-  const periodGrp = document.createElement('div'); periodGrp.className = 'an-filter-group';
-  const periodLbl = document.createElement('label'); periodLbl.className = 'an-filter-label'; periodLbl.textContent = 'Period';
-  const periodSeg = document.createElement('div');   periodSeg.className = 'an-seg';
-  [['today','Today'],['week','Week'],['all','All Time'],['specific','Date ↓']].forEach(([v,l]) => {
-    periodSeg.appendChild(makeSegBtn(v, l, analyticsDate, setAnalyticsDate));
+  // Branch toggle (top, full width, 3 options)
+  const branchRow = document.createElement('div');
+  branchRow.className = 'an-branch-row';
+  const branchToggle = document.createElement('div');
+  branchToggle.className = 'an-branch-toggle';
+  [['all','All'],['badagaon','Badagaon'],['baghpat','Baghpat']].forEach(([v,l]) => {
+    const btn = document.createElement('button');
+    btn.className = 'an-branch-btn' + (analyticsBranch === v ? ' active' : '');
+    btn.textContent = l;
+    btn.onclick = () => setAnalyticsBranch(v);
+    branchToggle.appendChild(btn);
   });
-  periodGrp.appendChild(periodLbl); periodGrp.appendChild(periodSeg);
-  filterRow.appendChild(periodGrp);
+  branchRow.appendChild(branchToggle);
+  filterWrap.appendChild(branchRow);
 
-  const datePickerRow = document.createElement('div');
-  datePickerRow.className = 'an-filter-group';
-  datePickerRow.id = 'an-specific-date-row';
-  datePickerRow.style.display = analyticsDate === 'specific' ? 'flex' : 'none';
-  const dpLbl = document.createElement('label'); dpLbl.className = 'an-filter-label'; dpLbl.textContent = 'Date';
-  const dpInp = document.createElement('input');
-  dpInp.type  = 'date'; dpInp.id = 'an-specific-date-input';
-  dpInp.className = 'an-date-input';
-  dpInp.style.colorScheme = 'light';
-  if (!analyticsSpecificDate) {
-    const today2 = new Date();
-    analyticsSpecificDate = `${today2.getFullYear()}-${String(today2.getMonth()+1).padStart(2,'0')}-${String(today2.getDate()).padStart(2,'0')}`;
+  // Period chips row
+  const chipsRow = document.createElement('div');
+  chipsRow.className = 'an-chips-row';
+  [['today','Today'],['week','This week'],['all','All time'],['specific','Specific Date ↓']].forEach(([v,l]) => {
+    const chip = document.createElement('button');
+    chip.className = 'an-chip' + (analyticsDate === v ? ' active' : '');
+    chip.textContent = l;
+    chip.onclick = () => setAnalyticsDate(v);
+    chipsRow.appendChild(chip);
+  });
+  filterWrap.appendChild(chipsRow);
+
+  // Specific date picker (shown only when 'specific' selected)
+  if (analyticsDate === 'specific') {
+    if (!analyticsSpecificDate) {
+      const t = new Date();
+      analyticsSpecificDate = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+    }
+    const dpRow = document.createElement('div');
+    dpRow.className = 'an-dp-row';
+    const dpInp = document.createElement('input');
+    dpInp.type = 'date'; dpInp.className = 'an-date-input';
+    dpInp.style.colorScheme = 'light';
+    dpInp.value = analyticsSpecificDate;
+    dpInp.addEventListener('change', e => setAnalyticsSpecificDate(e.target.value));
+    dpRow.appendChild(dpInp);
+    filterWrap.appendChild(dpRow);
   }
-  dpInp.value = analyticsSpecificDate;
-  dpInp.addEventListener('change', e => setAnalyticsSpecificDate(e.target.value));
-  datePickerRow.appendChild(dpLbl); datePickerRow.appendChild(dpInp);
-  filterRow.appendChild(datePickerRow);
 
-  filterRow.appendChild(makeFilterGroup('Branch', [['all','All'],['badagaon','Badagaon'],['baghpat','Baghpat']], analyticsBranch, setAnalyticsBranch));
+  wrap.appendChild(filterWrap);
 
-  const totBlock = document.createElement('div'); totBlock.className = 'an-total-block';
-  const refundNote = refundOrders.length ? ` · ${refundOrders.length} refund${refundOrders.length !== 1 ? 's' : ''}` : '';
-  totBlock.innerHTML = `<div class="an-total-label">Total Revenue</div><div class="an-total-amt">${rupees(totalRevenue)}</div><div class="an-total-sub">${orders.length} order${orders.length !== 1 ? 's' : ''}${refundNote}</div>`;
+  // ── Revenue metric (full width) ──
+  const metricsWrap = document.createElement('div');
+  metricsWrap.className = 'an-metrics-wrap';
 
-  headerCard.appendChild(filterRow); headerCard.appendChild(totBlock);
-  wrap.appendChild(headerCard);
+  const revCard = document.createElement('div');
+  revCard.className = 'an-metric an-metric-full';
+  revCard.innerHTML = `
+    <div class="an-metric-label">Total revenue</div>
+    <div class="an-metric-val">${rupees(totalRevenue)}</div>
+    <div class="an-metric-sub">${orders.length} order${orders.length !== 1 ? 's' : ''}</div>`;
+  metricsWrap.appendChild(revCard);
 
-  const collSec = makeAnSection('Collection');
-  collSec.appendChild(makeAnRow('Any payment received', ordersWithPayment.length, collected,      '#16a34a'));
-  collSec.appendChild(makeAnRow('Balance outstanding',  ordersWithBalance.length, balanceAmt,    '#d97706'));
-  if (refundOwedAmt > 0)
-    collSec.appendChild(makeAnRow('Refunds given',      refundOrders.length,      refundOwedAmt, '#7c3aed'));
-  const divider = document.createElement('div'); divider.className = 'an-divider'; divider.style.margin = '8px 0 10px';
-  collSec.appendChild(divider);
-  collSec.appendChild(makeAnRow('Cash',   cashOrders.length,   cashAmt,   '#16a34a'));
-  collSec.appendChild(makeAnRow('Online', onlineOrders.length, onlineAmt, '#1d4ed8'));
-  wrap.appendChild(collSec);
+  // Collected + Balance side by side
+  const collCard = document.createElement('div');
+  collCard.className = 'an-metric an-metric-green';
+  collCard.innerHTML = `
+    <div class="an-metric-label">Collected</div>
+    <div class="an-metric-val">${rupees(collected)}</div>
+    <div class="an-metric-sub">${ordersWithPayment.length} order${ordersWithPayment.length !== 1 ? 's' : ''}</div>`;
+  metricsWrap.appendChild(collCard);
 
+  const balCard = document.createElement('div');
+  balCard.className = 'an-metric an-metric-amber';
+  balCard.innerHTML = `
+    <div class="an-metric-label">Balance due</div>
+    <div class="an-metric-val">${rupees(balanceAmt)}</div>
+    <div class="an-metric-sub">${ordersWithBalance.length} order${ordersWithBalance.length !== 1 ? 's' : ''}</div>`;
+  metricsWrap.appendChild(balCard);
+
+  wrap.appendChild(metricsWrap);
+
+  // ── By payment mode section ──
+  const modeCard = makeAnSection('By payment mode');
+  makeAnRow2(modeCard, '#059669', 'Cash',   cashOrders,   cashAmt);
+  makeAnRow2(modeCard, '#2563eb', 'Online', onlineOrders, onlineAmt);
+  wrap.appendChild(modeCard);
+
+  // ── By branch section (only when showing all branches) ──
   if (analyticsBranch === 'all') {
-    const branchSec = makeAnSection('By Branch');
-    branchSec.appendChild(makeAnRow('Badagaon', badagaon.length, sumC(badagaon), '#16a34a'));
-    branchSec.appendChild(makeAnRow('Baghpat',  baghpat.length,  sumC(baghpat),  '#1d4ed8'));
-    wrap.appendChild(branchSec);
+    const branchCard = makeAnSection('By branch');
+    makeAnRow2(branchCard, '#059669', 'Badagaon', badagaon.length, sumC(badagaon));
+    makeAnRow2(branchCard, '#2563eb', 'Baghpat',  baghpat.length,  sumC(baghpat));
+    wrap.appendChild(branchCard);
   }
+}
+
+function makeAnSection(title) {
+  const sec = document.createElement('div');
+  sec.className = 'an-section-card';
+  const lbl = document.createElement('div');
+  lbl.className = 'an-section-label'; lbl.textContent = title;
+  sec.appendChild(lbl);
+  return sec;
+}
+
+function makeAnRow2(container, dotColor, label, count, amt) {
+  const row = document.createElement('div');
+  row.className = 'an-data-row';
+  row.innerHTML = `
+    <div class="an-row-left">
+      <span class="an-row-dot" style="background:${dotColor}"></span>
+      <span class="an-row-label">${label}</span>
+      <span class="an-row-count">${count}</span>
+    </div>
+    <div class="an-row-amt">${rupees(amt)}</div>`;
+  container.appendChild(row);
 }
 
 
@@ -2147,119 +2140,152 @@ function importJSON(event) {
 
 
 /* ----------------------------------------------------------
-   20. UI — PRICE LIST OVERLAY
+   20. UI — PRICE LIST OVERLAY  (redesigned)
 ---------------------------------------------------------- */
 
 function showPriceList() {
   priceBranch = currentBranch;
-  ['badagaon','baghpat'].forEach(b => $('pl-branch-'+b)?.classList.toggle('pl-branch-btn-active', b===priceBranch));
-  // Sync season toggle in price list
-  syncPriceListSeasonToggle();
   renderPriceList();
-  $('pricelist-screen').style.display = 'block'; document.body.style.overflow = 'hidden';
+  $('pricelist-screen').style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 function closePriceList() { $('pricelist-screen').style.display = 'none'; document.body.style.overflow = ''; }
 
 function setPriceBranch(branch) {
   priceBranch = branch;
-  ['badagaon','baghpat'].forEach(b => $('pl-branch-'+b)?.classList.toggle('pl-branch-btn-active', b===branch));
-  renderPriceList();
-}
-
-// Price list has its own season view toggle (doesn't change app season)
-let priceListSeason = currentSeason;
-
-function syncPriceListSeasonToggle() {
-  priceListSeason = currentSeason;
-  $('pl-season-summer')?.classList.toggle('pl-branch-btn-active', priceListSeason === 'summer');
-  $('pl-season-winter')?.classList.toggle('pl-branch-btn-active', priceListSeason === 'winter');
-}
-
-function setPriceListSeason(season) {
-  priceListSeason = season;
-  $('pl-season-summer')?.classList.toggle('pl-branch-btn-active', season === 'summer');
-  $('pl-season-winter')?.classList.toggle('pl-branch-btn-active', season === 'winter');
   renderPriceList();
 }
 
 function renderPriceList() {
-  const p    = buildPrices(priceBranch, priceListSeason);
+  const p    = buildPrices(priceBranch, 'summer');  // always use summer base; winter extras added separately
+  const pw   = buildPrices(priceBranch, 'winter');  // full winter set for winter-only sections
   const wrap = $('price-list-content');
   wrap.innerHTML = '';
-  const pr = v => v ? rupees(v) : `<span class="pl-na">—</span>`;
 
-  function makeSection(title, headCols, rows) {
-    const sec = document.createElement('div'); sec.className = 'section'; sec.style.marginBottom = '12px';
-    sec.innerHTML = `<div class="section-title">${title}</div>`;
-    const table = document.createElement('table'); table.className = 'pl-table';
+  // ── Branch toggle at top ──
+  const branchRow = document.createElement('div');
+  branchRow.className = 'pl-branch-row';
+  const branchToggle = document.createElement('div');
+  branchToggle.className = 'an-branch-toggle';
+  [['badagaon','Badagaon'],['baghpat','Baghpat']].forEach(([v,l]) => {
+    const btn = document.createElement('button');
+    btn.className = 'an-branch-btn' + (priceBranch === v ? ' active' : '');
+    btn.textContent = l;
+    btn.onclick = () => setPriceBranch(v);
+    branchToggle.appendChild(btn);
+  });
+  branchRow.appendChild(branchToggle);
+  wrap.appendChild(branchRow);
+
+  const pr = v => v != null && v !== 0 ? rupees(v) : `<span class="pl-na">—</span>`;
+
+  function makeTable(groupTitle, colHeaders, rows) {
+    const card = document.createElement('div');
+    card.className = 'pl-card';
+    card.innerHTML = `<div class="pl-group-title">${groupTitle}</div>`;
+    const scrollWrap = document.createElement('div');
+    scrollWrap.className = 'pl-scroll';
+    const table = document.createElement('table');
+    table.className = 'pl-table';
+
     const thead = document.createElement('thead');
-    thead.innerHTML = '<tr>' + headCols.map((h,i) => `<th class="pl-th${i===0?' pl-th-size':''}${h.total?' pl-th-total':''}">${h.label??h}</th>`).join('') + '</tr>';
+    thead.innerHTML = '<tr>' + colHeaders.map((h, i) => {
+      const isTotal = h.total;
+      return `<th class="pl-th${i === 0 ? ' pl-th-first' : ''}${isTotal ? ' pl-th-total' : ''}">${h.label ?? h}</th>`;
+    }).join('') + '</tr>';
     table.appendChild(thead);
+
     const tbody = document.createElement('tbody');
-    rows.forEach((cells, i) => {
-      const tr = document.createElement('tr'); if(i%2===1) tr.classList.add('pl-row-alt');
-      tr.innerHTML = cells.map((c,ci) => {
-        const cls   = ci===0 ? (c.name?'pl-td-name':'pl-td-size') : c.total?'pl-td-total':c.single?'pl-td-single':'pl-td-price';
-        const val   = c.val??c;
-        const span  = c.colspan?` colspan="${c.colspan}"`:'';
-        const style = c.style?` style="${c.style}"` : '';
-        return `<td class="${cls}"${span}${style}>${val}</td>`;
+    rows.forEach((cells, ri) => {
+      const tr = document.createElement('tr');
+      if (ri % 2 === 1) tr.classList.add('pl-row-alt');
+      tr.innerHTML = cells.map((c, ci) => {
+        const isTotal = typeof c === 'object' && c.total;
+        const isFirst = ci === 0;
+        const val     = typeof c === 'object' ? (c.val ?? '') : c;
+        const bold    = typeof c === 'object' && c.bold;
+        const cls     = isFirst ? 'pl-td-first' : isTotal ? 'pl-td-total' : 'pl-td';
+        return `<td class="${cls}"${bold ? ' style="font-weight:700"' : ''}>${val}</td>`;
       }).join('');
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
-    const wrap2 = document.createElement('div'); wrap2.className='pl-table-wrap'; wrap2.appendChild(table);
-    sec.appendChild(wrap2); return sec;
+    scrollWrap.appendChild(table);
+    card.appendChild(scrollWrap);
+    wrap.appendChild(card);
   }
 
-  // Yellow uniform: Pant/Shirt/Lower/T-Shirt
+  // 1. Pant / Shirt / Lower / T-Shirt
   if (priceBranch === 'baghpat') {
-    wrap.appendChild(makeSection('Pant / Shirt / Lower / T-Shirt (Yellow)',
-      ['Size', 'Each', { label: 'Pant+Shirt / Lower+T-Shirt', total: true }],
-      Object.entries(p['Pant']).map(([size, price]) => [size, pr(price), { val: pr(price*2), total: true }])
-    ));
+    // Baghpat: same price for all four → single price column + combo total
+    makeTable('Pant / Shirt / Lower / T-Shirt',
+      ['Size', 'Each', { label: 'Combo total', total: true }],
+      Object.entries(p['Pant']).map(([size, price]) => [
+        size, pr(price), { val: pr(price * 2), total: true }
+      ])
+    );
   } else {
-    const allSizes = [...new Set([...Object.keys(p['Pant']), ...Object.keys(p['Lower'])])].sort((a,b)=>parseInt(a)-parseInt(b));
-    wrap.appendChild(makeSection('Pant / Shirt / Lower / T-Shirt (Yellow)',
-      ['Size','Pant / Shirt','Lower / T-Shirt',{label:'Pant+Shirt',total:true},{label:'Lower+T-Shirt',total:true}],
-      allSizes.map(size => { const pp=p['Pant'][size]||null, lp=p['Lower'][size]||null; return [size, pr(pp), pr(lp), {val:pr(pp&&pp*2),total:true},{val:pr(lp&&lp*2),total:true}]; })
-    ));
+    // Badagaon: Pant/Shirt vs Lower/T-Shirt differ by size range
+    const allSizes = [...new Set([...Object.keys(p['Pant']), ...Object.keys(p['Lower'])])].sort((a,b) => parseInt(a)-parseInt(b));
+    makeTable('Pant / Shirt / Lower / T-Shirt',
+      ['Size', 'Pant / Shirt', 'Lower / T-Shirt', { label: 'Pant+Shirt', total: true }, { label: 'Lower+T-Shirt', total: true }],
+      allSizes.map(size => {
+        const pp = p['Pant'][size] || null;
+        const lp = p['Lower'][size] || null;
+        return [size, pr(pp), pr(lp), { val: pr(pp && pp * 2), total: true }, { val: pr(lp && lp * 2), total: true }];
+      })
+    );
   }
 
-  // Red uniform: Shorts + Half Sleeve T-Shirt (summer)
-  wrap.appendChild(makeSection('Half Lower / Half T-Shirt (Red — Summer)',
-    ['Size','Half Lower','Half T-Shirt',{label:'Half Lower + T-Shirt',total:true}],
-    Object.keys(p['Half Lower']).map(size => { const s=p['Half Lower'][size]||0, t=p['Half T-Shirt'][size]||0; return [size, pr(s), pr(t), {val:pr(s+t),total:true}]; })
-  ));
+  // 2. Half Lower + Half T-Shirt (summer)
+  makeTable('Half Lower / Half T-Shirt — Summer',
+    ['Size', 'Half Lower / Half T-Shirt', { label: 'Combo', total: true }],
+    Object.keys(p['Half Lower']).map(size => {
+      const s = p['Half Lower'][size] || 0;
+      const t = p['Half T-Shirt'][size] || 0;
+      return [size, `${pr(s)} / ${pr(t)}`, { val: pr(s + t), total: true }];
+    })
+  );
 
-  // Red uniform: Full Lower + Full T-Shirt (winter only)
-  if (priceListSeason === 'winter') {
-    wrap.appendChild(makeSection('Full Lower / Full T-Shirt (Red — Winter)',
-      ['Size','Full Lower','Full T-Shirt',{label:'Full Lower + T-Shirt',total:true}],
-      Object.keys(p['Full Lower']).map(size => { const l=p['Full Lower'][size]||0, t=p['Full T-Shirt'][size]||0; return [size, pr(l), pr(t), {val:pr(l+t),total:true}]; })
-    ));
+  // 3. Full Lower + Full T-Shirt (winter)
+  makeTable('Full Lower / Full T-Shirt — Winter',
+    ['Size', 'Full Lower / Full T-Shirt', { label: 'Combo', total: true }],
+    Object.keys(pw['Full Lower']).map(size => {
+      const l = pw['Full Lower'][size] || 0;
+      const t = pw['Full T-Shirt'][size] || 0;
+      return [size, `${pr(l)} / ${pr(t)}`, { val: pr(l + t), total: true }];
+    })
+  );
 
-    // Winter extras
-    wrap.appendChild(makeSection('Blazer & Sweater',
-      ['Size','Blazer','Sweater'],
-      Object.keys(p['Blazer']).map(size => [size, pr(p['Blazer'][size]||0), pr(p['Sweater'][size]||0)])
-    ));
-  }
+  // 4. Blazer & Sweater (winter)
+  makeTable('Blazer & Sweater — Winter',
+    ['Size', 'Blazer', 'Sweater'],
+    Object.keys(pw['Blazer']).map(size => [size, pr(pw['Blazer'][size]), pr(pw['Sweater'][size])])
+  );
 
-  // Suit Set
-  const suitItems = [['Suit','All'],['Trouser','All'],['Jacket','All']];
-  const suitTotal = suitItems.reduce((s,[item,sz])=>s+(p[item]?.[sz]||0),0);
-  wrap.appendChild(makeSection('Suit Set', ['Item',{label:'Price',total:true}], [
-    ...suitItems.map(([item,sz])=>[{val:item,name:true},{val:rupees(p[item]?.[sz]||0),total:true}]),
-    [{val:'Set Total',name:true,style:'font-weight:700;color:var(--text)'},{val:rupees(suitTotal),total:true,style:'font-weight:800'}]
-  ]));
+  // 5. Suit Set
+  const suitTotal = pw.Suit.All + pw.Trouser.All + pw.Jacket.All;
+  makeTable('Suit Set',
+    ['Item', { label: 'Price', total: true }],
+    [
+      ['Suit',    { val: pr(pw.Suit.All),    total: true }],
+      ['Trouser', { val: pr(pw.Trouser.All), total: true }],
+      ['Jacket',  { val: pr(pw.Jacket.All),  total: true }],
+      [{ val: 'Set total', bold: true }, { val: pr(suitTotal), total: true, bold: true }]
+    ]
+  );
 
-  // Accessories
-  const accRows = [['Tie','Small'],['Tie','Large'],['Belt','All'],['Socks','Pair']];
-  if (priceListSeason === 'winter') accRows.push(['Winter Cap','All']);
-  wrap.appendChild(makeSection('Accessories', ['Item',{label:'Price',total:true}],
-    accRows.map(([item,sz]) => [{val:(sz==='All'||sz==='Pair')?item:`${item} — ${sz}`,name:true},{val:rupees(p[item]?.[sz]||0),total:true}])
-  ));
+  // 6. Accessories
+  makeTable('Accessories',
+    ['Item', { label: 'Price', total: true }],
+    [
+      ['Tie — Small',  { val: pr(p['Tie']['Small']),  total: true }],
+      ['Tie — Large',  { val: pr(p['Tie']['Large']),  total: true }],
+      ['Belt',         { val: pr(p['Belt']['All']),   total: true }],
+      ['Socks',        { val: pr(p['Socks']['Pair']), total: true }],
+      ['Winter Cap',   { val: pr(pw['Winter Cap']['All']), total: true }]
+    ]
+  );
 }
 
 

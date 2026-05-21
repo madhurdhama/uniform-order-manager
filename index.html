@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <!-- ── THREE-DOT MENU (replaces hamburger) ──────── -->
+      <!-- ── THREE-DOT MENU ──────── -->
       <div class="header-menu-wrap">
         <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" title="Menu" aria-label="More options">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -83,37 +83,28 @@
 
   <!-- ── ANALYTICS OVERLAY ──────────────────────────── -->
   <div id="analytics-screen" style="display:none">
-    <div class="analytics-screen-inner">
-      <div class="analytics-screen-header">
+    <div class="overlay-inner">
+      <div class="screen-header">
         <button class="back-btn" onclick="closeAnalytics()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Back
         </button>
-        <div class="edit-screen-title">Analytics</div>
+        <div class="screen-title">Analytics</div>
       </div>
       <div id="analytics-content"></div>
     </div>
   </div>
 
   <!-- ── PRICE LIST OVERLAY ────────────────────────── -->
+  <!-- Branch select + all content rendered by JS into #price-list-content -->
   <div id="pricelist-screen" style="display:none">
-    <div class="analytics-screen-inner">
-      <div class="analytics-screen-header pricelist-header">
+    <div class="overlay-inner">
+      <div class="screen-header">
         <button class="back-btn" onclick="closePriceList()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Back
         </button>
-        <div class="edit-screen-title">Price List</div>
-        <div class="pricelist-toggles">
-          <div class="pl-branch-toggle">
-            <button class="pl-branch-btn pl-branch-btn-active" id="pl-branch-badagaon" onclick="setPriceBranch('badagaon')">Badagaon</button>
-            <button class="pl-branch-btn"                      id="pl-branch-baghpat"  onclick="setPriceBranch('baghpat')">Baghpat</button>
-          </div>
-          <div class="pl-branch-toggle">
-            <button class="pl-branch-btn" id="pl-season-summer" onclick="setPriceListSeason('summer')">☀️ Summer</button>
-            <button class="pl-branch-btn" id="pl-season-winter" onclick="setPriceListSeason('winter')">❄️ Winter</button>
-          </div>
-        </div>
+        <div class="screen-title">Price List</div>
       </div>
       <div id="price-list-content"></div>
     </div>
@@ -121,13 +112,13 @@
 
   <!-- ── QR PAYMENT OVERLAY ────────────────────────── -->
   <div id="qr-screen" style="display:none">
-    <div class="analytics-screen-inner">
-      <div class="analytics-screen-header">
+    <div class="overlay-inner">
+      <div class="screen-header">
         <button class="back-btn" onclick="closeQR()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Back
         </button>
-        <div class="edit-screen-title">Scan to Pay</div>
+        <div class="screen-title">Scan to Pay</div>
       </div>
       <div class="section qr-img-section">
         <img src="GooglePay_QR.png" id="qr-img" alt="Payment QR Code" class="qr-img">
@@ -137,13 +128,13 @@
 
   <!-- ── SETTINGS OVERLAY ──────────────────────────── -->
   <div id="settings-screen" style="display:none">
-    <div class="analytics-screen-inner">
-      <div class="analytics-screen-header">
+    <div class="overlay-inner">
+      <div class="screen-header">
         <button class="back-btn" onclick="closeSettings()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Back
         </button>
-        <div class="edit-screen-title">Settings</div>
+        <div class="screen-title">Settings</div>
       </div>
 
       <!-- Season toggle -->
@@ -345,13 +336,13 @@
      EDIT ORDER SCREEN
 ═════════════════════════════════════════════════════→ -->
 <div id="edit-order-screen">
-  <div class="edit-screen-inner">
-    <div class="edit-screen-header">
+  <div class="overlay-inner">
+    <div class="screen-header">
       <button class="back-btn" onclick="closeEditOrder()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         Back
       </button>
-      <div class="edit-screen-title">Edit Order</div>
+      <div class="screen-title">Edit Order</div>
       <span id="eo-branch-badge" class="badge"></span>
     </div>
     <div class="section">
@@ -434,9 +425,7 @@
     <div class="si-group-label">Accessories</div>
     <div id="si-accessories"></div>
 
-    <div class="si-group-label">
-      Sized Items
-    </div>
+    <div class="si-group-label">Sized Items</div>
     <div id="si-sized"></div>
 
     <div class="si-confirm-bar" id="si-confirm-bar">
@@ -562,7 +551,7 @@
       </div>
       <div class="sf-grid-cell sf-cell-mobile">
         <div class="sf-cell-label">Mobile</div>
-        <input class="sf-mobile sf-cell-input" type="tel" placeholder="10-digit number" maxlength="13">
+        <input class="sf-mobile sf-cell-input" type="tel" placeholder="10-digit number" maxlength="15">
       </div>
     </div>
 
@@ -773,29 +762,6 @@
       </label>
     </div>
   </label>
-</template>
-
-<!-- Analytics row with amount -->
-<template id="tpl-an-row">
-  <div class="an-row">
-    <div class="an-row-left">
-      <span class="an-row-dot anr-dot"></span>
-      <span class="an-row-label anr-label"></span>
-      <span class="an-row-count anr-count"></span>
-    </div>
-    <div class="an-row-amt anr-amt"></div>
-  </div>
-</template>
-
-<!-- Analytics plain row -->
-<template id="tpl-an-row-plain">
-  <div class="an-row">
-    <div class="an-row-left">
-      <span class="an-row-dot anrp-dot"></span>
-      <span class="an-row-label anrp-label"></span>
-      <span class="an-row-count anrp-count"></span>
-    </div>
-  </div>
 </template>
 
 <!-- Payment sheet history entry -->
