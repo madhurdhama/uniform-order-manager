@@ -1978,9 +1978,8 @@ function openWhatsApp(id) {
   const discountLine = discount > 0 ? `  • Discount = -Rs.${discount.toLocaleString('en-IN')}` : '';
   const paymentSection = (payLines || discountLine) ? `\n*Payments:*\n${[payLines, discountLine].filter(Boolean).join('\n')}\n` : '';
 
-  const upiLink     = balance > 0 ? `upi://pay?pa=${upiId}&pn=Golden%20Gate%20Uniforms&am=${balance}&cu=INR&tn=Uniform%20Bill` : '';
   const balanceLine = balance > 0
-    ? `⚠️ *Balance Due: Rs.${balance.toLocaleString('en-IN')}*\n\n👆 *Tap to Pay (GPay/PhonePe/Paytm):*\n${upiLink}\n\n *UPI ID:* ${upiId}\n *UPI Number:* ${upiNumber}`
+    ? `⚠️ *Balance Due: Rs.${balance.toLocaleString('en-IN')}*\n\n📲 *Pay via UPI:*\n *UPI ID:* ${upiId}\n *UPI Number:* ${upiNumber}`
     : '✅ Fully Paid';
   const exchangePolicy = `\n\n——————————————\n *Exchange Policy*\nNo returns. Size exchange only within 7 days of delivery in unused condition.\n• Larger size → pay the difference\n• Smaller size → we refund the difference`;
 
