@@ -2264,30 +2264,4 @@ function startApp(user) {
     savedOrders = orders;
     renderOrders(getSearchValue());
   });
-  /* one-time migration banner */
-  const legacy = JSON.parse(localStorage.getItem('uniform_orders') || '[]');
-  if (legacy.length > 0) showMigrationBanner(legacy);
-}
-
-function showMigrationBanner(legacyOrders) {
-  const banner = document.getElementById('migration-banner');
-  if (!banner) return;
-  document.getElementById('migration-count').textContent = legacyOrders.length;
-  banner.style.display = 'flex';
-
-  document.getElementById('migration-upload-btn').onclick = async () => {
-    banner.style.display = 'none';
-    try {
-      await uploadLocalOrders(legacyOrders);
-      localStorage.removeItem('uniform_orders');
-      toast(`${legacyOrders.length} local orders uploaded to cloud`);
-    } catch(e) {
-      toast('Upload failed: ' + e.message, 'error', 4000);
-      banner.style.display = 'flex';
-    }
-  };
-
-  document.getElementById('migration-dismiss-btn').onclick = () => {
-    banner.style.display = 'none';
-  };
 }

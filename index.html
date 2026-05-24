@@ -818,14 +818,13 @@
 <script type="module">
   import { signIn, signOutUser, onAuthReady, isAllowed,
            saveOrderRemote, deleteOrderRemote,
-           subscribeOrders, uploadLocalOrders } from './js/firebase.js';
+           subscribeOrders } from './js/firebase.js';
 
   window.signIn             = signIn;
   window.signOutUser        = signOutUser;
   window.saveOrderRemote    = saveOrderRemote;
   window.deleteOrderRemote  = deleteOrderRemote;
   window.subscribeOrders    = subscribeOrders;
-  window.uploadLocalOrders  = uploadLocalOrders;
 
   function updateMenuUI(user) {
     const menuProfile  = document.getElementById('menu-profile');
@@ -868,7 +867,8 @@
     if (user && isAllowed(user)) {
       if (typeof startApp === 'function') startApp(user);
     } else if (user && !isAllowed(user)) {
-      signOutUser();
+      if (typeof toast === 'function') toast('You are not authorised to access this app', 'error', 4000);
+      setTimeout(() => signOutUser(), 1500);
     }
   });
 
@@ -905,19 +905,6 @@
     <span class="bottom-nav-label">Orders</span>
   </button>
 </nav>
-
-<!-- migration banner -->
-<div id="migration-banner" style="
-  display:none; position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
-  background:#1a5c38; color:#fff; border-radius:12px; padding:14px 18px;
-  z-index:999; flex-direction:column; gap:10px; max-width:340px; width:90%;
-  box-shadow:0 4px 16px rgba(0,0,0,0.2); font-size:0.9rem;">
-  <p style="margin:0;">Found <strong id="migration-count"></strong> orders saved locally on this device. Upload them to the cloud?</p>
-  <div style="display:flex; gap:10px;">
-    <button id="migration-upload-btn" style="flex:1; padding:8px; background:#fff; color:#1a5c38; border:none; border-radius:6px; font-weight:600; cursor:pointer;">Upload</button>
-    <button id="migration-dismiss-btn" style="flex:1; padding:8px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.5); border-radius:6px; cursor:pointer;">Dismiss</button>
-  </div>
-</div>
 
 
 </div><!-- /#app-wrap -->
