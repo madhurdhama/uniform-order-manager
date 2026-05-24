@@ -151,6 +151,47 @@ input, select, button, textarea { font-family: inherit; }
 }
 .hamburger-btn:active { background: var(--border); }
 
+/* avatar mode — no border/background when showing profile photo */
+.hamburger-btn:has(#hamburger-avatar-img[style*="display: block"]) {
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+  width: 38px;
+  height: 38px;
+}
+
+.menu-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 10px;
+}
+.menu-avatar-large {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+}
+.menu-profile-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+.menu-profile-email {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
 .hamburger-dropdown {
   display: none;
   position: absolute;

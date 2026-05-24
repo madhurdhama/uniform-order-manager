@@ -87,7 +87,7 @@ let analyticsDate         = 'today';
 let analyticsSpecificDate = '';
 let analyticsBranch       = 'all';
 
-let savedOrders = JSON.parse(localStorage.getItem('uniform_orders') || '[]');
+let savedOrders = [];
 
 let sheetTarget          = null;
 let pendingDeleteId      = null;
@@ -110,7 +110,7 @@ const ctx = {
 
 const $         = id => document.getElementById(id);
 const rupees    = n  => 'Rs.' + (n || 0).toLocaleString('en-IN');
-const saveLocal = () => localStorage.setItem('uniform_orders', JSON.stringify(savedOrders));
+const saveLocal = () => {};
 
 function generateUUID() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
@@ -1186,14 +1186,16 @@ function saveOrder() {
       payments = [{ mode: newOrderPayMode, amount: paidAmt, date: new Date().toLocaleDateString('en-IN') }];
   }
 
-  savedOrders.unshift({
+  const newOrder = {
     id: Date.now(), uuid: generateUUID(), branch: currentBranch, season: currentSeason, ...fields,
     payments, items, subtotal, orderDiscount: newDiscount,
     date: new Date().toLocaleDateString('en-IN'),
     deliveryUnits: buildDeliveryUnits(items).map(u => ({ ...u, given: true }))
-  });
+  };
+  savedOrders.unshift(newOrder);
 
   saveLocal();
+  saveOrderRemote(newOrder).catch(err => toast('Cloud save failed: ' + err.message, 'error', 4000));
   toast(`Order saved — ${fields.studentName}, ${rupees(subtotal)}`);
   resetNewForm();
   showTab('orders');
@@ -1703,7 +1705,8 @@ function toggleItemDelivery(orderId, unitKey, isGiven) {
   const unit  = units.find(u => u.key === unitKey);
   if (unit) unit.given = isGiven;
   savedOrders[idx].deliveryUnits = units;
-  saveLocal(); renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
+  saveLocal(); saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+  renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
   if (units.every(u => u.given)) toast(`All items marked delivered for ${savedOrders[idx].studentName}`);
 }
 
@@ -1711,7 +1714,8 @@ function markAllDelivered(orderId) {
   const idx = savedOrders.findIndex(o => o.id === orderId);
   if (idx === -1) return;
   ensureDeliveryUnits(savedOrders[idx]).forEach(u => u.given = true);
-  saveLocal(); renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
+  saveLocal(); saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+  renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
   toast('All items marked delivered');
 }
 
@@ -1803,7 +1807,8 @@ function savePaymentEntry() {
   if (amtVal > 0) payments.push({ mode: newMode, amount: amtVal, date: new Date().toLocaleDateString('en-IN') });
   savedOrders[idx].payments      = payments;
   savedOrders[idx].orderDiscount = discVal;
-  saveLocal(); closeSheet('ep-modal'); renderOrders(getSearchValue());
+  saveLocal(); saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+  closeSheet('ep-modal'); renderOrders(getSearchValue());
   toast(amtVal > 0 ? 'Payment added' : `Discount of ${rupees(discVal)} applied`);
 }
 
@@ -1839,11 +1844,14 @@ function confirmDelete() {
     const idx = savedOrders.findIndex(o => o.id === orderId); if (idx === -1) return;
     const payments = [...getPayments(savedOrders[idx])]; payments.splice(entryIndex, 1);
     savedOrders[idx].payments = payments; savedOrders[idx].orderDiscount = savedOrders[idx].orderDiscount || 0;
-    saveLocal(); toast('Payment entry deleted'); closeSheet('ep-modal'); renderOrders(getSearchValue());
+    saveLocal(); saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+    toast('Payment entry deleted'); closeSheet('ep-modal'); renderOrders(getSearchValue());
   } else {
     if (!pendingDeleteId) return;
-    savedOrders = savedOrders.filter(o => o.id !== pendingDeleteId); pendingDeleteId = null;
-    saveLocal(); toast('Order deleted'); renderOrders(getSearchValue());
+    const deletedId = pendingDeleteId;
+    savedOrders = savedOrders.filter(o => o.id !== deletedId); pendingDeleteId = null;
+    saveLocal(); deleteOrderRemote(deletedId).catch(e => console.error(e));
+    toast('Order deleted'); renderOrders(getSearchValue());
   }
 }
 
@@ -1929,7 +1937,7 @@ function saveEditOrder() {
   newUnits.forEach(u => { if (givenKeys.has(u.key)) u.given = true; });
 
   savedOrders[idx] = { ...orig, ...fields, items, subtotal, payments: adjustedPayments, orderDiscount: orig.orderDiscount || 0, deliveryUnits: newUnits };
-  saveLocal();
+  saveLocal(); saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
   toast(`Order updated — ${fields.studentName}, ${rupees(subtotal)}`);
   closeEditOrder();
   renderOrders(getSearchValue());
@@ -2065,6 +2073,7 @@ function importJSON(event) {
 
       savedOrders = [...savedOrders, ...newOrders].sort((a, b) => b.id - a.id);
       saveLocal();
+      Promise.all(newOrders.map(o => saveOrderRemote(o))).catch(e => toast('Cloud sync failed: ' + e.message, 'error', 4000));
       renderOrders('');
       toast(`Imported ${newOrders.length} order${newOrders.length !== 1 ? 's' : ''}`);
     } catch (err) { toast('Import failed: ' + err.message, 'error', 4000); }
@@ -2243,3 +2252,42 @@ buildItemsSection('new-items-section', 'items-container', 'add-btns-new', 'grand
 syncBranchBadge();
 syncSeasonBadge();
 syncSeasonToggleUI();
+
+/* ── FIREBASE FUNCTIONS ──────────────────────────────────── */
+
+window.__firestoreUnsubscribe = null;
+
+function startApp(user) {
+  renderOrders('');
+  if (window.__firestoreUnsubscribe) window.__firestoreUnsubscribe();
+  window.__firestoreUnsubscribe = subscribeOrders(orders => {
+    savedOrders = orders;
+    renderOrders(getSearchValue());
+  });
+  /* one-time migration banner */
+  const legacy = JSON.parse(localStorage.getItem('uniform_orders') || '[]');
+  if (legacy.length > 0) showMigrationBanner(legacy);
+}
+
+function showMigrationBanner(legacyOrders) {
+  const banner = document.getElementById('migration-banner');
+  if (!banner) return;
+  document.getElementById('migration-count').textContent = legacyOrders.length;
+  banner.style.display = 'flex';
+
+  document.getElementById('migration-upload-btn').onclick = async () => {
+    banner.style.display = 'none';
+    try {
+      await uploadLocalOrders(legacyOrders);
+      localStorage.removeItem('uniform_orders');
+      toast(`${legacyOrders.length} local orders uploaded to cloud`);
+    } catch(e) {
+      toast('Upload failed: ' + e.message, 'error', 4000);
+      banner.style.display = 'flex';
+    }
+  };
+
+  document.getElementById('migration-dismiss-btn').onclick = () => {
+    banner.style.display = 'none';
+  };
+}
