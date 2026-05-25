@@ -3,7 +3,7 @@
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                                                    from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc,
+import { getFirestore, collection, doc, setDoc, deleteDoc, getDoc,
          onSnapshot, enableIndexedDbPersistence, query, orderBy }
                                                    from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
@@ -66,9 +66,7 @@ export function subscribeOrders(onUpdate) {
 /* ── FIRESTORE: USER SETTINGS ────────────────────────────── */
 
 export async function loadUserSettings(email) {
-  const { getDoc } = await import('https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js');
-  const ref = doc(db, 'users', email);
-  const snap = await getDoc(ref);
+  const snap = await getDoc(doc(db, 'users', email));
   return snap.exists() ? snap.data() : null;
 }
 
