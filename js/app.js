@@ -1,72 +1,3 @@
-/* ── PRICE DATA ──────────────────────────────────────────── */
-
-const PRICES_SUMMER = {
-  badagaon: {
-    'Tie':                { Small: 50, Large: 100 },
-    'Belt':               { All: 100 },
-    'Socks':              { Pair: 30 },
-    'Suit':               { All: 350 },
-    'Trouser':            { All: 350 },
-    'Jacket':             { All: 300 },
-    'Half Lower':         { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
-    'Half T-Shirt':       { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
-    'Lower':              { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
-    'T-Shirt':            { 26: 300, 28: 300, 30: 325, 32: 325, 34: 350, 36: 350, 38: 375, 40: 400, 42: 425, 44: 450 },
-    'Pant':               { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 },
-    'Shirt':              { 20: 300, 22: 300, 24: 300, 26: 325, 28: 325, 30: 350, 32: 350, 34: 375, 36: 375, 38: 400, 40: 400, 42: 425, 44: 450 }
-  },
-  baghpat: {
-    'Tie':                { Small: 50, Large: 100 },
-    'Belt':               { All: 100 },
-    'Socks':              { Pair: 40 },
-    'Suit':               { All: 400 },
-    'Trouser':            { All: 400 },
-    'Jacket':             { All: 300 },
-    'Half Lower':         { 20: 250, 22: 250, 24: 250, 26: 250, 28: 300, 30: 300 },
-    'Half T-Shirt':       { 20: 350, 22: 350, 24: 400, 26: 400, 28: 400, 30: 400 },
-    'Lower':              { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    'T-Shirt':            { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    'Pant':               { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 },
-    'Shirt':              { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400, 32: 425, 34: 425, 36: 450, 38: 450, 40: 475, 42: 475, 44: 500 }
-  }
-};
-
-const PRICES_WINTER_EXTRA = {
-  'Blazer':             { 26: 650, 28: 650, 30: 700, 32: 700, 34: 750, 36: 800, 38: 850, 40: 900, 42: 950, 44: 1000, 46: 1050 },
-  'Sweater':            { 26: 250, 28: 270, 30: 300, 32: 320, 34: 350, 36: 370, 38: 390, 40: 400, 42: 420, 44: 430, 46: 450 },
-  'Winter Cap':         { All: 50 },
-  'Full Lower':         { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400 },
-  'Full T-Shirt':       { 20: 350, 22: 350, 24: 375, 26: 375, 28: 400, 30: 400 }
-};
-
-const WINTER_ONLY_ITEMS = new Set(['Blazer', 'Sweater', 'Winter Cap', 'Full Lower', 'Full T-Shirt']);
-
-function buildPrices(branch, season) {
-  const base = { ...PRICES_SUMMER[branch] };
-  if (season === 'winter') Object.assign(base, PRICES_WINTER_EXTRA);
-  return base;
-}
-
-const COMBOS = {
-  'pant-shirt':        { item1: 'Pant',       item2: 'Shirt',        label: 'Pant + Shirt' },
-  'lower-tshirt':      { item1: 'Lower',      item2: 'T-Shirt',      label: 'Lower + T-Shirt' },
-  'half-lower-tshirt': { item1: 'Half Lower', item2: 'Half T-Shirt', label: 'Half Lower + T-Shirt' },
-  'full-lower-tshirt': { item1: 'Full Lower', item2: 'Full T-Shirt', label: 'Full Lower + T-Shirt' }
-};
-
-const COMBO_TYPE_BY_ITEM1 = {
-  'Pant':       'pant-shirt',
-  'Lower':      'lower-tshirt',
-  'Half Lower': 'half-lower-tshirt',
-  'Full Lower': 'full-lower-tshirt'
-};
-
-const BRANCH_LABEL = { badagaon: 'Badagaon', baghpat: 'Baghpat' };
-
-const DEFAULT_UPI_ID     = 'madhurdhama@okhdfcbank';
-const DEFAULT_UPI_NUMBER = '6398913135';
-
-
 /* ── APP STATE ───────────────────────────────────────────── */
 
 let currentBranch  = localStorage.getItem('uniform_branch')  || 'badagaon';
@@ -87,7 +18,7 @@ let analyticsDate         = 'today';
 let analyticsSpecificDate = '';
 let analyticsBranch       = 'all';
 
-let savedOrders = JSON.parse(localStorage.getItem('uniform_orders') || '[]');
+let savedOrders = [];
 
 let sheetTarget          = null;
 let pendingDeleteId      = null;
@@ -110,7 +41,6 @@ const ctx = {
 
 const $         = id => document.getElementById(id);
 const rupees    = n  => 'Rs.' + (n || 0).toLocaleString('en-IN');
-const saveLocal = () => localStorage.setItem('uniform_orders', JSON.stringify(savedOrders));
 
 function generateUUID() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
@@ -183,32 +113,41 @@ function updateSearchClear(input) {
 
 /* ── SETTINGS ────────────────────────────────────────────── */
 
+/* currentUserEmail set by Firebase bridge on sign-in */
+let currentUserEmail = null;
+
 function loadSettings() {
-  return {
-    upiId:     localStorage.getItem('uniform_upi_id')     || DEFAULT_UPI_ID,
-    upiNumber: localStorage.getItem('uniform_upi_number') || DEFAULT_UPI_NUMBER,
-    qrDataUrl: localStorage.getItem('uniform_qr_image')   || ''
-  };
+  /* sync fallback — returns defaults; real data loaded async in showSettings */
+  return { upiId: DEFAULT_UPI_ID, upiNumber: DEFAULT_UPI_NUMBER, qrDataUrl: '' };
 }
 
-function showSettings() {
-  const s = loadSettings();
-  $('settings-upi-id').value     = s.upiId     === DEFAULT_UPI_ID     ? '' : s.upiId;
-  $('settings-upi-number').value = s.upiNumber === DEFAULT_UPI_NUMBER ? '' : s.upiNumber;
+async function loadSettingsFromCloud() {
+  if (!currentUserEmail || typeof loadUserSettings !== 'function') return null;
+  try { return await loadUserSettings(currentUserEmail); }
+  catch(e) { console.warn('Could not load user settings:', e); return null; }
+}
 
+function applySettingsToUI(s) {
+  $('settings-upi-id').value     = (!s.upiId     || s.upiId     === DEFAULT_UPI_ID)     ? '' : s.upiId;
+  $('settings-upi-number').value = (!s.upiNumber || s.upiNumber === DEFAULT_UPI_NUMBER) ? '' : s.upiNumber;
   const preview = $('settings-qr-preview');
   if (s.qrDataUrl) {
-    preview.src           = s.qrDataUrl;
-    preview.style.display = 'block';
-    $('settings-qr-current').textContent = 'Custom QR saved on this device';
+    preview.src = s.qrDataUrl; preview.style.display = 'block';
+    $('settings-qr-current').textContent = 'Custom QR saved';
   } else {
     preview.style.display = 'none';
     $('settings-qr-current').textContent = 'Using GooglePay_QR.png (default)';
   }
+}
 
+function showSettings() {
+  applySettingsToUI(loadSettings()); /* show defaults immediately */
   syncSeasonToggleUI();
   $('settings-screen').style.display = 'block';
   document.body.style.overflow = 'hidden';
+
+  /* then load from cloud and update if signed in */
+  loadSettingsFromCloud().then(s => { if (s) applySettingsToUI(s); });
 }
 
 function closeSettings() {
@@ -219,22 +158,29 @@ function closeSettings() {
 function saveSettingsForm() {
   const upiId     = ($('settings-upi-id').value     || '').trim();
   const upiNumber = ($('settings-upi-number').value || '').trim();
+  const qrDataUrl = $('settings-qr-preview').src && $('settings-qr-preview').style.display !== 'none'
+                    ? $('settings-qr-preview').src : '';
 
-  if (upiId)     localStorage.setItem('uniform_upi_id',     upiId);
-  else           localStorage.removeItem('uniform_upi_id');
+  if (!currentUserEmail || typeof saveUserSettings !== 'function') {
+    toast('Sign in to save settings', 'error'); return;
+  }
 
-  if (upiNumber) localStorage.setItem('uniform_upi_number', upiNumber);
-  else           localStorage.removeItem('uniform_upi_number');
-
-  toast('Settings saved');
-  closeSettings();
+  saveUserSettings(currentUserEmail, { upiId, upiNumber, qrDataUrl })
+    .then(() => { toast('Settings saved'); closeSettings(); })
+    .catch(e => toast('Save failed: ' + e.message, 'error', 4000));
 }
 
 function clearSettingsQR() {
-  localStorage.removeItem('uniform_qr_image');
   $('settings-qr-preview').style.display = 'none';
+  $('settings-qr-preview').src           = '';
   $('settings-qr-current').textContent   = 'Using GooglePay_QR.png (default)';
   $('settings-qr-file').value            = '';
+  if (currentUserEmail && typeof saveUserSettings === 'function') {
+    const upiId     = ($('settings-upi-id').value     || '').trim();
+    const upiNumber = ($('settings-upi-number').value || '').trim();
+    saveUserSettings(currentUserEmail, { upiId, upiNumber, qrDataUrl: '' })
+      .catch(e => console.warn('Could not clear QR:', e));
+  }
   toast('Custom QR removed — using default');
 }
 
@@ -242,16 +188,21 @@ function handleQRFileSelect(input) {
   const file = input.files[0];
   if (!file) return;
   if (!file.type.startsWith('image/')) { toast('Please select an image file', 'error'); return; }
-  if (file.size > 2 * 1024 * 1024)    { toast('Image too large — max 2 MB', 'error'); return; }
+  if (file.size > 700 * 1024)          { toast('Image too large — max 700 KB', 'error'); return; }
 
   const reader = new FileReader();
   reader.onload = e => {
     const dataUrl = e.target.result;
-    localStorage.setItem('uniform_qr_image', dataUrl);
     const preview = $('settings-qr-preview');
     preview.src           = dataUrl;
     preview.style.display = 'block';
     $('settings-qr-current').textContent = 'Custom QR saved ✓';
+    if (currentUserEmail && typeof saveUserSettings === 'function') {
+      const upiId     = ($('settings-upi-id').value     || '').trim();
+      const upiNumber = ($('settings-upi-number').value || '').trim();
+      saveUserSettings(currentUserEmail, { upiId, upiNumber, qrDataUrl: dataUrl })
+        .catch(e => console.warn('Could not save QR:', e));
+    }
     toast('QR image saved');
   };
   reader.readAsDataURL(file);
@@ -1186,14 +1137,15 @@ function saveOrder() {
       payments = [{ mode: newOrderPayMode, amount: paidAmt, date: new Date().toLocaleDateString('en-IN') }];
   }
 
-  savedOrders.unshift({
+  const newOrder = {
     id: Date.now(), uuid: generateUUID(), branch: currentBranch, season: currentSeason, ...fields,
     payments, items, subtotal, orderDiscount: newDiscount,
     date: new Date().toLocaleDateString('en-IN'),
     deliveryUnits: buildDeliveryUnits(items).map(u => ({ ...u, given: true }))
-  });
+  };
+  savedOrders.unshift(newOrder);
 
-  saveLocal();
+  saveOrderRemote(newOrder).catch(err => toast('Cloud save failed: ' + err.message, 'error', 4000));
   toast(`Order saved — ${fields.studentName}, ${rupees(subtotal)}`);
   resetNewForm();
   showTab('orders');
@@ -1703,7 +1655,8 @@ function toggleItemDelivery(orderId, unitKey, isGiven) {
   const unit  = units.find(u => u.key === unitKey);
   if (unit) unit.given = isGiven;
   savedOrders[idx].deliveryUnits = units;
-  saveLocal(); renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
+  saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+  renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
   if (units.every(u => u.given)) toast(`All items marked delivered for ${savedOrders[idx].studentName}`);
 }
 
@@ -1711,7 +1664,8 @@ function markAllDelivered(orderId) {
   const idx = savedOrders.findIndex(o => o.id === orderId);
   if (idx === -1) return;
   ensureDeliveryUnits(savedOrders[idx]).forEach(u => u.given = true);
-  saveLocal(); renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
+  saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+  renderDeliverySheet(savedOrders[idx]); renderOrders(getSearchValue());
   toast('All items marked delivered');
 }
 
@@ -1803,7 +1757,8 @@ function savePaymentEntry() {
   if (amtVal > 0) payments.push({ mode: newMode, amount: amtVal, date: new Date().toLocaleDateString('en-IN') });
   savedOrders[idx].payments      = payments;
   savedOrders[idx].orderDiscount = discVal;
-  saveLocal(); closeSheet('ep-modal'); renderOrders(getSearchValue());
+  saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+  closeSheet('ep-modal'); renderOrders(getSearchValue());
   toast(amtVal > 0 ? 'Payment added' : `Discount of ${rupees(discVal)} applied`);
 }
 
@@ -1839,11 +1794,14 @@ function confirmDelete() {
     const idx = savedOrders.findIndex(o => o.id === orderId); if (idx === -1) return;
     const payments = [...getPayments(savedOrders[idx])]; payments.splice(entryIndex, 1);
     savedOrders[idx].payments = payments; savedOrders[idx].orderDiscount = savedOrders[idx].orderDiscount || 0;
-    saveLocal(); toast('Payment entry deleted'); closeSheet('ep-modal'); renderOrders(getSearchValue());
+    saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
+    toast('Payment entry deleted'); closeSheet('ep-modal'); renderOrders(getSearchValue());
   } else {
     if (!pendingDeleteId) return;
-    savedOrders = savedOrders.filter(o => o.id !== pendingDeleteId); pendingDeleteId = null;
-    saveLocal(); toast('Order deleted'); renderOrders(getSearchValue());
+    const deletedId = pendingDeleteId;
+    savedOrders = savedOrders.filter(o => o.id !== deletedId); pendingDeleteId = null;
+    deleteOrderRemote(deletedId).catch(e => console.error(e));
+    toast('Order deleted'); renderOrders(getSearchValue());
   }
 }
 
@@ -1929,7 +1887,7 @@ function saveEditOrder() {
   newUnits.forEach(u => { if (givenKeys.has(u.key)) u.given = true; });
 
   savedOrders[idx] = { ...orig, ...fields, items, subtotal, payments: adjustedPayments, orderDiscount: orig.orderDiscount || 0, deliveryUnits: newUnits };
-  saveLocal();
+  saveOrderRemote(savedOrders[idx]).catch(e => console.error(e));
   toast(`Order updated — ${fields.studentName}, ${rupees(subtotal)}`);
   closeEditOrder();
   renderOrders(getSearchValue());
@@ -1938,13 +1896,13 @@ function saveEditOrder() {
 
 /* ── WHATSAPP BILL ───────────────────────────────────────── */
 
-function openWhatsApp(id) {
+async function openWhatsApp(id) {
   const order = savedOrders.find(o => o.id === id);
   if (!order) return;
 
-  const settings  = loadSettings();
-  const upiId     = settings.upiId;
-  const upiNumber = settings.upiNumber;
+  const cloudSettings = await loadSettingsFromCloud();
+  const upiId     = cloudSettings?.upiId     || DEFAULT_UPI_ID;
+  const upiNumber = cloudSettings?.upiNumber || DEFAULT_UPI_NUMBER;
 
   const payments  = getPayments(order);
   const balance   = balanceDue(order);
@@ -2064,7 +2022,7 @@ function importJSON(event) {
       if (!newOrders.length) { toast('All orders already exist — nothing imported'); return; }
 
       savedOrders = [...savedOrders, ...newOrders].sort((a, b) => b.id - a.id);
-      saveLocal();
+      Promise.all(newOrders.map(o => saveOrderRemote(o))).catch(e => toast('Cloud sync failed: ' + e.message, 'error', 4000));
       renderOrders('');
       toast(`Imported ${newOrders.length} order${newOrders.length !== 1 ? 's' : ''}`);
     } catch (err) { toast('Import failed: ' + err.message, 'error', 4000); }
@@ -2217,11 +2175,11 @@ function renderPriceList() {
 /* ── QR PAYMENT OVERLAY ──────────────────────────────────── */
 
 function showQR() {
-  const s    = loadSettings();
   const qrImg = $('qr-img');
-  qrImg.src  = s.qrDataUrl || 'GooglePay_QR.png';
+  qrImg.src = 'GooglePay_QR.png';
   $('qr-screen').style.display = 'block';
   document.body.style.overflow = 'hidden';
+  loadSettingsFromCloud().then(s => { if (s?.qrDataUrl) qrImg.src = s.qrDataUrl; });
 }
 function closeQR() { $('qr-screen').style.display = 'none'; document.body.style.overflow = ''; }
 
@@ -2243,3 +2201,17 @@ buildItemsSection('new-items-section', 'items-container', 'add-btns-new', 'grand
 syncBranchBadge();
 syncSeasonBadge();
 syncSeasonToggleUI();
+
+/* ── FIREBASE BRIDGE CALLBACKS ───────────────────────────── */
+
+window.__firestoreUnsubscribe = null;
+
+function startApp(user) {
+  currentUserEmail = user.email;
+  renderOrders('');
+  if (window.__firestoreUnsubscribe) window.__firestoreUnsubscribe();
+  window.__firestoreUnsubscribe = subscribeOrders(orders => {
+    savedOrders = orders;
+    renderOrders(getSearchValue());
+  });
+}

@@ -9,6 +9,7 @@
 </head>
 <body>
 
+
 <div class="app">
 
   <!-- ── HEADER ─────────────────────────────────────── -->
@@ -49,16 +50,42 @@
         </div>
       </div>
 
-      <!-- ── THREE-DOT MENU ──────── -->
+      <!-- ── MENU ──────── -->
       <div class="header-menu-wrap">
+        <!-- signed-out: hamburger icon; signed-in: replaced by avatar via JS -->
         <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" title="Menu" aria-label="More options">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <line x1="4" y1="7"  x2="20" y2="7"/>
-            <line x1="4" y1="12" x2="20" y2="12"/>
-            <line x1="4" y1="17" x2="20" y2="17"/>
-          </svg>
+          <span id="hamburger-avatar-wrap">
+            <svg id="hamburger-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="4" y1="7"  x2="20" y2="7"/>
+              <line x1="4" y1="12" x2="20" y2="12"/>
+              <line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+          </span>
         </button>
         <div class="hamburger-dropdown" id="hamburger-menu">
+          <!-- profile section — shown when signed in -->
+          <div id="menu-profile" style="display:none;">
+            <div class="menu-profile-info">
+              <img id="menu-avatar-img" src="" alt="" class="menu-avatar-large"/>
+              <div>
+                <div id="menu-profile-name" class="menu-profile-name"></div>
+                <div id="menu-profile-email" class="menu-profile-email"></div>
+              </div>
+            </div>
+            <button class="menu-item destructive" onclick="closeHamburger();handleSignOut()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign out
+            </button>
+            <div class="menu-divider"></div>
+          </div>
+          <!-- signed-out section -->
+          <div id="menu-signin" style="display:none;">
+            <button class="menu-item" onclick="closeHamburger();handleSignIn()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Sign in with Google
+            </button>
+            <div class="menu-divider"></div>
+          </div>
           <button class="menu-item" onclick="closeHamburger();showAnalytics()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
             Analytics
@@ -183,7 +210,7 @@
             Reset to default
           </button>
         </div>
-        <div class="settings-field-hint settings-qr-hint">Max 2 MB. Stored locally on this device only.</div>
+        <div class="settings-field-hint settings-qr-hint">Max 700 KB. Synced to your account.</div>
       </div>
 
       <div class="section">
@@ -784,7 +811,80 @@
 </template>
 
 
+<script src="js/config.js"></script>
 <script src="js/app.js"></script>
+
+<!-- ── FIREBASE BRIDGE ────────────────────────────────────── -->
+<script type="module">
+  import { signIn, signOutUser, onAuthReady, isAllowed,
+           saveOrderRemote, deleteOrderRemote,
+           subscribeOrders, loadUserSettings, saveUserSettings } from './js/firebase.js';
+
+  window.signIn             = signIn;
+  window.signOutUser        = signOutUser;
+  window.saveOrderRemote    = saveOrderRemote;
+  window.deleteOrderRemote  = deleteOrderRemote;
+  window.subscribeOrders    = subscribeOrders;
+  window.loadUserSettings   = loadUserSettings;
+  window.saveUserSettings   = saveUserSettings;
+
+  function updateMenuUI(user) {
+    const menuProfile  = document.getElementById('menu-profile');
+    const menuSignin   = document.getElementById('menu-signin');
+    const avatarWrap   = document.getElementById('hamburger-avatar-wrap');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+
+    if (user && isAllowed(user)) {
+      menuProfile.style.display = 'block';
+      menuSignin.style.display  = 'none';
+
+      document.getElementById('menu-profile-name').textContent  = user.displayName || '';
+      document.getElementById('menu-profile-email').textContent = user.email;
+      document.getElementById('menu-avatar-img').src            = user.photoURL || '';
+
+      hamburgerIcon.style.display = 'none';
+      let avatarBtn = document.getElementById('hamburger-avatar-img');
+      if (!avatarBtn) {
+        avatarBtn = document.createElement('img');
+        avatarBtn.id = 'hamburger-avatar-img';
+        avatarBtn.alt = '';
+        avatarBtn.style.cssText = 'width:32px;height:32px;border-radius:50%;object-fit:cover;display:block;';
+        avatarWrap.appendChild(avatarBtn);
+      }
+      avatarBtn.src = user.photoURL || '';
+      avatarBtn.style.display = 'block';
+
+    } else {
+      menuProfile.style.display = 'none';
+      menuSignin.style.display  = 'block';
+
+      hamburgerIcon.style.display = '';
+      const avatarBtn = document.getElementById('hamburger-avatar-img');
+      if (avatarBtn) avatarBtn.style.display = 'none';
+    }
+  }
+
+  onAuthReady(user => {
+    updateMenuUI(user);
+    if (user && isAllowed(user)) {
+      if (typeof window !== 'undefined') window.currentUserEmail = user.email;
+      if (typeof startApp === 'function') startApp(user);
+    } else if (user && !isAllowed(user)) {
+      if (typeof toast === 'function') toast('You are not authorised to access this app', 'error', 4000);
+      setTimeout(() => signOutUser(), 1500);
+    }
+  });
+
+  window.handleSignIn = async () => {
+    try { await signIn(); }
+    catch(e) { console.error('Sign-in failed:', e.message); }
+  };
+
+  window.handleSignOut = async () => {
+    if (window.__firestoreUnsubscribe) { window.__firestoreUnsubscribe(); window.__firestoreUnsubscribe = null; }
+    await signOutUser();
+  };
+</script>
 
 <!-- ══════════════════════════════════════════════════
      BOTTOM NAVIGATION BAR
@@ -808,6 +908,8 @@
     <span class="bottom-nav-label">Orders</span>
   </button>
 </nav>
+
+
 
 </body>
 </html>
