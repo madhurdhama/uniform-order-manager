@@ -20,7 +20,8 @@ const FIREBASE_CONFIG = {
 
 /* add all authorised emails here — also update Firestore Rules to match */
 const ALLOWED_EMAILS = [
-  'madhurdhama@gmail.com'
+  'madhurdhama@gmail.com',
+  'bd2232748@gmail.com'
 ];
 
 /* ── INIT ────────────────────────────────────────────────── */
@@ -60,4 +61,17 @@ export function subscribeOrders(onUpdate) {
   return onSnapshot(q, snapshot => {
     onUpdate(snapshot.docs.map(d => d.data()));
   });
+}
+
+/* ── FIRESTORE: USER SETTINGS ────────────────────────────── */
+
+export async function loadUserSettings(email) {
+  const { getDoc } = await import('https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js');
+  const ref = doc(db, 'users', email);
+  const snap = await getDoc(ref);
+  return snap.exists() ? snap.data() : null;
+}
+
+export async function saveUserSettings(email, settings) {
+  return setDoc(doc(db, 'users', email), settings);
 }

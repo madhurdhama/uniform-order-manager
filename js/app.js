@@ -183,32 +183,41 @@ function updateSearchClear(input) {
 
 /* ── SETTINGS ────────────────────────────────────────────── */
 
+/* currentUserEmail set by Firebase bridge on sign-in */
+let currentUserEmail = null;
+
 function loadSettings() {
-  return {
-    upiId:     localStorage.getItem('uniform_upi_id')     || DEFAULT_UPI_ID,
-    upiNumber: localStorage.getItem('uniform_upi_number') || DEFAULT_UPI_NUMBER,
-    qrDataUrl: localStorage.getItem('uniform_qr_image')   || ''
-  };
+  /* sync fallback — returns defaults; real data loaded async in showSettings */
+  return { upiId: DEFAULT_UPI_ID, upiNumber: DEFAULT_UPI_NUMBER, qrDataUrl: '' };
 }
 
-function showSettings() {
-  const s = loadSettings();
-  $('settings-upi-id').value     = s.upiId     === DEFAULT_UPI_ID     ? '' : s.upiId;
-  $('settings-upi-number').value = s.upiNumber === DEFAULT_UPI_NUMBER ? '' : s.upiNumber;
+async function loadSettingsFromCloud() {
+  if (!currentUserEmail || typeof loadUserSettings !== 'function') return null;
+  try { return await loadUserSettings(currentUserEmail); }
+  catch(e) { console.warn('Could not load user settings:', e); return null; }
+}
 
+function applySettingsToUI(s) {
+  $('settings-upi-id').value     = (!s.upiId     || s.upiId     === DEFAULT_UPI_ID)     ? '' : s.upiId;
+  $('settings-upi-number').value = (!s.upiNumber || s.upiNumber === DEFAULT_UPI_NUMBER) ? '' : s.upiNumber;
   const preview = $('settings-qr-preview');
   if (s.qrDataUrl) {
-    preview.src           = s.qrDataUrl;
-    preview.style.display = 'block';
-    $('settings-qr-current').textContent = 'Custom QR saved on this device';
+    preview.src = s.qrDataUrl; preview.style.display = 'block';
+    $('settings-qr-current').textContent = 'Custom QR saved';
   } else {
     preview.style.display = 'none';
     $('settings-qr-current').textContent = 'Using GooglePay_QR.png (default)';
   }
+}
 
+function showSettings() {
+  applySettingsToUI(loadSettings()); /* show defaults immediately */
   syncSeasonToggleUI();
   $('settings-screen').style.display = 'block';
   document.body.style.overflow = 'hidden';
+
+  /* then load from cloud and update if signed in */
+  loadSettingsFromCloud().then(s => { if (s) applySettingsToUI(s); });
 }
 
 function closeSettings() {
@@ -219,22 +228,29 @@ function closeSettings() {
 function saveSettingsForm() {
   const upiId     = ($('settings-upi-id').value     || '').trim();
   const upiNumber = ($('settings-upi-number').value || '').trim();
+  const qrDataUrl = $('settings-qr-preview').src && $('settings-qr-preview').style.display !== 'none'
+                    ? $('settings-qr-preview').src : '';
 
-  if (upiId)     localStorage.setItem('uniform_upi_id',     upiId);
-  else           localStorage.removeItem('uniform_upi_id');
+  if (!currentUserEmail || typeof saveUserSettings !== 'function') {
+    toast('Sign in to save settings', 'error'); return;
+  }
 
-  if (upiNumber) localStorage.setItem('uniform_upi_number', upiNumber);
-  else           localStorage.removeItem('uniform_upi_number');
-
-  toast('Settings saved');
-  closeSettings();
+  saveUserSettings(currentUserEmail, { upiId, upiNumber, qrDataUrl })
+    .then(() => { toast('Settings saved'); closeSettings(); })
+    .catch(e => toast('Save failed: ' + e.message, 'error', 4000));
 }
 
 function clearSettingsQR() {
-  localStorage.removeItem('uniform_qr_image');
   $('settings-qr-preview').style.display = 'none';
+  $('settings-qr-preview').src           = '';
   $('settings-qr-current').textContent   = 'Using GooglePay_QR.png (default)';
   $('settings-qr-file').value            = '';
+  if (currentUserEmail && typeof saveUserSettings === 'function') {
+    const upiId     = ($('settings-upi-id').value     || '').trim();
+    const upiNumber = ($('settings-upi-number').value || '').trim();
+    saveUserSettings(currentUserEmail, { upiId, upiNumber, qrDataUrl: '' })
+      .catch(e => console.warn('Could not clear QR:', e));
+  }
   toast('Custom QR removed — using default');
 }
 
@@ -242,16 +258,21 @@ function handleQRFileSelect(input) {
   const file = input.files[0];
   if (!file) return;
   if (!file.type.startsWith('image/')) { toast('Please select an image file', 'error'); return; }
-  if (file.size > 2 * 1024 * 1024)    { toast('Image too large — max 2 MB', 'error'); return; }
+  if (file.size > 700 * 1024)          { toast('Image too large — max 700 KB', 'error'); return; }
 
   const reader = new FileReader();
   reader.onload = e => {
     const dataUrl = e.target.result;
-    localStorage.setItem('uniform_qr_image', dataUrl);
     const preview = $('settings-qr-preview');
     preview.src           = dataUrl;
     preview.style.display = 'block';
     $('settings-qr-current').textContent = 'Custom QR saved ✓';
+    if (currentUserEmail && typeof saveUserSettings === 'function') {
+      const upiId     = ($('settings-upi-id').value     || '').trim();
+      const upiNumber = ($('settings-upi-number').value || '').trim();
+      saveUserSettings(currentUserEmail, { upiId, upiNumber, qrDataUrl: dataUrl })
+        .catch(e => console.warn('Could not save QR:', e));
+    }
     toast('QR image saved');
   };
   reader.readAsDataURL(file);
@@ -2253,11 +2274,12 @@ syncBranchBadge();
 syncSeasonBadge();
 syncSeasonToggleUI();
 
-/* ── FIREBASE FUNCTIONS ──────────────────────────────────── */
+/* ── FIREBASE BRIDGE CALLBACKS ───────────────────────────── */
 
 window.__firestoreUnsubscribe = null;
 
 function startApp(user) {
+  currentUserEmail = user.email;
   renderOrders('');
   if (window.__firestoreUnsubscribe) window.__firestoreUnsubscribe();
   window.__firestoreUnsubscribe = subscribeOrders(orders => {

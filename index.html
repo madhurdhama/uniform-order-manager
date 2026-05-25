@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<div id="app-wrap">
 
 <div class="app">
 
@@ -211,7 +210,7 @@
             Reset to default
           </button>
         </div>
-        <div class="settings-field-hint settings-qr-hint">Max 2 MB. Stored locally on this device only.</div>
+        <div class="settings-field-hint settings-qr-hint">Max 700 KB. Synced to your account.</div>
       </div>
 
       <div class="section">
@@ -818,13 +817,15 @@
 <script type="module">
   import { signIn, signOutUser, onAuthReady, isAllowed,
            saveOrderRemote, deleteOrderRemote,
-           subscribeOrders } from './js/firebase.js';
+           subscribeOrders, loadUserSettings, saveUserSettings } from './js/firebase.js';
 
   window.signIn             = signIn;
   window.signOutUser        = signOutUser;
   window.saveOrderRemote    = saveOrderRemote;
   window.deleteOrderRemote  = deleteOrderRemote;
   window.subscribeOrders    = subscribeOrders;
+  window.loadUserSettings   = loadUserSettings;
+  window.saveUserSettings   = saveUserSettings;
 
   function updateMenuUI(user) {
     const menuProfile  = document.getElementById('menu-profile');
@@ -865,6 +866,7 @@
   onAuthReady(user => {
     updateMenuUI(user);
     if (user && isAllowed(user)) {
+      if (typeof window !== 'undefined') window.currentUserEmail = user.email;
       if (typeof startApp === 'function') startApp(user);
     } else if (user && !isAllowed(user)) {
       if (typeof toast === 'function') toast('You are not authorised to access this app', 'error', 4000);
@@ -906,8 +908,6 @@
   </button>
 </nav>
 
-
-</div><!-- /#app-wrap -->
 
 
 </body>
