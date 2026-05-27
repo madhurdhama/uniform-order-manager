@@ -1340,6 +1340,91 @@ input, select, button, textarea { font-family: inherit; }
 .an-metric-green .an-metric-val { color: var(--green); }
 .an-metric-amber .an-metric-val { color: var(--orange); }
 
+.an-bal-mode {
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+/* balance payment history button in analytics */
+.an-bal-history-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.an-bal-history-btn:active { background: var(--border); }
+
+.an-bal-total-line {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-1);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+
+/* balance payment entry card */
+.an-bal-entry {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.an-bal-entry:last-child { border-bottom: none; }
+
+.an-bal-entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.an-bal-entry-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.an-bal-entry-amt {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+.an-bal-entry-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-top: 3px;
+}
+.an-bal-remaining {
+  color: var(--orange);
+  font-weight: 500;
+}
+.an-bal-cleared {
+  color: var(--green);
+  font-weight: 500;
+}
+.an-empty {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 0.9rem;
+  padding: 40px 16px;
+}
+
 .an-section-card {
   background: var(--card);
   border: 1px solid var(--border);

@@ -1177,16 +1177,21 @@ function clearAllItems(btn) {
 
 /* ── ANALYTICS ───────────────────────────────────────────── */
 
-function setAnalyticsDate(v)  { analyticsDate = v; renderAnalytics(); }
-function setAnalyticsBranch(v){ analyticsBranch = v; renderAnalytics(); }
-function setAnalyticsSpecificDate(val) { analyticsSpecificDate = val; renderAnalytics(); }
+function setAnalyticsDate(v) { analyticsDate = v; renderAnalytics(); refreshBalPanel(); }
+function setAnalyticsBranch(v) { analyticsBranch = v; renderAnalytics(); refreshBalPanel(); }
+function setAnalyticsSpecificDate(v) { analyticsSpecificDate = v; renderAnalytics(); refreshBalPanel(); }
+
+function refreshBalPanel() {
+  const panel = $('bal-history-panel');
+  if (panel && panel.style.display !== 'none') renderBalHistoryPanel(panel);
+}
 
 function renderAnalytics() {
   function parseDate(str) { const p = (str || '').split('/'); return new Date(p[2], p[1] - 1, p[0]); }
   const now   = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  let base    = savedOrders;
-
+  
+  let base = savedOrders;
   if (analyticsDate === 'today') {
     base = base.filter(o => parseDate(o.date).getTime() === today.getTime());
   } else if (analyticsDate === 'week') {
@@ -1201,8 +1206,7 @@ function renderAnalytics() {
   const orders = analyticsBranch === 'all' ? base : base.filter(o => o.branch === analyticsBranch);
   const trueValue = o => (o.subtotal || 0) - totalDiscount(o);
 
-  let cashAmt = 0, onlineAmt = 0, balanceAmt = 0;
-  let cashOrders = 0, onlineOrders = 0;
+  let cashAmt = 0, onlineAmt = 0, balanceAmt = 0, cashOrders = 0, onlineOrders = 0;
   orders.forEach(o => {
     const outstanding = trueValue(o) - totalCollected(o);
     if (outstanding > 0) balanceAmt += outstanding;
@@ -1226,6 +1230,7 @@ function renderAnalytics() {
   const wrap = $('analytics-content');
   wrap.innerHTML = '';
 
+  /* ── FILTER UI ────────────────────────────────────────── */
   const filterWrap = document.createElement('div');
   filterWrap.className = 'an-filter-wrap';
 
@@ -1272,6 +1277,7 @@ function renderAnalytics() {
 
   wrap.appendChild(filterWrap);
 
+  /* ── METRICS ──────────────────────────────────────────── */
   const metricsWrap = document.createElement('div');
   metricsWrap.className = 'an-metrics-wrap';
 
@@ -1312,14 +1318,121 @@ function renderAnalytics() {
     makeAnRow2(branchCard, '#2563eb', 'Baghpat',  baghpat.length,  sumC(baghpat));
     wrap.appendChild(branchCard);
   }
+
+  /* ── BALANCE PAYMENT HISTORY ────────────── */
+  const balHistoryWrap = document.createElement('div');
+  balHistoryWrap.id = 'bal-history-wrap';
+
+  const balHistoryBtn = document.createElement('button');
+  balHistoryBtn.className = 'an-bal-history-btn';
+  balHistoryBtn.id = 'bal-history-toggle';
+  balHistoryBtn.innerHTML = 'Due Payments History <span id="bal-history-arrow">▼</span>';
+  balHistoryBtn.onclick = () => {
+    const panel = $('bal-history-panel');
+    const arrow = $('bal-history-arrow');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    arrow.textContent = isOpen ? '▼' : '▲';
+    if (!isOpen) renderBalHistoryPanel(panel);
+  };
+  balHistoryWrap.appendChild(balHistoryBtn);
+
+  const balHistoryPanel = document.createElement('div');
+  balHistoryPanel.id = 'bal-history-panel';
+  balHistoryPanel.style.display = 'none';
+  balHistoryWrap.appendChild(balHistoryPanel);
+
+  wrap.appendChild(balHistoryWrap);
+}
+
+function renderBalHistoryPanel(panel) {
+  function parseDate(str) { const p = (str || '').split('/'); return new Date(p[2], p[1] - 1, p[0]); }
+  const now   = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  function matchesDate(dateStr) {
+    const d = parseDate(dateStr);
+    if (analyticsDate === 'today') return d.getTime() === today.getTime();
+    if (analyticsDate === 'week')  { const w = new Date(today); w.setDate(today.getDate() - 6); return d >= w && d <= today; }
+    if (analyticsDate === 'specific' && analyticsSpecificDate) {
+      const [y, m, day] = analyticsSpecificDate.split('-').map(Number);
+      return d.getTime() === new Date(y, m - 1, day).getTime();
+    }
+    return true;
+  }
+
+  const entries = [];
+  savedOrders.forEach(o => {
+    if (analyticsBranch !== 'all' && o.branch !== analyticsBranch) return;
+    getPayments(o).forEach(p => {
+      if (!p.amount || p.amount <= 0) return;
+      if (p.date === o.date) return;
+      if (!matchesDate(p.date)) return;
+      entries.push({
+        studentName: o.studentName,
+        cls:         o.studentClass,
+        orderDate:   o.date,
+        payDate:     p.date,
+        amount:      p.amount,
+        mode:        p.mode,
+        remaining:   balanceDue(o)
+      });
+    });
+  });
+
+  entries.sort((a, b) => parseDate(b.payDate) - parseDate(a.payDate));
+
+  panel.innerHTML = '';
+
+  if (entries.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'an-empty';
+    empty.textContent = 'No balance payments for this period.';
+    panel.appendChild(empty);
+    return;
+  }
+
+  const total      = entries.reduce((s, e) => s + e.amount, 0);
+  const cashTotal  = entries.filter(e => e.mode === 'cash').reduce((s, e) => s + e.amount, 0);
+  const onlineTotal= entries.filter(e => e.mode === 'online').reduce((s, e) => s + e.amount, 0);
+
+  const totalLine = document.createElement('div');
+  totalLine.className = 'an-bal-total-line';
+  totalLine.innerHTML = `${rupees(total)} · ${entries.length} payment${entries.length !== 1 ? 's' : ''}
+    <span class="an-bal-mode" style="color:#059669">Cash ${rupees(cashTotal)}</span>
+    <span class="an-bal-mode" style="color:#2563eb">Online ${rupees(onlineTotal)}</span>`;
+  panel.appendChild(totalLine);
+
+  /* entries list */
+  const listCard = makeAnSection('');
+  entries.forEach(e => {
+    const modeColor = e.mode === 'cash' ? '#059669' : '#2563eb';
+    const row = document.createElement('div');
+    row.className = 'an-bal-entry';
+    row.innerHTML = `
+      <div class="an-bal-entry-top">
+        <div class="an-bal-entry-name">${e.studentName}${e.cls ? ' · ' + e.cls : ''}</div>
+        <div class="an-bal-entry-amt">${rupees(e.amount)}</div>
+      </div>
+      <div class="an-bal-entry-meta">
+        <span>Order: ${e.orderDate} · Paid: ${e.payDate} · <span style="color:${modeColor}">${e.mode.charAt(0).toUpperCase()+e.mode.slice(1)}</span></span>
+        <span>${e.remaining > 0
+          ? `<span class="an-bal-remaining">Due ${rupees(e.remaining)}</span>`
+          : `<span class="an-bal-cleared">Paid</span>`}</span>
+      </div>`;
+    listCard.appendChild(row);
+  });
+  panel.appendChild(listCard);
 }
 
 function makeAnSection(title) {
   const sec = document.createElement('div');
   sec.className = 'an-section-card';
-  const lbl = document.createElement('div');
-  lbl.className = 'an-section-label'; lbl.textContent = title;
-  sec.appendChild(lbl);
+  if (title) {
+    const lbl = document.createElement('div');
+    lbl.className = 'an-section-label'; lbl.textContent = title;
+    sec.appendChild(lbl);
+  }
   return sec;
 }
 
