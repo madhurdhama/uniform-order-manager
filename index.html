@@ -9,8 +9,7 @@
 </head>
 <body>
 
-
-<div class="app">
+<main class="app">
 
   <!-- ── HEADER ─────────────────────────────────────── -->
   <div class="header">
@@ -27,10 +26,8 @@
         </div>
       </div>
 
-      <!-- Season badge -->
-      <span id="season-header-badge" class="season-header-badge"></span>
 
-      <!-- Branch selector -->
+      <!-- Branch selector: dropdown populated in JS; active branch stored in localStorage -->
       <div class="branch-header-wrap" id="branch-header-wrap">
         <button class="branch-header-badge" id="branch-header-badge" onclick="toggleBranchDropdown()" aria-label="Switch branch">
           <span class="branch-header-dot" id="branch-header-dot"></span>
@@ -50,9 +47,8 @@
         </div>
       </div>
 
-      <!-- ── MENU ──────── -->
+      <!-- Hamburger: shows profile avatar when signed in (swapped by JS) -->
       <div class="header-menu-wrap">
-        <!-- signed-out: hamburger icon; signed-in: replaced by avatar via JS -->
         <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" title="Menu" aria-label="More options">
           <span id="hamburger-avatar-wrap">
             <svg id="hamburger-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -63,7 +59,7 @@
           </span>
         </button>
         <div class="hamburger-dropdown" id="hamburger-menu">
-          <!-- profile section — shown when signed in -->
+          <!-- Shown when signed in -->
           <div id="menu-profile" style="display:none;">
             <div class="menu-profile-info">
               <img id="menu-avatar-img" src="" alt="" class="menu-avatar-large"/>
@@ -78,7 +74,7 @@
             </button>
             <div class="menu-divider"></div>
           </div>
-          <!-- signed-out section -->
+          <!-- Shown when signed out -->
           <div id="menu-signin" style="display:none;">
             <button class="menu-item" onclick="closeHamburger();handleSignIn()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
@@ -118,12 +114,13 @@
         </button>
         <div class="screen-title">Analytics</div>
       </div>
+      <!-- Content rendered by renderAnalytics() -->
       <div id="analytics-content"></div>
     </div>
   </div>
 
   <!-- ── PRICE LIST OVERLAY ────────────────────────── -->
-  <!-- Branch select + all content rendered by JS into #price-list-content -->
+  <!-- Branch toggle + tables rendered by renderPriceList() -->
   <div id="pricelist-screen" style="display:none">
     <div class="overlay-inner">
       <div class="screen-header">
@@ -138,6 +135,7 @@
   </div>
 
   <!-- ── QR PAYMENT OVERLAY ────────────────────────── -->
+  <!-- QR src swapped to custom image if saved in Firestore user settings -->
   <div id="qr-screen" style="display:none">
     <div class="overlay-inner">
       <div class="screen-header">
@@ -164,22 +162,6 @@
         <div class="screen-title">Settings</div>
       </div>
 
-      <!-- Season toggle -->
-      <div class="section">
-        <div class="section-title">Season</div>
-        <div class="season-toggle">
-          <button class="season-btn" id="season-summer-btn" onclick="setSeason('summer')">
-            <span class="season-icon">☀️</span>
-            <span class="season-label">Summer</span>
-            <span class="season-desc">Half Lower + T-Shirt<br>Pant + Shirt, Lower + T-Shirt</span>
-          </button>
-          <button class="season-btn" id="season-winter-btn" onclick="setSeason('winter')">
-            <span class="season-icon">❄️</span>
-            <span class="season-label">Winter</span>
-            <span class="season-desc">Full Lower + T-Shirt<br>Blazer, Sweater, Winter Cap</span>
-          </button>
-        </div>
-      </div>
 
       <div class="section">
         <div class="section-title">UPI Details</div>
@@ -195,6 +177,7 @@
         </div>
       </div>
 
+      <!-- QR upload: converts to base64 dataURL and saves to Firestore (max 700 KB) -->
       <div class="section">
         <div class="section-title">QR Code Image</div>
         <div id="settings-qr-current" class="settings-qr-current"></div>
@@ -220,6 +203,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Backup Orders
           </button>
+          <!-- Triggers hidden file input for JSON restore -->
           <button class="menu-item settings-data-btn" onclick="$('import-file').click()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Restore Orders
@@ -240,17 +224,20 @@
     </div>
   </div>
 
+  <!-- Hidden file input for JSON import (triggered by Restore button above) -->
   <input type="file" id="import-file" accept=".json" class="settings-file-input" onchange="importJSON(event)">
 
   <div id="toast-container"></div>
 
   <!-- ── NEW ORDER TAB ──────────────────────────────── -->
   <div id="tab-new">
+    <!-- Student fields injected by buildStudentFields() -->
     <div class="section" id="new-student-section">
       <div class="section-title">Student Details</div>
       <div id="new-student-fields"></div>
     </div>
 
+    <!-- Item rows + add buttons + total injected by buildItemsSection() -->
     <div id="new-items-section"></div>
 
     <div class="section payment-section">
@@ -263,6 +250,7 @@
           <button class="pay-btn"        id="pay-online"  onclick="setNewOrderPayMode('online')">Online</button>
         </div>
       </div>
+      <!-- Discount & partial payment — hidden when mode is Pending -->
       <div class="row2 payment-extra-row" id="payment-extra-row" style="display:none">
         <div class="field payment-extra-field">
           <label>Discount <span class="label-optional">(optional)</span></label>
@@ -285,6 +273,7 @@
 
   <!-- ── SAVED ORDERS TAB ───────────────────────────── -->
   <div id="tab-orders" style="display:none">
+    <!-- Summary banners: pending payments + pending deliveries; hidden when counts are zero -->
     <div class="banners-row" id="banners-row" style="display:none">
       <div id="pending-banner" class="pending-banner">
         <div class="pending-count" id="pending-count">0</div>
@@ -303,12 +292,13 @@
     </div>
 
     <div class="filter-row">
-      <div class="search-box" style="flex:1;margin-bottom:0">
+      <div class="search-box">
         <div class="search-input-wrap">
-          <input type="text" placeholder="Search orders..." oninput="renderOrders(this.value); updateSearchClear(this)" id="orders-search" style="margin-bottom:0">
+          <input type="text" placeholder="Search orders..." oninput="renderOrders(this.value); updateSearchClear(this)" id="orders-search">
           <button class="search-clear-btn" id="orders-search-clear" onclick="clearSearch('orders-search')" style="display:none" aria-label="Clear search">✕</button>
         </div>
       </div>
+      <!-- Filter dropdown: date / payment status / delivery / branch -->
       <div class="filter-btn-wrap" id="filter-btn-wrap">
         <button class="filter-btn" onclick="toggleFilterSheet()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
@@ -327,18 +317,18 @@
             <input type="date" id="fopt-specific-date" class="filter-date-input"
               onchange="setSpecificDateFilter(this.value)">
           </div>
-          <div class="filter-section-label" style="margin-top:10px">Payment</div>
+          <div class="filter-section-label">Payment</div>
           <div class="filter-group">
             <button class="filter-opt active" id="fopt-pay-all"     onclick="setPaymentFilter('all')">All</button>
             <button class="filter-opt"        id="fopt-pay-pending" onclick="setPaymentFilter('pending')">Pending / Partial</button>
             <button class="filter-opt"        id="fopt-pay-refund"  onclick="setPaymentFilter('refund')">Refund</button>
           </div>
-          <div class="filter-section-label" style="margin-top:10px">Delivery</div>
+          <div class="filter-section-label">Delivery</div>
           <div class="filter-group">
             <button class="filter-opt active" id="fopt-del-all"              onclick="setDeliveryFilter('all')">All</button>
             <button class="filter-opt"        id="fopt-del-pending-delivery" onclick="setDeliveryFilter('pending-delivery')">Pending Delivery</button>
           </div>
-          <div class="filter-section-label" style="margin-top:10px">Branch</div>
+          <div class="filter-section-label">Branch</div>
           <div class="filter-group">
             <button class="filter-opt active" id="fopt-branch-all"      onclick="setBranchFilter('all')">All</button>
             <button class="filter-opt"        id="fopt-branch-badagaon" onclick="setBranchFilter('badagaon')">Badagaon</button>
@@ -353,15 +343,15 @@
       <div id="filter-bar-label"></div>
     </div>
 
+    <!-- Order cards injected by renderOrders() -->
     <div id="orders-list"></div>
   </div>
 
 </div><!-- end .app -->
 
 
-<!-- ══════════════════════════════════════════════════
-     EDIT ORDER SCREEN
-═════════════════════════════════════════════════════→ -->
+<!-- ── EDIT ORDER SCREEN ───────────────────────────────────── -->
+<!-- Full-screen overlay; opened by openEditOrder(), closed by closeEditOrder() -->
 <div id="edit-order-screen">
   <div class="overlay-inner">
     <div class="screen-header">
@@ -387,23 +377,19 @@
 </div>
 
 
-<!-- ══════════════════════════════════════════════════
-     BOTTOM SHEETS
-═════════════════════════════════════════════════════→ -->
+<!-- Bottom sheets — .sheet-modal + .open class pattern; backdrop click calls closeSheet() -->
 
-<!-- Quick Set -->
+<!-- Quick Set: adds a complete uniform (Pant+Shirt+Lower+T-Shirt+Tie+Belt+2×Socks) at one size -->
 <div class="sheet-modal" id="qs-modal" onclick="closeSheet('qs-modal',event)">
   <div class="sheet">
     <div class="sheet-header">
-      <div class="sheet-title">Full Set</div>
+      <div class="sheet-title">Complete Uniform</div>
       <button class="sheet-close-btn" onclick="closeSheet('qs-modal')">✕</button>
     </div>
-    <div class="sheet-sub">Adds: Pant + Shirt + Lower + T-Shirt + Tie + Belt + 2×Socks</div>
-    <div class="sheet-label">Pick size — all items use same size</div>
-    <div class="chip-grid" id="qs-sizes"></div>
-    <div class="sheet-tie-note">
-      Tie: Small for size &lt;34 &nbsp;|&nbsp; Large for size 34+
-    </div>
+    <div class="sheet-sub">Pant + Shirt + Lower + T-Shirt + Tie + Belt + 2×Socks — all at same size</div>
+    <div class="sheet-label">Select size</div>
+    <div class="size-chip-grid" id="qs-sizes"></div>
+    <div class="sheet-tie-note">Tie: Small for size &lt;34 · Large for size 34+</div>
     <div class="qty-row">
       <label>Quantity</label>
       <div class="qty-stepper">
@@ -411,22 +397,99 @@
         <span id="qs-qty">1</span>
         <button onclick="stepQty('qs-qty',1);updateQSPrice()">+</button>
       </div>
-      <div class="sheet-price-preview" id="qs-price-preview"></div>
     </div>
-    <button class="sheet-confirm" onclick="confirmQuickSet()">✦ Add Full Set</button>
+    <div class="sheet-confirm-bar visible" id="qs-confirm-bar" style="visibility:visible;opacity:1;margin-top:12px;">
+      <div class="sheet-confirm-left">
+        <div class="sheet-confirm-summary" id="qs-confirm-summary">Select a size above</div>
+        <div class="sheet-price-preview" id="qs-price-preview"></div>
+      </div>
+      <button class="sheet-confirm-btn" onclick="confirmQuickSet()">✦ Add Selected</button>
+    </div>
   </div>
 </div>
 
-<!-- Combo -->
+<!-- Combo: adds a paired set (Pant+Shirt, Lower+T-Shirt, Half or Full variants, or Suit Set) -->
+<!-- Main combo sheet: Pant+Shirt and Lower+T-Shirt — multi-select, independent size per combo -->
+<div class="sheet-modal" id="mc-modal" onclick="closeSheet('mc-modal',event)">
+  <div class="sheet multi-select-sheet">
+    <div class="sheet-header">
+      <div class="sheet-title">Formal / Sports Uniform</div>
+      <button class="sheet-close-btn" onclick="closeSheet('mc-modal')">✕</button>
+    </div>
+    <div class="sheet-sub">Pant+Shirt (formal) · Lower+T-Shirt (sports)</div>
+    <div id="mc-combos"></div>
+    <div class="sheet-confirm-bar" id="mc-confirm-bar">
+      <div class="sheet-confirm-left">
+        <div class="sheet-confirm-summary" id="mc-confirm-summary"></div>
+        <div class="sheet-price-preview" id="mc-total-preview"></div>
+      </div>
+      <button class="sheet-confirm-btn" onclick="confirmMainCombo()">Add Selected</button>
+    </div>
+  </div>
+</div>
+
+<!-- Half/Full Lower+T-Shirt sheet -->
+<div class="sheet-modal" id="hf-modal" onclick="closeSheet('hf-modal',event)">
+  <div class="sheet">
+    <div class="sheet-header">
+      <div class="sheet-title">Red Uniform</div>
+      <button class="sheet-close-btn" onclick="closeSheet('hf-modal')">✕</button>
+    </div>
+    <div class="sheet-sub">Half: shorts + T-Shirt · Full: lower + full sleeve</div>
+    <div class="hf-variant-row">
+      <button class="hf-variant-btn" id="hf-opt-half"
+        onclick="selectHalfFullType('half-lower-tshirt', this)">Half</button>
+      <button class="hf-variant-btn" id="hf-opt-full"
+        onclick="selectHalfFullType('full-lower-tshirt', this)">Full</button>
+    </div>
+    <div class="sheet-label" id="hf-size-label" style="display:none">Select size</div>
+    <div class="size-chip-grid" id="hf-sizes"></div>
+    <div class="qty-row" id="hf-qty-row" style="display:none">
+      <label>Quantity</label>
+      <div class="qty-stepper">
+        <button onclick="stepQty('hf-qty',-1);updateHalfFullQtyPrice()">−</button>
+        <span id="hf-qty">1</span>
+        <button onclick="stepQty('hf-qty',1);updateHalfFullQtyPrice()">+</button>
+      </div>
+    </div>
+    <div class="sheet-confirm-bar" id="hf-confirm-wrap" style="visibility:hidden;opacity:0;margin-top:12px;">
+      <div class="sheet-confirm-left">
+        <div class="sheet-confirm-summary" id="hf-confirm-summary"></div>
+        <div class="sheet-price-preview" id="hf-price-total"></div>
+      </div>
+      <button class="sheet-confirm-btn" onclick="confirmHalfFull()">Add Selected</button>
+    </div>
+  </div>
+</div>
+
+<!-- Blazer + Sweater sheet — multi-select, each item has independent size and qty -->
+<div class="sheet-modal" id="bs-modal" onclick="closeSheet('bs-modal',event)">
+  <div class="sheet multi-select-sheet">
+    <div class="sheet-header">
+      <div class="sheet-title">Winter Uniform</div>
+      <button class="sheet-close-btn" onclick="closeSheet('bs-modal')">✕</button>
+    </div>
+    <div class="sheet-sub">Blazer, Sweater, Winter Cap — select independently</div>
+    <div id="bs-items"></div>
+    <div class="sheet-confirm-bar" id="bs-confirm-bar">
+      <div class="sheet-confirm-left">
+        <div class="sheet-confirm-summary" id="bs-confirm-summary"></div>
+        <div class="sheet-price-preview" id="bs-total-preview"></div>
+      </div>
+      <button class="sheet-confirm-btn" onclick="confirmBlazerSweater()">Add Selected</button>
+    </div>
+  </div>
+</div>
+
+<!-- Suit Set / Combo sheet: shared for Suit Set and other combo types; title and sub set by JS -->
 <div class="sheet-modal" id="co-modal" onclick="closeSheet('co-modal',event)">
   <div class="sheet">
     <div class="sheet-header">
-      <div class="sheet-title" id="co-title">Add Combo</div>
+      <div class="sheet-title" id="co-title">Suit Set</div>
       <button class="sheet-close-btn" onclick="closeSheet('co-modal')">✕</button>
     </div>
-    <div class="sheet-sub"   id="co-sub"></div>
-    <div class="sheet-label" id="co-label1">Select size</div>
-    <div class="chip-grid"   id="co-sizes1"></div>
+    <div class="sheet-sub" id="co-sub"></div>
+    <div class="size-chip-grid" id="co-sizes1"></div>
     <div class="qty-row">
       <label>Quantity</label>
       <div class="qty-stepper">
@@ -434,15 +497,20 @@
         <span id="co-qty">1</span>
         <button onclick="stepQty('co-qty',1);updateComboQtyPrice()">+</button>
       </div>
-      <div class="sheet-price-preview" id="co-price-preview"></div>
     </div>
-    <button class="sheet-confirm" onclick="confirmCombo()">Add</button>
+    <div class="sheet-confirm-bar visible" id="co-confirm-bar" style="visibility:visible;opacity:1;margin-top:12px;">
+      <div class="sheet-confirm-left">
+        <div class="sheet-confirm-summary" id="co-confirm-summary"></div>
+        <div class="sheet-price-preview" id="co-price-preview"></div>
+      </div>
+      <button class="sheet-confirm-btn" onclick="confirmCombo()">Add Selected</button>
+    </div>
   </div>
 </div>
 
-<!-- Single Item -->
+<!-- Single Item: tap a size to select; tap again to deselect; confirm adds all selected -->
 <div class="sheet-modal" id="si-modal" onclick="closeSheet('si-modal',event)">
-  <div class="sheet si-sheet">
+  <div class="sheet multi-select-sheet">
     <div class="sheet-header">
       <div class="sheet-title">Add Items</div>
       <button class="sheet-close-btn" onclick="closeSheet('si-modal')">✕</button>
@@ -455,17 +523,18 @@
     <div class="si-group-label">Sized Items</div>
     <div id="si-sized"></div>
 
-    <div class="si-confirm-bar" id="si-confirm-bar">
-      <div class="si-confirm-left">
-        <div class="si-confirm-summary" id="si-confirm-summary"></div>
-        <div class="sheet-price-preview" id="si-price-preview"></div>
+    <!-- Sticky confirm bar, visible only when items are selected -->
+    <div class="sheet-confirm-bar" id="sheet-confirm-bar">
+      <div class="sheet-confirm-left">
+        <div class="sheet-confirm-summary" id="sheet-confirm-summary"></div>
+        <div class="sheet-price-preview" id="sheet-price-total"></div>
       </div>
-      <button class="si-confirm-btn" onclick="confirmSingleItem()">Add Selected</button>
+      <button class="sheet-confirm-btn" onclick="confirmSingleItem()">Add Selected</button>
     </div>
   </div>
 </div>
 
-<!-- Price Adjustment -->
+<!-- Price Adjustment: adds a charge (+) or refund (−) line to the order -->
 <div class="sheet-modal" id="adj-modal" onclick="closeSheet('adj-modal',event)">
   <div class="sheet">
     <div class="sheet-header">
@@ -490,7 +559,7 @@
   </div>
 </div>
 
-<!-- Delivery Tracking -->
+<!-- Delivery Tracking: toggle individual items as given/pending per order -->
 <div class="sheet-modal" id="dv-modal" onclick="closeSheet('dv-modal',event)">
   <div class="sheet">
     <div class="sheet-header">
@@ -501,14 +570,14 @@
     <div id="dv-summary" class="dv-summary"></div>
     <div class="dv-items-header">
       <div class="sheet-label dv-items-label">Items — toggle to mark as given</div>
-      <button class="dv-mark-all-btn" onclick="markAllDelivered(deliverySheetOrderId)">Mark All Delivered</button>
+      <button class="dv-mark-all-btn" onclick="markAllDelivered(activeSheet.orderId)">Mark All Delivered</button>
     </div>
     <div id="dv-items" class="dv-items-list"></div>
     <button class="sheet-done" onclick="closeSheet('dv-modal')">Done</button>
   </div>
 </div>
 
-<!-- Edit Payment -->
+<!-- Edit Payment: view payment history, add new payment or discount for an order -->
 <div class="sheet-modal" id="ep-modal" onclick="closeSheet('ep-modal',event)">
   <div class="sheet">
     <div class="sheet-header">
@@ -531,12 +600,11 @@
         <input id="ep-amt" type="number" placeholder="e.g. 1000" min="0" class="sheet-input">
       </div>
     </div>
-    <div id="ep-orig" style="display:none"></div>
     <button class="sheet-confirm" onclick="savePaymentEntry()">Add Payment</button>
   </div>
 </div>
 
-<!-- Delete Confirm -->
+<!-- Delete Confirm: used for both order deletion and payment entry deletion -->
 <div class="modal-backdrop" id="del-modal" onclick="if(event.target===this)closeDelModal()">
   <div class="modal-box">
     <div class="modal-icon">
@@ -548,19 +616,20 @@
       </svg>
     </div>
     <div class="modal-title">Are you sure?</div>
+    <!-- Sub-text set dynamically before opening -->
     <div class="modal-sub" id="del-modal-sub">This cannot be undone.</div>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeDelModal()">Cancel</button>
+      <!-- data-mode="order"|"payment" drives confirmDelete() logic -->
       <button class="modal-delete" onclick="confirmDelete()">Delete</button>
     </div>
   </div>
 </div>
 
 
-<!-- ══════════════════════════════════════════════════
-     HTML TEMPLATES
-═════════════════════════════════════════════════════→ -->
+<!-- HTML templates — cloned via cloneTemplate(id), never rendered directly -->
 
+<!-- Student input grid (name, class, parent, mobile) + expandable address/note -->
 <template id="tpl-student-fields">
   <div>
     <div class="sf-grid-box">
@@ -600,6 +669,7 @@
   </div>
 </template>
 
+<!-- Items section wrapper: holds column headers, item rows, add buttons, and total -->
 <template id="tpl-items-section">
   <div class="section">
     <div class="section-title-row">
@@ -618,7 +688,7 @@
   </div>
 </template>
 
-<!-- Order card -->
+<!-- Order list card: student info, status badges, item details panel, action menu -->
 <template id="tpl-order-card">
   <div class="order-card">
     <div class="order-card-top">
@@ -685,23 +755,24 @@
         <span class="items-chevron oc-chevron">▸</span>
       </button>
     </div>
+    <!-- Collapsible detail panel: item lines, payments, discount, balance -->
     <div class="order-items oc-items-panel" style="display:none"></div>
   </div>
 </template>
 
-<!-- Order item line -->
+<!-- Single item line inside the order detail panel -->
 <template id="tpl-order-item-line">
   <div class="order-item-line">
     <span class="oil-label-wrap">
       <span class="item-status-dot oil-dot"></span>
       <span class="oil-label"></span>
-      <span class="oil-pend-note oil-pend-note-hidden"></span>
+      <span class="oil-pend-note"></span>
     </span>
     <span class="oil-price"></span>
   </div>
 </template>
 
-<!-- Payment history row -->
+<!-- Payment history row in the order detail panel -->
 <template id="tpl-pay-history-row">
   <div class="order-item-line pay-history-row">
     <span class="phr-label"></span>
@@ -709,7 +780,7 @@
   </div>
 </template>
 
-<!-- Single item row -->
+<!-- Single item row: item dropdown, size dropdown, qty input, line price, remove -->
 <template id="tpl-item-row">
   <div class="item-row js-item-row" data-type="single">
     <select class="ir-item-sel"></select>
@@ -720,7 +791,7 @@
   </div>
 </template>
 
-<!-- Suit-set combo row -->
+<!-- Suit set row: shows Suit+Trouser+Jacket as a single combo line -->
 <template id="tpl-suit-row">
   <div class="combo-row js-item-row" data-type="suit-set">
     <div class="combo-top">
@@ -733,7 +804,7 @@
   </div>
 </template>
 
-<!-- Pant/Lower/Half combo row -->
+<!-- Paired combo row: Pant/Shirt, Lower/T-Shirt, etc. — each item has its own size select -->
 <template id="tpl-combo-row">
   <div class="combo-row js-item-row" data-type="combo">
     <div class="combo-top">
@@ -757,14 +828,14 @@
   </div>
 </template>
 
-<!-- Adjustment Row Template -->
+<!-- Price adjustment row: charge (+) or refund (−) line -->
 <template id="tpl-adj-row">
   <div class="adj-row js-item-row" data-type="adjustment">
     <div class="adj-row-left">
       <span class="item-status-dot dot-adjustment"></span>
       <div>
         <div class="adj-row-label ar-label">± Adjustment</div>
-        <div class="adj-row-note ar-note adj-note-hidden"></div>
+        <div class="adj-row-note ar-note"></div>
       </div>
     </div>
     <div class="adj-row-right">
@@ -774,7 +845,7 @@
   </div>
 </template>
 
-<!-- Delivery item toggle row -->
+<!-- Delivery item toggle: checkbox switch per physical piece of clothing -->
 <template id="tpl-dv-item">
   <label class="dv-item-row">
     <div class="dv-item-info">
@@ -791,7 +862,7 @@
   </label>
 </template>
 
-<!-- Payment sheet history entry -->
+<!-- Payment entry in the Edit Payment sheet history -->
 <template id="tpl-pay-entry">
   <div class="pay-entry-row">
     <div>
@@ -814,12 +885,14 @@
 <script src="js/config.js"></script>
 <script src="js/app.js"></script>
 
-<!-- ── FIREBASE BRIDGE ────────────────────────────────────── -->
+<!-- Firebase bridge: imports ES module functions and exposes them on window so
+     non-module app.js can call them. Also handles auth state and header UI. -->
 <script type="module">
   import { signIn, signOutUser, onAuthReady, isAllowed,
            saveOrderRemote, deleteOrderRemote,
            subscribeOrders, loadUserSettings, saveUserSettings } from './js/firebase.js';
 
+  // Expose Firebase functions to global scope for app.js
   window.signIn             = signIn;
   window.signOutUser        = signOutUser;
   window.saveOrderRemote    = saveOrderRemote;
@@ -828,6 +901,7 @@
   window.loadUserSettings   = loadUserSettings;
   window.saveUserSettings   = saveUserSettings;
 
+  // Update header menu UI based on auth state
   function updateMenuUI(user) {
     const menuProfile  = document.getElementById('menu-profile');
     const menuSignin   = document.getElementById('menu-signin');
@@ -842,6 +916,7 @@
       document.getElementById('menu-profile-email').textContent = user.email;
       document.getElementById('menu-avatar-img').src            = user.photoURL || '';
 
+      // Swap hamburger icon for avatar photo
       hamburgerIcon.style.display = 'none';
       let avatarBtn = document.getElementById('hamburger-avatar-img');
       if (!avatarBtn) {
@@ -870,6 +945,7 @@
       if (typeof window !== 'undefined') window.currentUserEmail = user.email;
       if (typeof startApp === 'function') startApp(user);
     } else if (user && !isAllowed(user)) {
+      // Unauthorised email — show error and sign out
       if (typeof toast === 'function') toast('You are not authorised to access this app', 'error', 4000);
       setTimeout(() => signOutUser(), 1500);
     }
@@ -881,14 +957,15 @@
   };
 
   window.handleSignOut = async () => {
+    // Unsubscribe from Firestore listener before signing out
     if (window.__firestoreUnsubscribe) { window.__firestoreUnsubscribe(); window.__firestoreUnsubscribe = null; }
     await signOutUser();
   };
 </script>
 
-<!-- ══════════════════════════════════════════════════
-     BOTTOM NAVIGATION BAR
-═════════════════════════════════════════════════════→ -->
+<!-- ── BOTTOM NAVIGATION BAR ──────────────────────────────── -->
+</main>
+
 <nav class="bottom-nav-bar" aria-label="Main navigation">
   <button class="bottom-nav-tab active" id="tab-btn-new" onclick="showTab('new')" aria-label="New Order">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -908,8 +985,6 @@
     <span class="bottom-nav-label">Orders</span>
   </button>
 </nav>
-
-
 
 </body>
 </html>
