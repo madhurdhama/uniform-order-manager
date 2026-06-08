@@ -1,6 +1,4 @@
-/* ----------------------------------------------------------
-   DESIGN TOKENS
----------------------------------------------------------- */
+/* DESIGN TOKENS */
 :root {
   --green:      #059669;  --green-bg:   #d1fae5;
   --blue:       #2563eb;  --blue-bg:    #dbeafe;
@@ -32,12 +30,10 @@
   --shadow-md:  0 4px 16px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.04);
   --shadow-lg:  0 8px 32px rgba(15,23,42,0.12);
 
-  --nav-height: 60px;
+  --nav-height: 60px; /* bottom nav bar height — used for body padding-bottom */
 }
 
-/* ----------------------------------------------------------
-   RESET & BASE
----------------------------------------------------------- */
+/* RESET & BASE */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -62,13 +58,12 @@ body {
 
 input, select, button, textarea { font-family: inherit; }
 
-/* ----------------------------------------------------------
-   LAYOUT
----------------------------------------------------------- */
+/* LAYOUT */
 .app {
   max-width: 600px;
   margin: 0 auto;
   padding: 0 14px;
+  /* extra space so content isn't hidden behind the fixed bottom nav */
   padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 30px);
   position: relative;
 }
@@ -151,7 +146,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .hamburger-btn:active { background: var(--border); }
 
-/* avatar mode — no border/background when showing profile photo */
+/* avatar mode — strip border/bg when showing the user's profile photo */
 .hamburger-btn:has(#hamburger-avatar-img[style*="display: block"]) {
   background: transparent;
   border-color: transparent;
@@ -175,16 +170,16 @@ input, select, button, textarea { font-family: inherit; }
   border: 2px solid var(--border);
 }
 .menu-profile-name {
-  font-size: 0.85rem;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-1);
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 140px;
 }
 .menu-profile-email {
-  font-size: 0.72rem;
+  font-size: 11px;
   color: var(--text-3);
   white-space: nowrap;
   overflow: hidden;
@@ -317,9 +312,7 @@ input, select, button, textarea { font-family: inherit; }
 .bdot-badagaon { background: #059669; }
 .bdot-baghpat  { background: #2563eb; }
 
-/* ----------------------------------------------------------
-   SECTION CARDS & FORM FIELDS
----------------------------------------------------------- */
+/* SECTION CARDS & FORM FIELDS */
 .section {
   background: rgba(255,255,255,0.82);
   backdrop-filter: blur(14px);
@@ -501,9 +494,7 @@ input, select, button, textarea { font-family: inherit; }
   gap: 10px;
 }
 
-/* ----------------------------------------------------------
-   PAYMENT TOGGLE
----------------------------------------------------------- */
+/* PAYMENT TOGGLE */
 .payment-toggle {
   display: flex;
   background: var(--surface);
@@ -533,9 +524,7 @@ input, select, button, textarea { font-family: inherit; }
 #pay-cash.active    { background: #d1fae5; color: #065f46; }
 #pay-online.active  { background: #dbeafe; color: #1e3a8a; }
 
-/* ----------------------------------------------------------
-   ITEM TABLE
----------------------------------------------------------- */
+/* ITEM TABLE */
 .col-labels,
 .item-row {
   display: grid;
@@ -627,9 +616,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .remove-btn:hover { background: var(--red-bg); color: var(--red); }
 
-/* ----------------------------------------------------------
-   ADD BUTTONS
----------------------------------------------------------- */
+/* ADD BUTTONS */
 .add-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -664,9 +651,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .add-btn.quickset:hover { color: #3730a3; }
 
-/* ----------------------------------------------------------
-   TOTAL CARD & SAVE BUTTON
----------------------------------------------------------- */
+/* TOTAL CARD & SAVE BUTTON */
 .total-card {
   margin-top: 14px;
   padding: 14px 16px;
@@ -692,7 +677,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 
 .save-btn-wrap { padding: 6px 0 0; margin-top: 4px; }
-.edit-save-btn-wrap { padding-bottom: 0; margin-bottom: 2rem; }
+.edit-save-btn-wrap { padding-bottom: 0; margin-bottom: 32px; }
 
 .save-btn {
   width: 100%;
@@ -715,11 +700,11 @@ input, select, button, textarea { font-family: inherit; }
 .save-btn:hover  { box-shadow: 0 6px 22px rgba(37,99,235,0.5); transform: translateY(-1px); }
 .save-btn:active { transform: scale(0.99); box-shadow: 0 2px 10px rgba(37,99,235,0.4); }
 
-/* ----------------------------------------------------------
-   ORDERS LIST
----------------------------------------------------------- */
+/* ORDERS LIST */
 .search-input-wrap { position: relative; display: flex; align-items: center; }
 .search-input-wrap input { width: 100%; padding-right: 36px; }
+.filter-row .search-box { flex: 1; margin-bottom: 0; }
+.filter-row .search-box input { margin-bottom: 0; }
 .search-clear-btn {
   position: absolute;
   right: 10px;
@@ -824,9 +809,7 @@ input, select, button, textarea { font-family: inherit; }
 .oc-notes-row    { font-size: 12px; color: var(--orange); margin-top: 4px; display: none; align-items: center; gap: 4px; font-style: italic; }
 .oc-notes-icon   { flex-shrink: 0; }
 
-/* ----------------------------------------------------------
-   BADGES & STATUS DOTS
----------------------------------------------------------- */
+/* BADGES & STATUS DOTS */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -849,14 +832,6 @@ input, select, button, textarea { font-family: inherit; }
 
 #eo-branch-badge.badagaon { background: #d1fae5; color: #059669; }
 #eo-branch-badge.baghpat  { background: #dbeafe; color: #2563eb; }
-
-.badge.delivery-pending {
-  background: #fff1f2;
-  color: #e11d48;
-  border: 1.5px solid #fecdd3;
-}
-.badge.delivery-pending:hover { background: #ffe4e6; cursor: pointer; }
-.badge.delivery-done { background: var(--green-bg); color: var(--green); }
 
 .item-status-dot {
   display: inline-block;
@@ -883,10 +858,10 @@ input, select, button, textarea { font-family: inherit; }
   margin: -14px -14px 14px -14px;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
+.card-meta-branch { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text-3); }
+.card-branch-dot  { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
-/* ----------------------------------------------------------
-   ORDER CARD DETAIL
----------------------------------------------------------- */
+/* ORDER CARD DETAIL */
 .items-toggle-btn {
   display: inline-flex;
   align-items: center;
@@ -923,8 +898,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 
 .oil-label-wrap { display: flex; align-items: center; gap: 6px; }
-.oil-pend-note-hidden { display: none; }
-.oil-pend-note { font-size: 10px; color: #e11d48; font-weight: 600; margin-left: 4px; }
+.oil-pend-note { display: none; font-size: 10px; color: #e11d48; font-weight: 600; margin-left: 4px; }
 
 .pay-history-row { color: var(--text-3); }
 .phr-amt-green   { color: var(--green); font-weight: 600; }
@@ -982,9 +956,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .delivery-action.card-action-btn:hover { background: #ffe4e6; border-color: #fb7185; }
 
-/* ----------------------------------------------------------
-   THREE-DOT CARD MENU
----------------------------------------------------------- */
+/* THREE-DOT CARD MENU */
 .menu-wrap { position: relative; display: inline-block; }
 
 .menu-btn {
@@ -1037,9 +1009,7 @@ input, select, button, textarea { font-family: inherit; }
 .menu-item.destructive       { color: var(--red); }
 .menu-item.destructive:hover { background: var(--red-bg); }
 
-/* ----------------------------------------------------------
-   TOAST NOTIFICATIONS
----------------------------------------------------------- */
+/* TOAST NOTIFICATIONS */
 #toast-container {
   position: fixed;
   top: 72px;
@@ -1072,16 +1042,14 @@ input, select, button, textarea { font-family: inherit; }
 .toast.error { background: var(--red); }
 
 .empty {
-  padding: 3rem 2rem;
+  padding: 48px 32px;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
   color: var(--text-3);
 }
 
-/* ----------------------------------------------------------
-   FILTER BAR
----------------------------------------------------------- */
+/* FILTER BAR */
 .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .filter-btn-wrap { position: relative; }
 
@@ -1137,6 +1105,8 @@ input, select, button, textarea { font-family: inherit; }
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+.filter-section-label + .filter-group { margin-bottom: 0; }
+.filter-group + .filter-section-label { margin-top: 10px; }
 
 .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
@@ -1169,9 +1139,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .filter-clear-btn:hover { color: var(--red); border-color: var(--red); background: var(--red-bg); }
 
-/* ----------------------------------------------------------
-   ANALYTICS / OVERLAY SCREENS
----------------------------------------------------------- */
+/* ANALYTICS / OVERLAY SCREENS */
 #analytics-screen,
 #pricelist-screen,
 #qr-screen,
@@ -1205,6 +1173,7 @@ input, select, button, textarea { font-family: inherit; }
   box-shadow: 0 10px 24px rgba(15,23,42,0.06);
 }
 
+/* Absolutely centred title — avoids flex layout fighting with back button width */
 .screen-title {
   position: absolute;
   left: 50%;
@@ -1340,6 +1309,91 @@ input, select, button, textarea { font-family: inherit; }
 .an-metric-green .an-metric-val { color: var(--green); }
 .an-metric-amber .an-metric-val { color: var(--orange); }
 
+.an-bal-mode {
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+/* balance payment history button in analytics */
+.an-bal-history-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.an-bal-history-btn:active { background: var(--border); }
+
+.an-bal-total-line {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+
+/* balance payment entry card */
+.an-bal-entry {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.an-bal-entry:last-child { border-bottom: none; }
+
+.an-bal-entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.an-bal-entry-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.an-bal-entry-amt {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+.an-bal-entry-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 3px;
+}
+.an-bal-remaining {
+  color: var(--orange);
+  font-weight: 500;
+}
+.an-bal-cleared {
+  color: var(--green);
+  font-weight: 500;
+}
+.an-empty {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 14px;
+  padding: 40px 16px;
+}
+
 .an-section-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -1410,6 +1464,7 @@ input, select, button, textarea { font-family: inherit; }
   line-height: 1.3;
 }
 
+/* Horizontal scroll for price tables on narrow screens */
 .pl-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -1471,9 +1526,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .pl-na { color: var(--text-3); font-weight: 400; }
 
-/* ----------------------------------------------------------
-   BOTTOM SHEETS
----------------------------------------------------------- */
+/* BOTTOM SHEETS */
 .sheet-modal {
   display: none;
   position: fixed;
@@ -1497,6 +1550,7 @@ input, select, button, textarea { font-family: inherit; }
   box-shadow: 0 -4px 32px rgba(15,23,42,0.15);
 }
 
+/* Drag handle pill at top of every bottom sheet */
 .sheet::before {
   content: '';
   display: block;
@@ -1550,25 +1604,6 @@ input, select, button, textarea { font-family: inherit; }
 
 .sheet-tie-note { font-size: 12px; color: var(--text-3); margin-bottom: 8px; }
 
-.chip-grid      { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px,  1fr)); gap: 8px; margin-bottom: 8px; }
-.chip-grid.wide { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-
-.chip {
-  padding: 11px 6px;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.3;
-  text-align: center;
-  border: 1.5px solid var(--border-2);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--text-2);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.chip:hover    { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-.chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 6px rgba(37,99,235,0.3); }
-
 .sheet-price-preview { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--accent); }
 
 .qty-row { display: flex; align-items: center; gap: 14px; margin: 14px 0; }
@@ -1582,8 +1617,8 @@ input, select, button, textarea { font-family: inherit; }
   overflow: hidden;
 }
 .qty-stepper button {
-  padding: 8px 16px;
-  font-size: 18px;
+  padding: 5px 12px;
+  font-size: 16px;
   font-weight: 600;
   border: none;
   background: var(--surface);
@@ -1593,14 +1628,15 @@ input, select, button, textarea { font-family: inherit; }
 }
 .qty-stepper button:hover { background: var(--border); }
 .qty-stepper span {
-  min-width: 38px;
+  min-width: 32px;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   border-left: 1.5px solid var(--border-2);
   border-right: 1.5px solid var(--border-2);
-  padding: 8px 0;
+  padding: 5px 0;
 }
+
 
 .sheet-confirm {
   width: 100%;
@@ -1680,6 +1716,15 @@ input, select, button, textarea { font-family: inherit; }
 
 .ep-discount-row { gap: 10px; margin-top: 4px; }
 
+.ep-history-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 8px;
+}
+
 .ep-info-block {
   background: var(--surface);
   border: 1.5px solid var(--border);
@@ -1743,14 +1788,12 @@ input, select, button, textarea { font-family: inherit; }
   padding: 2px;
 }
 
-/* ----------------------------------------------------------
-   DELETE CONFIRM MODAL
----------------------------------------------------------- */
+/* DELETE CONFIRM MODAL */
 .modal-backdrop {
   display: none;
   position: fixed;
   inset: 0;
-  padding: 1rem;
+  padding: 16px;
   background: rgba(15,23,42,0.5);
   z-index: 200;
   align-items: center;
@@ -1818,9 +1861,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .modal-delete:hover { background: #b91c1c; }
 
-/* ----------------------------------------------------------
-   EDIT ORDER SCREEN (back-btn, screen-header/title/overlay-inner shared in overlay screens)
----------------------------------------------------------- */
+/* EDIT ORDER SCREEN (back-btn, screen-header/title/overlay-inner shared in overlay screens) */
 #edit-order-screen {
   display: none;
   position: fixed;
@@ -1849,9 +1890,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .back-btn:hover { background: var(--surface); }
 
-/* ----------------------------------------------------------
-   DELIVERY SHEET — toggle switch
----------------------------------------------------------- */
+/* DELIVERY SHEET — toggle switch */
 .dv-item-row {
   display: flex;
   align-items: center;
@@ -1889,6 +1928,7 @@ input, select, button, textarea { font-family: inherit; }
 .dv-pending .dv-status-text { color: #e11d48; }
 .dv-given   .dv-status-text { color: var(--green); }
 
+/* Custom toggle switch for marking individual items as delivered */
 .dv-switch {
   position: relative;
   display: inline-block;
@@ -1935,9 +1975,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .dv-mark-all-btn:hover { background: var(--green); color: #fff; }
 
-/* ----------------------------------------------------------
-   QR SCREEN
----------------------------------------------------------- */
+/* QR SCREEN */
 .qr-img-section { text-align: center; padding: 24px 16px; margin-top: 4px; }
 .qr-img {
   width: 100%;
@@ -1950,9 +1988,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .qr-img[src=""] { display: none; }
 
-/* ----------------------------------------------------------
-   ADJUSTMENT SHEET
----------------------------------------------------------- */
+/* ADJUSTMENT SHEET */
 .adj-sign-toggle {
   display: flex;
   background: var(--surface);
@@ -2002,6 +2038,7 @@ input, select, button, textarea { font-family: inherit; }
 .adj-row-label { font-size: 13px; font-weight: 600; color: #5b21b6; }
 
 .adj-row-note {
+  display: none;
   font-size: 11px;
   color: var(--text-3);
   font-style: italic;
@@ -2009,15 +2046,12 @@ input, select, button, textarea { font-family: inherit; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.adj-note-hidden { display: none; }
 
 .adj-row-price { font-size: 13px; font-weight: 700; flex-shrink: 0; white-space: nowrap; }
 .adj-row-price.positive { color: #059669; }
 .adj-row-price.negative { color: #dc2626; }
 
-/* ----------------------------------------------------------
-   SETTINGS SCREEN
----------------------------------------------------------- */
+/* SETTINGS SCREEN */
 .settings-field-hint {
   margin-top: 5px;
   font-size: 11px;
@@ -2083,9 +2117,7 @@ input, select, button, textarea { font-family: inherit; }
 }
 .settings-clear-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
 
-/* ----------------------------------------------------------
-   DATE PICKER INPUTS
----------------------------------------------------------- */
+/* DATE PICKER INPUTS */
 .filter-date-input,
 .an-date-input {
   width: 100%;
@@ -2102,50 +2134,8 @@ input, select, button, textarea { font-family: inherit; }
 .filter-date-input:focus,
 .an-date-input:focus { box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
-/* ----------------------------------------------------------
-   SEASON TOGGLE (Settings)
----------------------------------------------------------- */
-.season-header-badge { display: none !important; }
-
-.season-toggle {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.season-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 16px 12px;
-  border: 2px solid var(--border-2);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: center;
-}
-.season-btn:hover { border-color: var(--accent); background: var(--accent-bg); }
-
-.season-icon  { font-size: 22px; line-height: 1; }
-.season-label { font-size: 14px; font-weight: 700; color: var(--text); }
-.season-desc  { font-size: 11px; font-weight: 400; color: var(--text-3); line-height: 1.4; }
-
-.season-btn.season-active-summer { border-color: #fde68a; background: #fffbeb; }
-.season-btn.season-active-summer .season-label { color: #92400e; }
-.season-btn.season-active-summer .season-desc  { color: #b45309; }
-
-.season-btn.season-active-winter { border-color: #93c5fd; background: #eff6ff; }
-.season-btn.season-active-winter .season-label { color: #1e3a8a; }
-.season-btn.season-active-winter .season-desc  { color: #1d4ed8; }
-
-.season-btn.season-inactive { opacity: 0.55; }
-
-/* ----------------------------------------------------------
-   SINGLE ITEM SHEET
----------------------------------------------------------- */
-.si-sheet { padding-bottom: 0; }
+/* SINGLE ITEM SHEET */
+.multi-select-sheet { padding-bottom: 0; }
 
 .si-group-label {
   display: flex;
@@ -2161,24 +2151,24 @@ input, select, button, textarea { font-family: inherit; }
   letter-spacing: 0.08em;
 }
 
-.si-acc-row {
+.acc-item-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 11px;
+  padding: 11px 13px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.si-acc-row.selected { background: var(--accent-bg); border-color: var(--accent); }
+.acc-item-row.selected { background: var(--accent-bg); border-color: var(--accent); }
 
-.si-acc-left { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
+.acc-item-left { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
 
-.si-acc-check {
+.acc-item-check {
   width: 18px;
   height: 18px;
   border-radius: 5px;
@@ -2190,17 +2180,17 @@ input, select, button, textarea { font-family: inherit; }
   flex-shrink: 0;
   transition: background 0.15s, border-color 0.15s;
 }
-.si-acc-row.selected .si-acc-check { background: var(--accent); border-color: var(--accent); }
-.si-acc-check svg { display: none; }
-.si-acc-row.selected .si-acc-check svg { display: block; }
+.acc-item-row.selected .acc-item-check { background: var(--accent); border-color: var(--accent); }
+.acc-item-check svg { display: none; }
+.acc-item-row.selected .acc-item-check svg { display: block; }
 
-.si-acc-name { font-size: 13px; font-weight: 600; color: var(--text-2); }
-.si-acc-row.selected .si-acc-name { color: var(--accent); }
+.acc-item-name { font-size: 14px; font-weight: 600; color: var(--text-2); }
+.acc-item-row.selected .acc-item-name { color: var(--accent); }
 
-.si-acc-price { font-size: 12px; font-weight: 700; color: var(--text-3); flex-shrink: 0; }
-.si-acc-row.selected .si-acc-price { color: var(--accent); }
+.acc-item-price { font-size: 13px; font-weight: 700; color: var(--text-3); flex-shrink: 0; }
+.acc-item-row.selected .acc-item-price { color: var(--accent); }
 
-.si-row-stepper {
+.inline-stepper {
   display: flex;
   align-items: center;
   border: 1.5px solid var(--border-2);
@@ -2210,10 +2200,10 @@ input, select, button, textarea { font-family: inherit; }
   background: var(--card);
 }
 
-.si-acc-stepper-wrap { visibility: hidden; }
-.si-acc-row.selected .si-acc-stepper-wrap { visibility: visible; }
+.acc-item-stepper-wrap { visibility: hidden; }
+.acc-item-row.selected .acc-item-stepper-wrap { visibility: visible; }
 
-.si-row-stepper button {
+.inline-stepper button {
   width: 30px;
   height: 30px;
   display: flex;
@@ -2228,8 +2218,8 @@ input, select, button, textarea { font-family: inherit; }
   transition: background 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
-.si-row-stepper button:active { background: var(--border); }
-.si-row-stepper span {
+.inline-stepper button:active { background: var(--border); }
+.inline-stepper span {
   min-width: 22px;
   text-align: center;
   font-size: 13px;
@@ -2241,16 +2231,16 @@ input, select, button, textarea { font-family: inherit; }
   line-height: 20px;
 }
 
-.si-sized-row {
+.sized-item-row {
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
   margin-bottom: 5px;
   overflow: hidden;
 }
-.si-sized-row.has-selection { border-color: var(--accent); background: var(--accent-bg); }
+.sized-item-row.has-selection { border-color: var(--accent); background: var(--accent-bg); }
 
-.si-sized-header {
+.sized-item-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2261,22 +2251,22 @@ input, select, button, textarea { font-family: inherit; }
   user-select: none;
 }
 
-.si-sized-name { font-size: 13px; font-weight: 700; color: var(--text-2); flex: 1; }
-.si-sized-row.has-selection .si-sized-name { color: var(--accent); }
+.sized-item-name { font-size: 13px; font-weight: 700; color: var(--text-2); flex: 1; }
+.sized-item-row.has-selection .sized-item-name { color: var(--accent); }
 
-.si-sized-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.sized-item-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
-.si-sized-sel-price { font-size: 12px; font-weight: 700; color: var(--text-3); }
-.si-sized-row.has-selection .si-sized-sel-price { color: var(--accent); }
+.sized-item-sel-price { font-size: 12px; font-weight: 700; color: var(--text-3); }
+.sized-item-row.has-selection .sized-item-sel-price { color: var(--accent); }
 
-.si-sized-stepper-wrap { visibility: hidden; }
-.si-sized-row.has-selection .si-sized-stepper-wrap { visibility: visible; }
+.sized-item-stepper-wrap { visibility: hidden; }
+.sized-item-row.has-selection .sized-item-stepper-wrap { visibility: visible; }
 
-.si-sized-sizes { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 13px 11px; }
+.size-chip-grid { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 13px 13px; }
 
-.si-size-chip {
-  padding: 6px 11px;
-  font-size: 13px;
+.size-chip {
+  padding: 8px 14px;
+  font-size: 14px;
   font-weight: 600;
   border: 1.5px solid var(--border-2);
   border-radius: var(--radius-sm);
@@ -2286,14 +2276,49 @@ input, select, button, textarea { font-family: inherit; }
   transition: all 0.12s;
   -webkit-tap-highlight-color: transparent;
 }
-.si-size-chip.selected {
+.size-chip.selected {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
   box-shadow: 0 2px 6px rgba(37,99,235,0.25);
 }
 
-.si-confirm-bar {
+/* Half/Full variant toggle buttons */
+.hf-variant-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.hf-variant-btn {
+  flex: 1;
+  padding: 8px;
+  border: 2px solid var(--border-2);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hf-variant-btn.active {
+  background: var(--accent-bg);
+  color: var(--accent-dark);
+  border-color: var(--accent);
+}
+.hf-variant-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+
+/* Sticky confirm bar at the bottom of multi-select sheets —
+   hidden until at least one item is selected */
+.sheet-confirm-bar {
   position: sticky;
   bottom: 0;
   display: flex;
@@ -2308,9 +2333,9 @@ input, select, button, textarea { font-family: inherit; }
   opacity: 0;
   transition: opacity 0.18s;
 }
-.si-confirm-bar.visible { visibility: visible; opacity: 1; }
+.sheet-confirm-bar.visible { visibility: visible; opacity: 1; }
 
-.si-confirm-summary {
+.sheet-confirm-summary {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-2);
@@ -2319,10 +2344,10 @@ input, select, button, textarea { font-family: inherit; }
   line-height: 1.4;
 }
 
-.si-confirm-left { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-.si-confirm-left .sheet-price-preview { margin-left: 0; }
+.sheet-confirm-left { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sheet-confirm-left .sheet-price-preview { margin-left: 0; }
 
-.si-confirm-btn {
+.sheet-confirm-btn {
   padding: 11px 20px;
   font-size: 14px;
   font-weight: 700;
@@ -2336,11 +2361,9 @@ input, select, button, textarea { font-family: inherit; }
   transition: all 0.15s;
   flex-shrink: 0;
 }
-.si-confirm-btn:active { transform: scale(0.98); }
+.sheet-confirm-btn:active { transform: scale(0.98); }
 
-/* ----------------------------------------------------------
-   BOTTOM NAVIGATION BAR
----------------------------------------------------------- */
+/* BOTTOM NAVIGATION BAR */
 .bottom-nav-bar {
   position: fixed;
   bottom: 0;
@@ -2379,6 +2402,7 @@ input, select, button, textarea { font-family: inherit; }
   transition: color 0.15s;
 }
 
+/* Sliding top indicator bar for the active tab */
 .bottom-nav-tab::before {
   content: '';
   position: absolute;

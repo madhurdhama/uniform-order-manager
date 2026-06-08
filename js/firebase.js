@@ -1,4 +1,3 @@
-/* ── FIREBASE: AUTH + FIRESTORE ──────────────────────────── */
 
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
@@ -7,7 +6,6 @@ import { getFirestore, collection, doc, setDoc, deleteDoc, getDoc,
          onSnapshot, enableIndexedDbPersistence, query, orderBy }
                                                    from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
-/* ── CONFIG ──────────────────────────────────────────────── */
 
 const FIREBASE_CONFIG = {
   apiKey:            'AIzaSyB2eHS3VsuecZddli8AvbRqICN5l1BvJjc',
@@ -18,24 +16,23 @@ const FIREBASE_CONFIG = {
   appId:             '1:849753872869:web:1ddade23095dcb7853770c'
 };
 
-/* add all authorised emails here — also update Firestore Rules to match */
+/* Allowlist — must also match Firestore Security Rules */
 const ALLOWED_EMAILS = [
   'madhurdhama@gmail.com',
   'bd2232748@gmail.com'
 ];
 
-/* ── INIT ────────────────────────────────────────────────── */
 
 const app  = initializeApp(FIREBASE_CONFIG);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
+/* Enable offline cache; silently degrades in multi-tab or unsupported browsers */
 enableIndexedDbPersistence(db).catch(err => {
   if (err.code === 'failed-precondition') console.warn('Offline persistence disabled: multiple tabs open');
   else if (err.code === 'unimplemented')  console.warn('Offline persistence not supported in this browser');
 });
 
-/* ── AUTH ────────────────────────────────────────────────── */
 
 const provider = new GoogleAuthProvider();
 
@@ -44,10 +41,10 @@ export function signOutUser()           { return signOut(auth); }
 export function onAuthReady(callback)   { onAuthStateChanged(auth, callback); }
 export function isAllowed(user)         { return user && ALLOWED_EMAILS.includes(user.email); }
 
-/* ── FIRESTORE: ORDERS ───────────────────────────────────── */
 
 const ordersCol = collection(db, 'orders');
 
+/* Upsert an order document using order.id as the document key */
 export function saveOrderRemote(order) {
   return setDoc(doc(db, 'orders', String(order.id)), order);
 }
@@ -56,6 +53,7 @@ export function deleteOrderRemote(orderId) {
   return deleteDoc(doc(db, 'orders', String(orderId)));
 }
 
+/* Real-time listener: calls onUpdate with all orders sorted newest-first */
 export function subscribeOrders(onUpdate) {
   const q = query(ordersCol, orderBy('id', 'desc'));
   return onSnapshot(q, snapshot => {
@@ -63,8 +61,8 @@ export function subscribeOrders(onUpdate) {
   });
 }
 
-/* ── FIRESTORE: USER SETTINGS ────────────────────────────── */
 
+/* Settings stored per-user under /users/{email} (UPI ID, UPI number, QR dataURL) */
 export async function loadUserSettings(email) {
   const snap = await getDoc(doc(db, 'users', email));
   return snap.exists() ? snap.data() : null;
