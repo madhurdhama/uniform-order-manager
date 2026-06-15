@@ -1549,6 +1549,8 @@ input, select, button, textarea { font-family: inherit; }
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   box-shadow: 0 -4px 32px rgba(15,23,42,0.15);
 }
+/* Sheets with a sticky confirm bar need no bottom padding */
+.multi-select-sheet { padding-bottom: 0; }
 
 /* Drag handle pill at top of every bottom sheet */
 .sheet::before {
@@ -2134,8 +2136,6 @@ input, select, button, textarea { font-family: inherit; }
 .filter-date-input:focus,
 .an-date-input:focus { box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
-/* SINGLE ITEM SHEET */
-.multi-select-sheet { padding-bottom: 0; }
 
 .si-group-label {
   display: flex;

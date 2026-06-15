@@ -47,6 +47,7 @@ const studentFormRefs = {
 
 const $         = id => document.getElementById(id);
 const rupees    = n  => 'Rs.' + (n || 0).toLocaleString('en-IN');
+const pr        = v  => v != null && v !== 0 ? rupees(v) : `<span class="pl-na">—</span>`;
 
 /* Human-readable labels for each order status — used on order cards and CSV export */
 const STATUS_LABEL = {
@@ -507,7 +508,7 @@ function stepQty(spanId, delta) {
   el.textContent = Math.max(1, Math.min(99, parseInt(el.textContent) + delta));
 }
 
-function buildChips(containerId, values, selectedValue, onSelectFn) {
+function buildChips(containerId, values, onSelectFn, selectedValue = null) {
   const wrap = $(containerId);
   wrap.innerHTML = '';
   values.forEach(v => {
@@ -528,11 +529,17 @@ function selectChip(containerId, value, el) {
 function openQuickSetSheet(target) {
   activeSheet.target = target;
   const sizes = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44];
-  sheetState.quickSetSize = String(sizes[0]);
-  buildChips('qs-sizes', sizes, sheetState.quickSetSize,
-    (v, el) => { sheetState.quickSetSize = selectChip('qs-sizes', v, el); updateQSPrice(); });
-  $('qs-qty').textContent = '1';
-  updateQSPrice();
+  buildChips('qs-sizes', sizes, (v, el) => {
+    const already = sheetState.quickSetSize === v;
+    sheetState.quickSetSize = already ? null : v;
+    $('qs-sizes').querySelectorAll('.size-chip').forEach(c => c.classList.remove('selected'));
+    if (!already) el.classList.add('selected');
+    updateQSPrice();
+  });
+  $('qs-qty').textContent           = '1';
+  $('qs-price-preview').textContent = '';
+  $('qs-item-row').classList.remove('has-selection');
+  $('qs-confirm-bar').classList.remove('visible');
   openSheet('qs-modal');
 }
 
@@ -551,19 +558,30 @@ function confirmQuickSet() {
 
 function updateQSPrice() {
   const priceEl   = $('qs-price-preview');
+  const totalEl   = $('qs-total-preview');
   const summaryEl = $('qs-confirm-summary');
+  const row       = $('qs-item-row');
+  const bar       = $('qs-confirm-bar');
   if (!priceEl) return;
   const size = sheetState.quickSetSize;
   const qty  = parseInt($('qs-qty').textContent) || 1;
-  if (!size) { priceEl.textContent = ''; return; }
+  if (!size) {
+    priceEl.textContent = '';
+    row.classList.remove('has-selection');
+    bar.classList.remove('visible');
+    return;
+  }
 
   const p       = prices;
   const lookup  = (item, sz) => p[item]?.[sz] || p[item]?.[parseInt(sz)] || 0;
   const tieSize = parseInt(size) >= 34 ? 'Large' : 'Small';
   const unit    = lookup('Pant', size) + lookup('Shirt', size) + lookup('Lower', size) + lookup('T-Shirt', size)
              + lookup('Tie', tieSize) + (p['Belt']?.['All'] || 0) + (p['Socks']?.['Pair'] || 0) * 2;
-  priceEl.textContent   = unit ? rupees(unit * qty) : '';
+  priceEl.textContent   = unit ? rupees(unit) : '';
+  if (totalEl)   totalEl.textContent   = unit ? rupees(unit * qty) : '';
   if (summaryEl) summaryEl.textContent = `Size ${size}${qty > 1 ? ' ×'+qty : ''}`;
+  row.classList.add('has-selection');
+  bar.classList.add('visible');
 }
 
 /* Fixed accessories for the Single Item sheet — no size grid, just tap to toggle */
@@ -673,7 +691,7 @@ function openSingleItemSheet(target) {
 
   const sizedCtn = $('si-sized');
   sizedCtn.innerHTML = '';
-  ['Pant','Shirt','Lower','T-Shirt','Half Lower','Half T-Shirt','Full Lower','Full T-Shirt','Suit','Trouser','Jacket'].forEach(itemName => {
+  ['Pant','Shirt','Lower','T-Shirt','Half Lower','Half T-Shirt','Full Lower','Full T-Shirt'].forEach(itemName => {
     if (!p[itemName]) return;
     sizedCtn.appendChild(buildSizedItemRow(itemName, Object.entries(p[itemName]), siToggleSized, 'siSizedStep', 'si-sized'));
   });
@@ -783,7 +801,7 @@ function openMainComboSheet(target) {
   const ctn = $('mc-combos');
   ctn.innerHTML = '';
 
-  [['pant-shirt','Pant + Shirt (Formal)'],['lower-tshirt','Lower + T-Shirt (Sports)']].forEach(([type, label]) => {
+  [['pant-shirt','Pant + Shirt'],['lower-tshirt','Lower + T-Shirt']].forEach(([type, label]) => {
     const cfg   = COMBOS[type];
     const sizes = Object.keys(p[cfg.item1] || {});
 
@@ -877,12 +895,11 @@ function openHalfFullSheet(target) {
   activeSheet.target = target;
   sheetState.hfType = null;
   sheetState.hfSize = null;
-  $('hf-sizes').innerHTML   = '';
-  $('hf-qty').textContent   = '1';
-  $('hf-size-label').style.display  = 'none';
-  $('hf-qty-row').style.display     = 'none';
-  $('hf-confirm-wrap').style.visibility = 'hidden';
-  $('hf-confirm-wrap').style.opacity    = '0';
+  $('hf-sizes').innerHTML = '';
+  $('hf-qty').textContent = '1';
+  $('hf-item-row').style.display = 'none';
+  $('hf-item-row').classList.remove('has-selection');
+  $('hf-confirm-wrap').classList.remove('visible');
   document.querySelectorAll('.hf-variant-btn').forEach(b => b.classList.remove('active'));
 
   openSheet('hf-modal');
@@ -901,45 +918,60 @@ function selectHalfFullType(type, el) {
   localStorage.setItem('hf_last_type', type);
   document.querySelectorAll('.hf-variant-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  $('hf-confirm-wrap').style.visibility = 'hidden';
-  $('hf-confirm-wrap').style.opacity    = '0';
+  $('hf-item-row').classList.remove('has-selection');
+  $('hf-unit-price').textContent  = '';
+  $('hf-price-total').textContent = '';
+  $('hf-confirm-wrap').classList.remove('visible');
 
   const ctxPrices = getSheetPrices(activeSheet.target);
+  const cfg       = COMBOS[type];
+  const sizes     = Object.keys(ctxPrices[cfg.item1] || {});
 
-  const cfg   = COMBOS[type];
-  const sizes = Object.keys(ctxPrices[cfg.item1] || {});
+  $('hf-item-label').textContent = cfg.label;
+  $('hf-item-row').style.display = '';
 
-  $('hf-size-label').style.display  = '';
-  $('hf-qty-row').style.display     = '';
-
-  buildChips('hf-sizes', sizes, null, (v, chip) => {
-    sheetState.hfSize = selectChip('hf-sizes', v, chip);
-    updateHalfFullPrice(ctxPrices);
-    $('hf-confirm-wrap').style.visibility = 'visible';
-    $('hf-confirm-wrap').style.opacity    = '1';
+  buildChips('hf-sizes', sizes, (v, chip) => {
+    const already = sheetState.hfSize === v;
+    sheetState.hfSize = already ? null : v;
+    $('hf-sizes').querySelectorAll('.size-chip').forEach(c => c.classList.remove('selected'));
+    if (!already) {
+      chip.classList.add('selected');
+      $('hf-item-row').classList.add('has-selection');
+      updateHalfFullPrice(ctxPrices);
+      $('hf-confirm-wrap').classList.add('visible');
+    } else {
+      $('hf-item-row').classList.remove('has-selection');
+      $('hf-unit-price').textContent = '';
+      $('hf-price-total').textContent = '';
+      $('hf-confirm-wrap').classList.remove('visible');
+    }
   });
 }
 
 function updateHalfFullPrice(p) {
-  if (!sheetState.hfType || !sheetState.hfSize) { $('hf-price-total').textContent = ''; return; }
-  const cfg     = COMBOS[sheetState.hfType];
-  const p1      = p[cfg.item1]?.[sheetState.hfSize] || 0;
-  const p2      = p[cfg.item2]?.[sheetState.hfSize] || 0;
-  const unit    = p1 + p2;
-  const qty     = parseInt($('hf-qty').textContent) || 1;
-  const total   = $('hf-price-total');
-  const summary = $('hf-confirm-summary');
-  if (total)   { total.dataset.unit = unit; total.textContent = unit ? rupees(unit * qty) : ''; }
-  if (summary) summary.textContent = `${cfg.label} (${sheetState.hfSize})`;
+  if (!sheetState.hfType || !sheetState.hfSize) {
+    $('hf-unit-price').textContent = '';
+    $('hf-price-total').textContent = '';
+    return;
+  }
+  const cfg      = COMBOS[sheetState.hfType];
+  const unit     = (p[cfg.item1]?.[sheetState.hfSize] || 0) + (p[cfg.item2]?.[sheetState.hfSize] || 0);
+  const qty      = parseInt($('hf-qty').textContent) || 1;
+  const unitEl   = $('hf-unit-price');
+  const totalEl  = $('hf-price-total');
+  const summary  = $('hf-confirm-summary');
+  if (unitEl)   unitEl.textContent  = unit ? 'Rs.' + unit : '';
+  if (totalEl)  { totalEl.dataset.unit = unit; totalEl.textContent = unit ? rupees(unit * qty) : ''; }
+  if (summary)  summary.textContent = `${cfg.label} (${sheetState.hfSize})${qty > 1 ? ' ×'+qty : ''}`;
 }
 
 function updateHalfFullQtyPrice() {
-  const total   = $('hf-price-total');
-  const summary = $('hf-confirm-summary');
-  const unit    = parseFloat(total?.dataset.unit) || 0;
-  const qty     = parseInt($('hf-qty').textContent) || 1;
-  if (total)   total.textContent = unit ? rupees(unit * qty) : '';
-  if (summary && sheetState.hfType) {
+  const totalEl  = $('hf-price-total');
+  const summary  = $('hf-confirm-summary');
+  const unit     = parseFloat(totalEl?.dataset.unit) || 0;
+  const qty      = parseInt($('hf-qty').textContent) || 1;
+  if (totalEl)  totalEl.textContent = unit ? rupees(unit * qty) : '';
+  if (summary && sheetState.hfType && sheetState.hfSize) {
     const cfg = COMBOS[sheetState.hfType];
     summary.textContent = `${cfg.label} (${sheetState.hfSize})${qty > 1 ? ' ×'+qty : ''}`;
   }
@@ -1061,38 +1093,91 @@ function confirmBlazerSweater() {
   items.forEach(({ item, size, qty }) => addItem(containerId, idPrefix, recalcFn, item, size, qty));
 }
 
+let coSelections = {};
+
+function coUpdateConfirmBar() {
+  const items   = Object.values(coSelections);
+  const bar     = $('co-confirm-bar');
+  const sumEl   = $('co-confirm-summary');
+  const priceEl = $('co-price-preview');
+  if (!items.length) { bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+  if (sumEl)   sumEl.textContent   = items.map(({ item, qty }) => qty > 1 ? `${item} ×${qty}` : item).join(', ');
+  const total = items.reduce((s, { price, qty }) => s + price * qty, 0);
+  if (priceEl) priceEl.textContent = total ? rupees(total) : '';
+}
+
 function openComboSheet(target, type) {
-  activeSheet.target = target; sheetState.comboType = type; sheetState.comboSize = null;
-  $('co-qty').textContent = '1';
+  activeSheet.target = target;
+  sheetState.comboType = type;
+  coSelections = {};
 
-  let ctxPrices = getSheetPrices(target);
+  const p   = getSheetPrices(target);
+  const ctn = $('co-items');
+  ctn.innerHTML = '';
 
-  const unit = (ctxPrices.Suit?.All || 0) + (ctxPrices.Trouser?.All || 0) + (ctxPrices.Jacket?.All || 0);
-  $('co-sub').textContent                  = 'Suit + Trouser + Jacket';
-  $('co-confirm-summary').textContent      = 'Suit Set';
-  $('co-price-preview').textContent        = rupees(unit);
-  $('co-price-preview').dataset.unit       = unit;
-  $('co-sizes1').innerHTML                 = '';
+  const pieces = [
+    { item: 'Suit',    price: p.Suit?.All    || 0 },
+    { item: 'Trouser', price: p.Trouser?.All || 0 },
+    { item: 'Jacket',  price: p.Jacket?.All  || 0 },
+  ];
+
+  pieces.forEach(({ item, price }) => {
+    const key    = item;
+    const safeId = item.toLowerCase();
+    const row    = document.createElement('div');
+    row.className   = 'acc-item-row';
+    row.dataset.key = key;
+    row.innerHTML   = `
+      <div class="acc-item-left">
+        <div class="acc-item-check">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+            <polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="acc-item-name">${item}</span>
+        <span class="acc-item-price">Rs.${price}</span>
+      </div>
+      <div class="acc-item-stepper-wrap inline-stepper">
+        <button onclick="coStep('${key}',-1,event)">−</button>
+        <span id="co-qty-${safeId}">1</span>
+        <button onclick="coStep('${key}',1,event)">+</button>
+      </div>`;
+    row.addEventListener('click', e => {
+      if (e.target.closest('.inline-stepper')) return;
+      if (coSelections[key]) {
+        delete coSelections[key];
+        row.classList.remove('selected');
+      } else {
+        const qty = parseInt(document.getElementById('co-qty-' + safeId)?.textContent) || 1;
+        coSelections[key] = { item, price, qty };
+        row.classList.add('selected');
+      }
+      coUpdateConfirmBar();
+    });
+    ctn.appendChild(row);
+  });
+
+  $('co-confirm-bar').classList.remove('visible');
   openSheet('co-modal');
 }
 
-function updateComboQtyPrice() {
-  const el  = $('co-price-preview');
-  const sum = $('co-confirm-summary');
+function coStep(key, delta, e) {
+  e.stopPropagation();
+  const safeId = key.toLowerCase();
+  const el     = $('co-qty-' + safeId);
   if (!el) return;
-  const unit = parseFloat(el.dataset.unit) || 0;
-  const qty  = parseInt($('co-qty').textContent) || 1;
-  el.textContent = unit ? rupees(unit * qty) : '';
-  if (sum && sheetState.comboType === 'suit-set') sum.textContent = `Suit Set${qty > 1 ? ' ×'+qty : ''}`;
+  const newQty   = Math.max(1, Math.min(99, parseInt(el.textContent) + delta));
+  el.textContent = newQty;
+  if (coSelections[key]) { coSelections[key].qty = newQty; coUpdateConfirmBar(); }
 }
 
 function confirmCombo() {
   const { containerId, idPrefix, recalcFn } = resolveSheetTarget(activeSheet.target);
-  const qty = parseInt($('co-qty').textContent);
-  if (sheetState.comboType === 'suit-set') { closeSheet('co-modal'); addCombo(containerId, idPrefix, recalcFn, 'suit-set', null, null, qty); return; }
-  if (!sheetState.comboSize) { toast('Select a size first', 'error'); return; }
+  const items = Object.values(coSelections);
+  if (!items.length) { toast('Select at least one piece', 'error'); return; }
   closeSheet('co-modal');
-  addCombo(containerId, idPrefix, recalcFn, sheetState.comboType, sheetState.comboSize, sheetState.comboSize, qty);
+  items.forEach(({ item, qty }) => addItem(containerId, idPrefix, recalcFn, item, 'All', qty));
 }
 
 function openAdjSheet(target) {
@@ -2392,7 +2477,6 @@ function setPriceBranch(branch) {
    colHeaders: array of strings or { label, total } objects.
    rows: array of cell arrays where each cell is a string or { val, total?, bold? } object. */
 function makePriceTable(container, groupTitle, colHeaders, rows) {
-  const pr  = v => v != null && v !== 0 ? rupees(v) : `<span class="pl-na">—</span>`;
   const card = document.createElement('div');
   card.className = 'pl-card';
   card.innerHTML = `<div class="pl-group-title">${groupTitle}</div>`;
