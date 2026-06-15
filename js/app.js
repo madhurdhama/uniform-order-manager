@@ -47,6 +47,7 @@ const studentFormRefs = {
 
 const $         = id => document.getElementById(id);
 const rupees    = n  => 'Rs.' + (n || 0).toLocaleString('en-IN');
+const pr  = v => v != null && v !== 0 ? rupees(v) : `<span class="pl-na">—</span>`;
 
 /* Human-readable labels for each order status — used on order cards and CSV export */
 const STATUS_LABEL = {
@@ -2392,7 +2393,6 @@ function setPriceBranch(branch) {
    colHeaders: array of strings or { label, total } objects.
    rows: array of cell arrays where each cell is a string or { val, total?, bold? } object. */
 function makePriceTable(container, groupTitle, colHeaders, rows) {
-  const pr  = v => v != null && v !== 0 ? rupees(v) : `<span class="pl-na">—</span>`;
   const card = document.createElement('div');
   card.className = 'pl-card';
   card.innerHTML = `<div class="pl-group-title">${groupTitle}</div>`;
