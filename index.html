@@ -381,29 +381,33 @@
 
 <!-- Quick Set: adds a complete uniform (Pant+Shirt+Lower+T-Shirt+Tie+Belt+2×Socks) at one size -->
 <div class="sheet-modal" id="qs-modal" onclick="closeSheet('qs-modal',event)">
-  <div class="sheet">
+  <div class="sheet multi-select-sheet">
     <div class="sheet-header">
       <div class="sheet-title">Complete Uniform</div>
       <button class="sheet-close-btn" onclick="closeSheet('qs-modal')">✕</button>
     </div>
     <div class="sheet-sub">Pant + Shirt + Lower + T-Shirt + Tie + Belt + 2×Socks — all at same size</div>
-    <div class="sheet-label">Select size</div>
-    <div class="size-chip-grid" id="qs-sizes"></div>
-    <div class="sheet-tie-note">Tie: Small for size &lt;34 · Large for size 34+</div>
-    <div class="qty-row">
-      <label>Quantity</label>
-      <div class="qty-stepper">
-        <button onclick="stepQty('qs-qty',-1);updateQSPrice()">−</button>
-        <span id="qs-qty">1</span>
-        <button onclick="stepQty('qs-qty',1);updateQSPrice()">+</button>
+    <div class="sized-item-row" id="qs-item-row">
+      <div class="sized-item-header">
+        <span class="sized-item-name">Complete Uniform</span>
+        <div class="sized-item-controls">
+          <span class="sized-item-sel-price" id="qs-price-preview"></span>
+          <div class="sized-item-stepper-wrap inline-stepper">
+            <button onclick="stepQty('qs-qty',-1);updateQSPrice()">−</button>
+            <span id="qs-qty">1</span>
+            <button onclick="stepQty('qs-qty',1);updateQSPrice()">+</button>
+          </div>
+        </div>
       </div>
+      <div class="size-chip-grid" id="qs-sizes"></div>
     </div>
-    <div class="sheet-confirm-bar visible" id="qs-confirm-bar" style="visibility:visible;opacity:1;margin-top:12px;">
+    <div class="sheet-tie-note">Tie: Small for size &lt;34 · Large for size 34+</div>
+    <div class="sheet-confirm-bar" id="qs-confirm-bar">
       <div class="sheet-confirm-left">
-        <div class="sheet-confirm-summary" id="qs-confirm-summary">Select a size above</div>
-        <div class="sheet-price-preview" id="qs-price-preview"></div>
+        <div class="sheet-confirm-summary" id="qs-confirm-summary"></div>
+        <div class="sheet-price-preview" id="qs-total-preview"></div>
       </div>
-      <button class="sheet-confirm-btn" onclick="confirmQuickSet()">✦ Add Selected</button>
+      <button class="sheet-confirm-btn" onclick="confirmQuickSet()">✦ Add to Order</button>
     </div>
   </div>
 </div>
@@ -416,7 +420,7 @@
       <div class="sheet-title">Formal / Sports Uniform</div>
       <button class="sheet-close-btn" onclick="closeSheet('mc-modal')">✕</button>
     </div>
-    <div class="sheet-sub">Pant+Shirt (formal) · Lower+T-Shirt (sports)</div>
+    <div class="sheet-sub">Formal (Pant + Shirt)  •  Sports (Lower + T-Shirt)</div>
     <div id="mc-combos"></div>
     <div class="sheet-confirm-bar" id="mc-confirm-bar">
       <div class="sheet-confirm-left">
@@ -430,29 +434,33 @@
 
 <!-- Half/Full Lower+T-Shirt sheet -->
 <div class="sheet-modal" id="hf-modal" onclick="closeSheet('hf-modal',event)">
-  <div class="sheet">
+  <div class="sheet multi-select-sheet">
     <div class="sheet-header">
       <div class="sheet-title">Red Uniform</div>
       <button class="sheet-close-btn" onclick="closeSheet('hf-modal')">✕</button>
     </div>
-    <div class="sheet-sub">Half: shorts + T-Shirt · Full: lower + full sleeve</div>
+    <div class="sheet-sub">Half (shorts + T-Shirt)  •  Full (lower + full sleeve)</div>
     <div class="hf-variant-row">
       <button class="hf-variant-btn" id="hf-opt-half"
         onclick="selectHalfFullType('half-lower-tshirt', this)">Half</button>
       <button class="hf-variant-btn" id="hf-opt-full"
         onclick="selectHalfFullType('full-lower-tshirt', this)">Full</button>
     </div>
-    <div class="sheet-label" id="hf-size-label" style="display:none">Select size</div>
-    <div class="size-chip-grid" id="hf-sizes"></div>
-    <div class="qty-row" id="hf-qty-row" style="display:none">
-      <label>Quantity</label>
-      <div class="qty-stepper">
-        <button onclick="stepQty('hf-qty',-1);updateHalfFullQtyPrice()">−</button>
-        <span id="hf-qty">1</span>
-        <button onclick="stepQty('hf-qty',1);updateHalfFullQtyPrice()">+</button>
+    <div class="sized-item-row" id="hf-item-row" style="display:none">
+      <div class="sized-item-header">
+        <span class="sized-item-name" id="hf-item-label"></span>
+        <div class="sized-item-controls">
+          <span class="sized-item-sel-price" id="hf-unit-price"></span>
+          <div class="sized-item-stepper-wrap inline-stepper">
+            <button onclick="stepQty('hf-qty',-1);updateHalfFullQtyPrice()">−</button>
+            <span id="hf-qty">1</span>
+            <button onclick="stepQty('hf-qty',1);updateHalfFullQtyPrice()">+</button>
+          </div>
+        </div>
       </div>
+      <div class="size-chip-grid" id="hf-sizes"></div>
     </div>
-    <div class="sheet-confirm-bar" id="hf-confirm-wrap" style="visibility:hidden;opacity:0;margin-top:12px;">
+    <div class="sheet-confirm-bar" id="hf-confirm-wrap">
       <div class="sheet-confirm-left">
         <div class="sheet-confirm-summary" id="hf-confirm-summary"></div>
         <div class="sheet-price-preview" id="hf-price-total"></div>
@@ -481,24 +489,16 @@
   </div>
 </div>
 
-<!-- Suit Set / Combo sheet: shared for Suit Set and other combo types; title and sub set by JS -->
+<!-- Suit Set sheet: three independently toggleable pieces -->
 <div class="sheet-modal" id="co-modal" onclick="closeSheet('co-modal',event)">
-  <div class="sheet">
+  <div class="sheet multi-select-sheet">
     <div class="sheet-header">
-      <div class="sheet-title" id="co-title">Suit Set</div>
+      <div class="sheet-title">Suit Set</div>
       <button class="sheet-close-btn" onclick="closeSheet('co-modal')">✕</button>
     </div>
-    <div class="sheet-sub" id="co-sub"></div>
-    <div class="size-chip-grid" id="co-sizes1"></div>
-    <div class="qty-row">
-      <label>Quantity</label>
-      <div class="qty-stepper">
-        <button onclick="stepQty('co-qty',-1);updateComboQtyPrice()">−</button>
-        <span id="co-qty">1</span>
-        <button onclick="stepQty('co-qty',1);updateComboQtyPrice()">+</button>
-      </div>
-    </div>
-    <div class="sheet-confirm-bar visible" id="co-confirm-bar" style="visibility:visible;opacity:1;margin-top:12px;">
+    <div class="sheet-sub">Suit + Trouser + Jacket — select independently</div>
+    <div id="co-items"></div>
+    <div class="sheet-confirm-bar" id="co-confirm-bar">
       <div class="sheet-confirm-left">
         <div class="sheet-confirm-summary" id="co-confirm-summary"></div>
         <div class="sheet-price-preview" id="co-price-preview"></div>
