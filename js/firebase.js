@@ -2,8 +2,9 @@
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                                                    from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, getDoc,
-         onSnapshot, enableIndexedDbPersistence, query, orderBy }
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager,
+         collection, doc, setDoc, deleteDoc, getDoc,
+         onSnapshot, query, orderBy }
                                                    from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
 
@@ -25,12 +26,10 @@ const ALLOWED_EMAILS = [
 
 const app  = initializeApp(FIREBASE_CONFIG);
 const auth = getAuth(app);
-const db   = getFirestore(app);
 
-/* Enable offline cache; silently degrades in multi-tab or unsupported browsers */
-enableIndexedDbPersistence(db).catch(err => {
-  if (err.code === 'failed-precondition') console.warn('Offline persistence disabled: multiple tabs open');
-  else if (err.code === 'unimplemented')  console.warn('Offline persistence not supported in this browser');
+/* Enable offline persistence across multiple tabs. */
+const db = initializeFirestore(app, {
+  cache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
 });
 
 
