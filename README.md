@@ -1,7 +1,7 @@
 # Uniform Order Manager
 
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-0070f3?style=for-the-badge&logo=vercel&logoColor=white)](https://uniform-order-manager.vercel.app/)
-[![Firebase](https://img.shields.io/badge/Database-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Firebase](https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=4A1B0C)](https://firebase.google.com/)
 
 A mobile-first web app for managing school uniform orders.
 
